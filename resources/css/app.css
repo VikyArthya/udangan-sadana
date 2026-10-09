@@ -1,0 +1,76 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+
+@theme {
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-display: 'Caudex', 'Cormorant Garamond', Georgia, serif;
+    --font-sans: 'Montserrat', system-ui, -apple-system, sans-serif;
+    
+    --color-wine-50: #FAF4F4;
+    --color-wine-100: #F3E5E5;
+    --color-wine-200: #E4C8C8;
+    --color-wine-600: #8E3A37;
+    --color-wine-700: #753230;
+    --color-wine-800: #5D2625;
+    --color-wine-900: #421817;
+
+    --color-gold-300: #D8C3A8;
+    --color-gold-400: #C9AE8E;
+    --color-gold-500: #B89C7A;
+    --color-gold-600: #9E8160;
+
+    --color-cream-100: #FFF9F3;
+    --color-cream-200: #FFF0E5;
+    --color-cream-300: #F7E5D6;
+}
+
+:root {
+    --primary-wine: #753230;
+    --secondary-gold: #B89C7A;
+    --bg-cream: #FFF0E5;
+}
+
+/* Custom Animation Utilities */
+@keyframes spin-slow {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin-slow {
+    animation: spin-slow 12s linear infinite;
+}
+
+@keyframes float-gentle {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+.animate-float {
+    animation: float-gentle 4s ease-in-out infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #FFF0E5;
+}
+::-webkit-scrollbar-thumb {
+    background: #B89C7A;
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #753230;
+}
