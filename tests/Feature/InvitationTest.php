@@ -39,3 +39,9 @@ test('admin login succeeds with default credentials', function () {
 
     $response->assertRedirect(route('admin.dashboard'));
 });
+
+test('unauthenticated user accessing /admin is redirected to /admin/login', function () {
+    $response = $this->get('/admin');
+
+    $response->assertRedirect('/admin/login');
+});

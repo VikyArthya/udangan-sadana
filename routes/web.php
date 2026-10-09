@@ -23,6 +23,9 @@ Route::get('/', [InvitationController::class, 'index'])->name('invitation.index'
 Route::post('/rsvp', [InvitationController::class, 'storeRsvp'])->name('invitation.rsvp');
 Route::get('/api/wishes', [InvitationController::class, 'getWishes'])->name('invitation.wishes');
 
+// Login Route for standard Laravel Auth middleware fallback
+Route::redirect('/login', '/admin/login')->name('login');
+
 // Admin Authentication Routes
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
