@@ -2,7 +2,8 @@
 <html lang="id">
 <head>
 	<meta charset="UTF-8">
-		
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{ $setting->groom_nickname ?? 'Habib' }} &amp; {{ $setting->bride_nickname ?? 'Adiba' }} - Wedding Invitation</title>
 
 	
 
@@ -218,11 +219,11 @@ p {
 				</div>
 				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-3f49816 elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="400" style="transition-duration: 2000ms; transition-delay: 400ms;" data-id="3f49816" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
 				<div class="elementor-widget-container">
-					<p class="elementor-heading-title elementor-size-default">Habib &amp; Adiba</p>				</div>
+					<p class="elementor-heading-title elementor-size-default">{{ $setting->groom_nickname ?? 'Habib' }} &amp; {{ $setting->bride_nickname ?? 'Adiba' }}</p>				</div>
 				</div>
 				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-48c5c30b elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="600" style="transition-duration: 2000ms; transition-delay: 600ms;" data-id="48c5c30b" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
 				<div class="elementor-widget-container">
-					<p class="elementor-heading-title elementor-size-default">28. 12. 2026</p>				</div>
+					<p class="elementor-heading-title elementor-size-default">{{ $setting->wedding_date ? \Carbon\Carbon::parse($setting->wedding_date)->format('d. m. Y') : '28. 12. 2026' }}</p>				</div>
 				</div>
 				</div>
 		<div class="elementor-element elementor-element-70200ae7 e-con-full e-flex e-con e-child" data-id="70200ae7" data-element_type="container" data-e-type="container">
@@ -252,7 +253,7 @@ p {
 				</div>
 				<div class="elementor-element elementor-element-5e883ffe profil1 elementor-widget elementor-widget-image" data-id="5e883ffe" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
 				<div class="elementor-widget-container">
-															<img loading="lazy" decoding="async" width="1000" height="1498" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co.jpg" class="attachment-full size-full wp-image-33948" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co.jpg 1000w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-200x300.jpg 200w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-684x1024.jpg 684w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-768x1150.jpg 768w" sizes="(max-width: 1000px) 100vw, 1000px" />															</div>
+															<img loading="lazy" decoding="async" width="1000" height="1498" src="{{ $setting->hero_photo ? (str_starts_with($setting->hero_photo, 'http') ? $setting->hero_photo : asset($setting->hero_photo)) : 'https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co.jpg' }}" class="attachment-full size-full wp-image-33948" alt="" />															</div>
 				</div>
 				<div class="elementor-element elementor-element-7b4164dc elementor-widget elementor-widget-heading" data-id="7b4164dc" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
 				<div class="elementor-widget-container">
@@ -260,7 +261,7 @@ p {
 				</div>
 				<div class="elementor-element elementor-element-344af349 elementor-widget elementor-widget-text-editor" data-id="344af349" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
-									Senin, 28 Desember 2026								</div>
+									{{ $events->first()?->date_text ?? 'Senin, 28 Desember 2026' }}								</div>
 				</div>
 				<div class="elementor-element elementor-element-b3817b9 elementor-align-center elementor-mobile-align-center elementor-widget elementor-widget-button" data-id="b3817b9" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_animation_mobile&quot;:&quot;fadeInDown&quot;}" data-widget_type="button.default">
 				<div class="elementor-widget-container">
@@ -291,7 +292,10 @@ p {
 				</div>
 				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-7af836a1 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="7af836a1" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
-									&#8220;Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir.&#8221;<br><br>(Qs. Ar-Rum : 21)								</div>
+					@if(!empty($setting->quote_arabic))
+						<p style="font-family: serif; font-size: 1.15em; line-height: 2; margin-bottom: 15px; direction: rtl;">{{ $setting->quote_arabic }}</p>
+					@endif
+					&#8220;{{ $setting->quote_text ?? 'Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir.' }}&#8221;<br><br>{{ $setting->quote_source ?? '(Qs. Ar-Rum : 21)' }}								</div>
 				</div>
 				<div class="elementor-element elementor-element-2da13bce elementor-widget elementor-widget-spacer" data-id="2da13bce" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
 				<div class="elementor-widget-container">
@@ -326,19 +330,19 @@ p {
 				</div>
 				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-4ca654ba elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="4ca654ba" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
 				<div class="elementor-widget-container">
-					<p class="elementor-heading-title elementor-size-default">Habib Yulianto</p>				</div>
+					<p class="elementor-heading-title elementor-size-default">{{ $setting->groom_name ?? 'Habib Yulianto' }}</p>				</div>
 				</div>
 				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-7deaa6a9 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="7deaa6a9" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
-									Putra Kedua dari <span class="ayah-marker" data-idb-mempelai-side="pria">Bapak M. Dawam</span><br>
-<span class="ibu-marker" data-idb-mempelai-side="pria">(Almh) Ibu Dewi Sudarwati</span>								</div>
+									{{ $setting->groom_parent_status ?? 'Putra Kedua dari' }} <span class="ayah-marker" data-idb-mempelai-side="pria">{{ $setting->groom_father ?? 'Bapak M. Dawam' }}</span><br>
+<span class="ibu-marker" data-idb-mempelai-side="pria">{{ $setting->groom_mother ?? '(Almh) Ibu Dewi Sudarwati' }}</span>								</div>
 				</div>
 				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-5aad0627 elementor-widget elementor-widget-bisdev_social_icons" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="5aad0627" data-element_type="widget" data-e-type="widget" data-widget_type="bisdev_social_icons.default">
 				<div class="elementor-widget-container">
 					        <div class="idb-social-icons is-auto-columns  is-shape-circle" style="">
                                             <a
                     class="idb-social-icons__item elementor-animation-grow"
-                    href="https://www.instagram.com/"
+                    href="https://www.instagram.com/{{ ltrim($setting->groom_instagram ?? '', '@') }}"
                     aria-label="Instagram"
                     title="Instagram"
                     style=""
@@ -357,19 +361,19 @@ p {
 				</div>
 				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-1f499b1a elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="1f499b1a" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
 				<div class="elementor-widget-container">
-					<p class="elementor-heading-title elementor-size-default">Adiba Putri Syakila</p>				</div>
+					<p class="elementor-heading-title elementor-size-default">{{ $setting->bride_name ?? 'Adiba Putri Syakila' }}</p>				</div>
 				</div>
 				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-6403adf5 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="6403adf5" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
-									Putri Pertama dari <span class="ayah-marker" data-idb-mempelai-side="wanita">Bapak Anas Rifai</span><br>
-<span class="ibu-marker" data-idb-mempelai-side="wanita">Ibu Kholifah</span>								</div>
+									{{ $setting->bride_parent_status ?? 'Putri Pertama dari' }} <span class="ayah-marker" data-idb-mempelai-side="wanita">{{ $setting->bride_father ?? 'Bapak Anas Rifai' }}</span><br>
+<span class="ibu-marker" data-idb-mempelai-side="wanita">{{ $setting->bride_mother ?? 'Ibu Kholifah' }}</span>								</div>
 				</div>
 				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-33ad61ca elementor-widget elementor-widget-bisdev_social_icons" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="33ad61ca" data-element_type="widget" data-e-type="widget" data-widget_type="bisdev_social_icons.default">
 				<div class="elementor-widget-container">
 					        <div class="idb-social-icons is-auto-columns  is-shape-circle" style="">
                                             <a
                     class="idb-social-icons__item elementor-animation-grow"
-                    href="https://www.instagram.com/"
+                    href="https://www.instagram.com/{{ ltrim($setting->bride_instagram ?? '', '@') }}"
                     aria-label="Instagram"
                     title="Instagram"
                     style=""
@@ -413,7 +417,7 @@ p {
 				</div>
 				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-5431c61 elementor-widget__width-inherit elementor-widget elementor-widget-bisdev_countdown" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="5431c61" data-element_type="widget" data-e-type="widget" data-widget_type="bisdev_countdown.default">
 				<div class="elementor-widget-container">
-					<div class="idb-countdown" data-target="1798426800000" data-target-iso="2026-12-28T03:00:00+00:00" data-show-days="1" data-show-hours="1" data-show-minutes="1" data-show-seconds="1" data-label-days="Hari" data-label-hours="Jam" data-label-minutes="Menit" data-label-seconds="Detik">  <div class="idb-countdown__row"><div class="idb-countdown__item" data-part="days">  <div class="idb-countdown__num" data-role="num">0</div>  <div class="idb-countdown__label" data-role="label">Hari</div></div><div class="idb-countdown__item" data-part="hours">  <div class="idb-countdown__num" data-role="num">0</div>  <div class="idb-countdown__label" data-role="label">Jam</div></div><div class="idb-countdown__item" data-part="minutes">  <div class="idb-countdown__num" data-role="num">0</div>  <div class="idb-countdown__label" data-role="label">Menit</div></div><div class="idb-countdown__item" data-part="seconds">  <div class="idb-countdown__num" data-role="num">0</div>  <div class="idb-countdown__label" data-role="label">Detik</div></div>  </div></div>				</div>
+					<div class="idb-countdown" data-target="{{ $setting->wedding_date ? \Carbon\Carbon::parse($setting->wedding_date)->timestamp * 1000 : 1798426800000 }}" data-target-iso="{{ $setting->wedding_date ? \Carbon\Carbon::parse($setting->wedding_date)->toIso8601String() : '2026-12-28T03:00:00+00:00' }}" data-show-days="1" data-show-hours="1" data-show-minutes="1" data-show-seconds="1" data-label-days="Hari" data-label-hours="Jam" data-label-minutes="Menit" data-label-seconds="Detik">  <div class="idb-countdown__row"><div class="idb-countdown__item" data-part="days">  <div class="idb-countdown__num" data-role="num">0</div>  <div class="idb-countdown__label" data-role="label">Hari</div></div><div class="idb-countdown__item" data-part="hours">  <div class="idb-countdown__num" data-role="num">0</div>  <div class="idb-countdown__label" data-role="label">Jam</div></div><div class="idb-countdown__item" data-part="minutes">  <div class="idb-countdown__num" data-role="num">0</div>  <div class="idb-countdown__label" data-role="label">Menit</div></div><div class="idb-countdown__item" data-part="seconds">  <div class="idb-countdown__num" data-role="num">0</div>  <div class="idb-countdown__label" data-role="label">Detik</div></div>  </div></div>				</div>
 				</div>
 				</div>
 				<div class="elementor-element elementor-element-373494f7 elementor-widget elementor-widget-spacer" data-id="373494f7" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
@@ -429,12 +433,13 @@ p {
 				<div class="elementor-widget-container">
 															<img loading="lazy" decoding="async" width="954" height="739" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-07.webp" class="attachment-full size-full wp-image-33963" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-07.webp 954w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-07-300x232.webp 300w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-07-768x595.webp 768w" sizes="(max-width: 954px) 100vw, 954px" />															</div>
 				</div>
-		<div class="elementor-element elementor-element-1ad2f2d0 e-con-full acara-con e-flex e-con e-child" data-id="1ad2f2d0" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
-				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-5ef4622a elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="5ef4622a" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+		@foreach($events as $index => $event)
+		<div class="elementor-element {{ $index === 0 ? 'elementor-element-1ad2f2d0' : 'elementor-element-57aba0e' }} e-con-full acara-con e-flex e-con e-child" data-id="acara-{{ $event->id }}" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-5ef4622a elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="h-{{ $event->id }}" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
 				<div class="elementor-widget-container">
-					<h2 class="elementor-heading-title elementor-size-default"><span class="nama-acara-marker" data-event-index="0">Akad Nikah</span></h2>				</div>
+					<h2 class="elementor-heading-title elementor-size-default"><span class="nama-acara-marker" data-event-index="{{ $index }}">{{ $event->title }}</span></h2>				</div>
 				</div>
-				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-bf23b94 elementor-widget-divider--view-line elementor-widget elementor-widget-divider" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="bf23b94" data-element_type="widget" data-e-type="widget" data-widget_type="divider.default">
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-bf23b94 elementor-widget-divider--view-line elementor-widget elementor-widget-divider" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="d-{{ $event->id }}" data-element_type="widget" data-e-type="widget" data-widget_type="divider.default">
 				<div class="elementor-widget-container">
 							<div class="elementor-divider">
 			<span class="elementor-divider-separator">
@@ -442,26 +447,27 @@ p {
 		</div>
 						</div>
 				</div>
-				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-2d0c61af elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="2d0c61af" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-2d0c61af elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="dt-{{ $event->id }}" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
-									Senin, 28 Desember 2026								</div>
+									{{ $event->date_text }}								</div>
 				</div>
-				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-10f77c13 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="10f77c13" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-10f77c13 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="tt-{{ $event->id }}" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
-									Pukul : 08.00 WIB								</div>
+									{{ $event->time_text }}								</div>
 				</div>
-				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-766b8b67 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="766b8b67" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-766b8b67 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="vn-{{ $event->id }}" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
-									Tempat : <span class="niku-multiline"><strong>KEDIAMAN MEMPELAI WANITA</strong><br class="niku-lb">Ds Pagu, Wates, Kediri, <br class="niku-lb">Jawa Timur</span>								</div>
+									Tempat : <span class="niku-multiline"><strong>{{ strtoupper($event->venue_name) }}</strong><br class="niku-lb">{!! nl2br(e($event->venue_address)) !!}</span>								</div>
 				</div>
-				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-2ff1b86b elementor-widget elementor-widget-bisdev_social_icons" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="2ff1b86b" data-element_type="widget" data-e-type="widget" data-widget_type="bisdev_social_icons.default">
+				@if(!empty($event->maps_url))
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-2ff1b86b elementor-widget elementor-widget-bisdev_social_icons" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="map-{{ $event->id }}" data-element_type="widget" data-e-type="widget" data-widget_type="bisdev_social_icons.default">
 				<div class="elementor-widget-container">
 					        <div class="idb-social-icons is-auto-columns is-location-buttons is-shape-circle" style="--idb-loc-btn-text:#FFFFFF;">
                                             <a
                     class="idb-social-icons__item elementor-animation-grow"
-                    href="https://maps.app.goo.gl/GgLwpE6Qq8GZYBJh9"
-                    aria-label="Akad Nikah"
-                    title="Akad Nikah"
+                    href="{{ $event->maps_url }}"
+                    aria-label="{{ $event->title }}"
+                    title="{{ $event->title }}"
                     style=""
                     data-idb-maps-link="1"                    target="_blank"                    rel="nofollow noopener noreferrer"                >
                     <i class="fas fa-map-marker-alt" aria-hidden="true"></i>                                                                    <span class="idb-social-icons__text">Lihat Lokasi</span>
@@ -469,62 +475,10 @@ p {
                     </div>
         				</div>
 				</div>
-				</div>
-		<div class="elementor-element elementor-element-57aba0e e-con-full acara-con e-flex e-con e-child" data-id="57aba0e" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
-				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-11674f6c elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="11674f6c" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
-				<div class="elementor-widget-container">
-					<h2 class="elementor-heading-title elementor-size-default"><span class="nama-acara-marker" data-event-index="1">Resepsi</span></h2>				</div>
-				</div>
-				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-2e2e583b elementor-widget-divider--view-line elementor-widget elementor-widget-divider" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="2e2e583b" data-element_type="widget" data-e-type="widget" data-widget_type="divider.default">
-				<div class="elementor-widget-container">
-							<div class="elementor-divider">
-			<span class="elementor-divider-separator">
-						</span>
+				@endif
 		</div>
-						</div>
-				</div>
-				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-28f0d57c elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="28f0d57c" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
-				<div class="elementor-widget-container">
-									Senin, 28 Desember 2026								</div>
-				</div>
-				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-6f144195 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="6f144195" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
-				<div class="elementor-widget-container">
-									Pukul : 10.00 WIB &#8211; Selesai								</div>
-				</div>
-				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-129ef3eb elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="129ef3eb" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
-				<div class="elementor-widget-container">
-									Tempat : <span class="niku-multiline"><strong>KEDIAMAN MEMPELAI WANITA<br class="niku-lb"></strong>Ds Pagu, Wates, Kediri, <br class="niku-lb">Jawa Timur</span>								</div>
-				</div>
-				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-6f70bbc2 elementor-widget elementor-widget-bisdev_social_icons" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="6f70bbc2" data-element_type="widget" data-e-type="widget" data-widget_type="bisdev_social_icons.default">
-				<div class="elementor-widget-container">
-					        <div class="idb-social-icons is-auto-columns is-location-buttons is-shape-circle" style="--idb-loc-btn-text:#FFFFFF;">
-                                            <a
-                    class="idb-social-icons__item elementor-animation-grow"
-                    href="https://www.google.com/maps"
-                    aria-label="Resepsi"
-                    title="Resepsi"
-                    style=""
-                    data-idb-maps-link="1"                    target="_blank"                    rel="nofollow noopener noreferrer"                >
-                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>                                                                    <span class="idb-social-icons__text">Lihat Lokasi</span>
-                                    </a>
-                    </div>
-        				</div>
-				</div>
-				</div>
-		<div class="elementor-element elementor-element-2599c18b e-con-full acara-con e-flex e-con e-child" data-id="2599c18b" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
-				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-26c9f7a7 elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="26c9f7a7" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
-				<div class="elementor-widget-container">
-					<h2 class="elementor-heading-title elementor-size-default"><span class="nama-acara-marker" data-event-index="2"></span></h2>				</div>
-				</div>
-				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-6439e5e8 elementor-widget-divider--view-line elementor-widget elementor-widget-divider" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="6439e5e8" data-element_type="widget" data-e-type="widget" data-widget_type="divider.default">
-				<div class="elementor-widget-container">
-							<div class="elementor-divider">
-			<span class="elementor-divider-separator">
-						</span>
-		</div>
-						</div>
-				</div>
-				</div>
+		@endforeach
+		@if($setting->stream_enabled ?? true)
 		<div class="elementor-element elementor-element-2a439cf3 e-con-full stream-con e-flex e-con e-child" data-id="2a439cf3" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
 				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-b838c51 elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="b838c51" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
 				<div class="elementor-widget-container">
@@ -540,32 +494,29 @@ p {
 				</div>
 				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-261d667c elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="261d667c" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
-									Kami mengundang Bapak/Ibu/Saudara/i untuk menyaksikan pernikahan kami secara virtual yang disiarkan langsung melalui media sosial di bawah ini								</div>
+									Kami mengundang Bapak/Ibu/Saudara/i untuk menyaksikan pernikahan kami secara virtual yang disiarkan langsung melalui tautan di bawah ini:								</div>
 				</div>
 				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-9635ac3 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="9635ac3" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
-									Senin, 28 Desember 2026								</div>
-				</div>
-				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-4c743599 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="4c743599" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
-				<div class="elementor-widget-container">
-									Pukul : 08.00 WIB								</div>
+									{{ $setting->stream_time ?? 'Senin, 28 Desember 2026 - Pukul 08.00 WIB' }}								</div>
 				</div>
 				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-16287c93 elementor-widget elementor-widget-bisdev_social_icons" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="16287c93" data-element_type="widget" data-e-type="widget" data-widget_type="bisdev_social_icons.default">
 				<div class="elementor-widget-container">
 					        <div class="idb-social-icons is-auto-columns is-streaming-buttons is-shape-circle" style="--idb-loc-btn-text:#FFFFFF;">
                                             <a
                     class="idb-social-icons__item elementor-animation-grow"
-                    href="https://www.instagram.com/"
-                    aria-label="Instagram"
-                    title="Instagram"
+                    href="{{ $setting->stream_url ?? 'https://www.instagram.com/' }}"
+                    aria-label="Live Stream"
+                    title="Live Stream"
                     style=""
                                         target="_blank"                    rel="nofollow noopener noreferrer"                >
-                    <i class="fab fa-instagram" aria-hidden="true"></i>                                                                    <span class="idb-social-icons__text">@Habib</span>
+                    <i class="fab fa-instagram" aria-hidden="true"></i>                                                                    <span class="idb-social-icons__text">{{ $setting->stream_platform ?? '@Habib' }}</span>
                                     </a>
                     </div>
         				</div>
 				</div>
 				</div>
+		@endif
 				<div class="elementor-element elementor-element-18014394 elementor-widget elementor-widget-spacer" data-id="18014394" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
 				<div class="elementor-widget-container">
 							<div class="elementor-spacer">
@@ -591,8 +542,16 @@ p {
 				<div class="elementor-widget-container">
 					        <div class="bisdev-invite-video" data-video-type="youtube" data-duck-music="1" data-biv-id="bisdev-invite-video-2adffe22">
             <div class="bisdev-invite-video__inner">
+                @php
+                    $ytId = '8h7pbb4A4JI';
+                    if (!empty($setting->video_url)) {
+                        if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i', $setting->video_url, $m)) {
+                            $ytId = $m[1];
+                        }
+                    }
+                @endphp
                 <iframe id="bisdev-invite-video-2adffe22" class="bisdev-invite-video__iframe"
-                    src="https://www.youtube-nocookie.com/embed/8h7pbb4A4JI?playsinline=1&#038;rel=0&#038;iv_load_policy=3&#038;modestbranding=1&#038;autoplay=1&#038;mute=1&#038;loop=1&#038;playlist=8h7pbb4A4JI&#038;enablejsapi=1&#038;origin=https%3A%2F%2Finv.punakawandigital.id"
+                    src="https://www.youtube-nocookie.com/embed/{{ $ytId }}?playsinline=1&#038;rel=0&#038;iv_load_policy=3&#038;modestbranding=1&#038;autoplay=0&#038;mute=1&#038;loop=1&#038;playlist={{ $ytId }}&#038;enablejsapi=1"
                     title="Video undangan"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerpolicy="strict-origin-when-cross-origin"
@@ -605,40 +564,15 @@ p {
 				<div class="elementor-element elementor-element-a9597da elementor-widget elementor-widget-gallery" data-id="a9597da" data-element_type="widget" data-e-type="widget" data-settings="{&quot;gallery_layout&quot;:&quot;justified&quot;,&quot;ideal_row_height&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:300,&quot;sizes&quot;:[]},&quot;ideal_row_height_mobile&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:300,&quot;sizes&quot;:[]},&quot;ideal_row_height_tablet&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:400,&quot;sizes&quot;:[]},&quot;gap&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:10,&quot;sizes&quot;:[]},&quot;gap_tablet&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:10,&quot;sizes&quot;:[]},&quot;gap_mobile&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:10,&quot;sizes&quot;:[]},&quot;link_to&quot;:&quot;file&quot;,&quot;content_hover_animation&quot;:&quot;fade-in&quot;}" data-widget_type="gallery.default">
 				<div class="elementor-widget-container">
 							<div class="elementor-gallery__container">
-							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/awal-3-1.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="awal-3-1.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5NjksInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcL2F3YWwtMy0xLmpwZyIsInNsaWRlc2hvdyI6ImE5NTk3ZGEifQ%3D%3D">
-					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/awal-3-1.jpg" data-width="497" data-height="662" aria-label="" role="img" ></div>
-														</a>
-							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-2.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="23RSW2031-co-2.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5NzEsInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcLzIzUlNXMjAzMS1jby0yLmpwZyIsInNsaWRlc2hvdyI6ImE5NTk3ZGEifQ%3D%3D">
-					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-2.jpg" data-width="1000" data-height="1498" aria-label="" role="img" ></div>
-														</a>
-							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/8-.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="8-.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5NzMsInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcLzgtLmpwZyIsInNsaWRlc2hvdyI6ImE5NTk3ZGEifQ%3D%3D">
-					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/8-.jpg" data-width="640" data-height="958" aria-label="" role="img" ></div>
-														</a>
-							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/7-.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="7-.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5NzUsInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcLzctLmpwZyIsInNsaWRlc2hvdyI6ImE5NTk3ZGEifQ%3D%3D">
-					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/7-.jpg" data-width="640" data-height="958" aria-label="" role="img" ></div>
-														</a>
-							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/5-.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="5-.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5NzYsInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcLzUtLmpwZyIsInNsaWRlc2hvdyI6ImE5NTk3ZGEifQ%3D%3D">
-					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/5-.jpg" data-width="719" data-height="480" aria-label="" role="img" ></div>
-														</a>
-							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/4-e1692005649211.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="4-e1692005649211.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5NzgsInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcLzQtZTE2OTIwMDU2NDkyMTEuanBnIiwic2xpZGVzaG93IjoiYTk1OTdkYSJ9">
-					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/4-e1692005649211.jpg" data-width="663" data-height="370" aria-label="" role="img" ></div>
-														</a>
-							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/4-1-1-1.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="4-1-1-1.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5ODAsInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcLzQtMS0xLTEuanBnIiwic2xpZGVzaG93IjoiYTk1OTdkYSJ9">
-					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/4-1-1-1.jpg" data-width="663" data-height="480" aria-label="" role="img" ></div>
-														</a>
-							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/3-.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="3-.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5ODIsInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcLzMtLmpwZyIsInNsaWRlc2hvdyI6ImE5NTk3ZGEifQ%3D%3D">
-					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/3-.jpg" data-width="640" data-height="958" aria-label="" role="img" ></div>
-														</a>
-							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/2-1-2.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="2-1-2.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5ODQsInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcLzItMS0yLmpwZyIsInNsaWRlc2hvdyI6ImE5NTk3ZGEifQ%3D%3D">
-					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/2-1-2.jpg" data-width="640" data-height="958" aria-label="" role="img" ></div>
-														</a>
-							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/6-.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="6-.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5ODYsInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcLzYtLmpwZyIsInNsaWRlc2hvdyI6ImE5NTk3ZGEifQ%3D%3D">
-					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/6-.jpg" data-width="640" data-height="958" aria-label="" role="img" ></div>
-														</a>
-							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/1-e1740985931589.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="1-e1740985931589.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5NjAsInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcLzEtZTE3NDA5ODU5MzE1ODkuanBnIiwic2xpZGVzaG93IjoiYTk1OTdkYSJ9">
-					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/1-e1740985931589.jpg" data-width="597" data-height="480" aria-label="" role="img" ></div>
-														</a>
-					</div>
+							@foreach($galleries as $gallery)
+								@php
+									$imgSrc = str_starts_with($gallery->image_url, 'http') ? $gallery->image_url : asset($gallery->image_url);
+								@endphp
+								<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="{{ $imgSrc }}" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="{{ $gallery->caption ?? 'Gallery' }}">
+									<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="{{ $imgSrc }}" data-width="800" data-height="1000" aria-label="{{ $gallery->caption ?? 'Gallery' }}" role="img" style="background-image: url('{{ $imgSrc }}'); background-size: cover; background-position: center; min-height: 250px;"></div>
+								</a>
+							@endforeach
+							</div>
 					</div>
 				</div>
 				<div class="elementor-element elementor-element-5a3fad7c elementor-widget elementor-widget-spacer" data-id="5a3fad7c" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
@@ -675,40 +609,19 @@ p {
              style="--idb-tl-reveal-delay: 180ms; --idb-tl-reveal-duration: 2500ms;"
              >
             <div class="idb-timeline__list">
-                                                                                        <div class="idb-timeline__item">
-                                                <div class="idb-timeline__content idb-reveal idb-ef zoom-up"
-                                                          data-reveal-offset="100"
+                @foreach($stories as $idx => $story)
+                    <div class="idb-timeline__item">
+                        <div class="idb-timeline__content idb-reveal idb-ef zoom-up"
+                             data-reveal-offset="100"
                              data-reveal-duration="2500"
-                             data-reveal-delay="0"
-                             style="transition-duration: 2500ms;"
-                             >
-                                                                                        <h3 class="idb-timeline__title">Awal Cerita</h3>
-                                                                                        <div class="idb-timeline__desc"><span class="niku-multiline">Berawal dari pertemuan sederhana, kami saling mengenal dan mulai berbagi banyak cerita. Tanpa disadari, kebersamaan itu tumbuh menjadi rasa nyaman yang semakin kuat dari hari ke hari.</span></div>
-                                                    </div>
+                             data-reveal-delay="{{ $idx * 180 }}"
+                             style="transition-duration: 2500ms; transition-delay: {{ $idx * 180 }}ms;">
+                            <h3 class="idb-timeline__title">{{ $story->year_or_date ?: $story->title }}</h3>
+                            <div class="idb-timeline__desc"><span class="niku-multiline">{{ $story->story }}</span></div>
+                        </div>
                     </div>
-                                                        <div class="idb-timeline__item">
-                                                <div class="idb-timeline__content idb-reveal idb-ef zoom-up"
-                                                          data-reveal-offset="100"
-                             data-reveal-duration="2500"
-                             data-reveal-delay="180"
-                             style="transition-duration: 2500ms; transition-delay: 180ms;"
-                             >
-                                                                                        <h3 class="idb-timeline__title">Lamaran</h3>
-                                                                                        <div class="idb-timeline__desc"><span class="niku-multiline">Dengan niat yang tulus dan restu keluarga, kami memutuskan untuk melangkah ke tahap yang lebih serius. Momen lamaran menjadi awal dari perjalanan baru yang penuh harapan dan doa baik.</span></div>
-                                                    </div>
-                    </div>
-                                                        <div class="idb-timeline__item">
-                                                <div class="idb-timeline__content idb-reveal idb-ef zoom-up"
-                                                          data-reveal-offset="100"
-                             data-reveal-duration="2500"
-                             data-reveal-delay="360"
-                             style="transition-duration: 2500ms; transition-delay: 360ms;"
-                             >
-                                                                                        <h3 class="idb-timeline__title">Pernikahan</h3>
-                                                                                        <div class="idb-timeline__desc"><span class="niku-multiline">Kini kami sampai pada hari yang kami nantikan, hari di mana dua hati dipersatukan dalam ikatan suci pernikahan. Semoga langkah ini menjadi awal kehidupan baru yang penuh cinta, kebahagiaan, dan keberkahan.</span></div>
-                                                    </div>
-                    </div>
-                            </div>
+                @endforeach
+            </div>
         </div>
         				</div>
 				</div>
@@ -830,35 +743,50 @@ p {
               syncVisibleStateAndReplay(document);
               schedule(document);
             })();
-            </script>                                <div class="idb-copy-rek idb-copy-rek--auto elementor-invisible is-stack is-btn-right is-hide-bankname" id="idb-copy-rek-7e46926e-0"
-                     data-settings='{&quot;_animation&quot;:&quot;zoomIn&quot;,&quot;_animation_delay&quot;:20}'
-                     data-copy="12345678"
+            </script>
+            @foreach($bankAccounts as $bIdx => $bank)
+                @php
+                    $bName = strtoupper($bank->bank_name);
+                    $logoUrl = 'https://inv.punakawandigital.id/wp-content/uploads/2026/06/BCA_5770.webp';
+                    if (str_contains($bName, 'MANDIRI')) {
+                        $logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/320px-Bank_Mandiri_logo_2016.svg.png';
+                    } elseif (str_contains($bName, 'BRI')) {
+                        $logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/BANK_BRI_logo.svg/320px-BANK_BRI_logo.svg.png';
+                    } elseif (str_contains($bName, 'BNI')) {
+                        $logoUrl = 'https://upload.wikimedia.org/wikipedia/id/thumb/5/55/BNI_logo.svg/320px-BNI_logo.svg.png';
+                    } elseif (str_contains($bName, 'BSI')) {
+                        $logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Bank_Syariah_Indonesia.svg/320px-Bank_Syariah_Indonesia.svg.png';
+                    }
+                @endphp
+                <div class="idb-copy-rek idb-copy-rek--auto is-stack is-btn-right is-hide-bankname" id="idb-copy-rek-{{ $bank->id }}"
+                     data-settings='{&quot;_animation&quot;:&quot;zoomIn&quot;,&quot;_animation_delay&quot;:{{ 20 + ($bIdx * 100) }}}'
+                     data-copy="{{ $bank->account_number }}"
                      data-success="Tersalin."
                      data-fail="Gagal menyalin. Coba lagi."
                      data-trigger-text="0"
-                     data-trigger-btn="1">
+                     data-trigger-btn="1"
+                     style="margin-bottom: 16px;">
                     <div class="idb-copy-rek__box">
                         <div class="idb-copy-rek__info">
-                                                            <div class="idb-copy-rek__label is-logo-right" >
-                                                                                                                                                                <span class="idb-copy-rek__banklogo" style="margin-left:auto;"><img decoding="async" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/BCA_5770.webp" alt="" loading="lazy"></span>
-                                                                                                            </div>
-                                                        
-                            <div class="idb-copy-rek__number "
-                                 >
-                                                                    <div class="idb-copy-rek__chipimg"><img decoding="async" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/chip-atm-1-2-1-1-1-3-1-1.png" alt="" loading="lazy"></div>
-                                                                <div class="idb-copy-rek__numtext"><span class="no-rekening-marker" data-gift-index="0">12345678</span></div>
+                            <div class="idb-copy-rek__label is-logo-right" >
+                                <span class="idb-copy-rek__banklogo" style="margin-left:auto;">
+                                    <img decoding="async" src="{{ $logoUrl }}" alt="{{ $bank->bank_name }}" style="max-height: 26px; width: auto;" loading="lazy">
+                                </span>
                             </div>
-
-                                                            <div class="idb-copy-rek__name">Habib</div>
-                                                    </div>
-
-                                                    <button type="button" class="idb-copy-rek__btn">
-                                                                    <span class="idb-copy-rek__icon idb-is-left"><i aria-hidden="true" class="fas fa-copy"></i></span>
-                                                                <span class="idb-copy-rek__btntext">Copy</span>
-                                                            </button>
-                                                <div class="idb-copy-rek__toast" aria-live="polite" aria-atomic="true"></div>
+                            <div class="idb-copy-rek__number">
+                                <div class="idb-copy-rek__chipimg"><img decoding="async" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/chip-atm-1-2-1-1-1-3-1-1.png" alt="" loading="lazy"></div>
+                                <div class="idb-copy-rek__numtext"><span class="no-rekening-marker" data-gift-index="{{ $bIdx }}">{{ $bank->account_number }}</span></div>
+                            </div>
+                            <div class="idb-copy-rek__name">{{ $bank->account_holder }}</div>
+                        </div>
+                        <button type="button" class="idb-copy-rek__btn">
+                            <span class="idb-copy-rek__icon idb-is-left"><i aria-hidden="true" class="fas fa-copy"></i></span>
+                            <span class="idb-copy-rek__btntext">Copy</span>
+                        </button>
+                        <div class="idb-copy-rek__toast" aria-live="polite" aria-atomic="true"></div>
                     </div>
                 </div>
+            @endforeach
                 				</div>
 				</div>
 				<div class="elementor-element elementor-element-425f85f1 elementor-widget elementor-widget-bisdev_kirim_hadiah" data-id="425f85f1" data-element_type="widget" data-e-type="widget" data-widget_type="bisdev_kirim_hadiah.default">
@@ -874,19 +802,19 @@ p {
                                     <div class="idb-kirim-hadiah__line">
                         <span class="idb-kirim-hadiah__label">Nama Penerima</span>
                         <span class="idb-kirim-hadiah__sep">:</span>
-                        <span class="idb-kirim-hadiah__value">Habib Yulianto</span>
+                        <span class="idb-kirim-hadiah__value">{{ $setting->gift_recipient_name ?? 'Habib Yulianto' }}</span>
                     </div>
                 
                                     <div class="idb-kirim-hadiah__line">
                         <span class="idb-kirim-hadiah__label">No. HP</span>
                         <span class="idb-kirim-hadiah__sep">:</span>
-                        <span class="idb-kirim-hadiah__value">1234567890</span>
+                        <span class="idb-kirim-hadiah__value">{{ $setting->gift_phone ?? '1234567890' }}</span>
                     </div>
                 
                                     <div class="idb-kirim-hadiah__line idb-kirim-hadiah__line--alamat">
                         <span class="idb-kirim-hadiah__label">Alamat</span>
                         <span class="idb-kirim-hadiah__sep">:</span>
-                        <span class="idb-kirim-hadiah__value">Ds Pagu Kec.Wates Kab. Kediri</span>
+                        <span class="idb-kirim-hadiah__value">{{ $setting->gift_address ?? 'Ds Pagu Kec. Wates Kab. Kediri' }}</span>
                     </div>
                                                     </div>
 
@@ -1050,8 +978,29 @@ p {
             <div class="rsvp-comments-wrap"
                  data-post="30947"
                  data-per-page="10"
-                 data-has-pager="1">
-                <div class="rsvp-list-wrap"><ul class="rsvp-list"></ul></div>            </div>
+                <div class="rsvp-list-wrap"><ul class="rsvp-list">
+                    @foreach($wishes as $wish)
+                        <li class="rsvp-item" style="display:flex;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #f0f0f0;">
+                            <div class="rsvp-ava" style="flex-shrink:0;">
+                                <svg class="rsvp-ava-icon" viewBox="0 0 496 512" fill="#888" style="width:32px;height:32px;"><circle cx="248" cy="256" r="248"/><circle cx="248" cy="192" r="80" fill="#fff"/><path d="M248 296c-68.48 0-124 48.14-124 107.52V408c34.32 34.97 82.14 56 124 56s89.68-21.03 124-56v-4.48C372 344.14 316.48 296 248 296z" fill="#fff"/></svg>
+                            </div>
+                            <div class="rsvp-body" style="flex:1;">
+                                <div class="rsvp-headline" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                                    <span class="rsvp-name" style="font-weight:600;font-size:14px;color:#333;">{{ $wish->name }}</span>
+                                    @if($wish->attendance === 'hadir')
+                                        <span class="rsvp-status-label rsvp-status-hadir" style="font-size:11px;background:#e6f4ea;color:#137333;padding:2px 8px;border-radius:12px;">Hadir</span>
+                                    @elseif($wish->attendance === 'tidak_hadir')
+                                        <span class="rsvp-status-label rsvp-status-tidak" style="font-size:11px;background:#fce8e6;color:#c5221f;padding:2px 8px;border-radius:12px;">Tidak Hadir</span>
+                                    @else
+                                        <span class="rsvp-status-label" style="font-size:11px;background:#f1f3f4;color:#5f6368;padding:2px 8px;border-radius:12px;">Ragu-ragu</span>
+                                    @endif
+                                </div>
+                                <div class="rsvp-time" style="font-size:11px;color:#999;margin-top:2px;">{{ $wish->created_at ? $wish->created_at->diffForHumans() : 'Baru saja' }}</div>
+                                <div class="rsvp-content" style="font-size:13px;color:#555;margin-top:6px;line-height:1.5;">{{ $wish->message }}</div>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul></div>            </div>
 
             <!-- Fallback tanpa JS -->
             <noscript>

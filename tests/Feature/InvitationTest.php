@@ -45,3 +45,11 @@ test('unauthenticated user accessing /admin is redirected to /admin/login', func
 
     $response->assertRedirect('/admin/login');
 });
+
+test('invitation page displays dynamic galleries and wedding settings', function () {
+    $response = $this->get('/');
+
+    $response->assertStatus(200);
+    $response->assertSee('Galeri Foto');
+    $response->assertSee('elementor-gallery__container');
+});
