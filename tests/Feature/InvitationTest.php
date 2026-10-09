@@ -31,7 +31,8 @@ test('admin login page loads successfully', function () {
 });
 
 test('admin login succeeds with default credentials', function () {
-    $response = $this->post('/admin/login', [
+    $response = $this->withSession(['_token' => 'test-token'])->post('/admin/login', [
+        '_token' => 'test-token',
         'email' => 'admin@gmail.com',
         'password' => 'admin123',
     ]);

@@ -1,679 +1,1697 @@
-@extends('layouts.invitation')
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8">
+		
 
-@section('content')
+	
 
-<!-- ========================================== -->
-<!-- 1. COVER SCREEN (Modal Opening Overlay)    -->
-<!-- ========================================== -->
-<div id="cover-screen" class="fixed inset-0 z-50 flex flex-col justify-between items-center text-center p-6 bg-[#1C1514] text-[#FFF0E5] bg-cover bg-center overflow-hidden"
-     style="background-image: linear-gradient(to bottom, rgba(28,21,20,0.65), rgba(117,50,48,0.85)), url('{{ $setting->cover_photo ?? 'https://inv.punakawandigital.id/wp-content/uploads/2025/05/Premium-Vintage-03-3.webp' }}');">
-    
-    <!-- Top Floral Ornament -->
-    <div class="pt-8">
-        <p class="font-cormorant text-xs tracking-[0.25em] uppercase text-[#B89C7A] mb-1">Wedding Invitation</p>
-        <div class="ornament-line mx-auto w-40 opacity-70"></div>
-    </div>
 
-    <!-- Center Couple & Guest Box -->
-    <div class="my-auto max-w-sm w-full py-6 px-4 rounded-2xl bg-black/30 backdrop-blur-sm border border-[#B89C7A]/30">
-        <p class="font-cormorant italic text-sm tracking-widest text-[#B89C7A] mb-2">The Wedding of</p>
-        <h1 class="font-cormorant text-3xl sm:text-4xl font-semibold tracking-wider text-[#FFF0E5] mb-4">
-            {{ $setting->groom_nickname ?? 'Habib' }} <span class="font-script text-2xl text-[#B89C7A]">&</span> {{ $setting->bride_nickname ?? 'Adiba' }}
-        </h1>
 
-        <!-- Date Pill -->
-        <div class="inline-block px-4 py-1 rounded-full border border-[#B89C7A]/50 bg-[#753230]/40 text-xs font-medium tracking-widest text-[#B89C7A] mb-8">
-            {{ $setting->wedding_date ? $setting->wedding_date->format('d . m . Y') : '28 . 12 . 2026' }}
-        </div>
 
-        <!-- Guest Name Box -->
-        <div class="bg-[#FFF0E5]/10 border border-[#B89C7A]/40 rounded-xl p-4 mb-6">
-            <p class="text-[11px] text-[#D8C3A8] uppercase tracking-wider mb-1">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
-            <h2 class="font-cormorant text-xl font-bold text-[#FFF0E5] capitalize">{{ $guestName }}</h2>
-            <p class="text-[10px] text-[#D8C3A8]/80 mt-1 italic">*Mohon maaf bila ada kesalahan penulisan nama/gelar</p>
-        </div>
+<style>
+      .niku-multiline { white-space: normal; }
+      .niku-multiline br,
+      .niku-multiline br.niku-lb {
+        display: block;
+        margin: 0;
+        line-height: 1.5;
+        content: '';
+      }
+      .deskripsi-ls-marker {
+        display: block;
+        font-size: 0.875rem;
+        line-height: 1.65;
+        font-weight: 400;
+        text-align: center;
+      }
+      .deskripsi-ls-marker .niku-multiline,
+      .deskripsi-ls-marker strong,
+      .deskripsi-ls-marker em {
+        font-size: inherit;
+        line-height: inherit;
+      }
+      .deskripsi-ls-marker strong { font-weight: 600; }
+      .deskripsi-ls-marker em { font-style: italic; }
+    </style><style id="wp-img-auto-sizes-contain-inline-css">
+img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/*# sourceURL=wp-img-auto-sizes-contain-inline-css */
+</style>
+<style id="wp-emoji-styles-inline-css">
 
-        <!-- Open Invitation Button -->
-        <button onclick="openInvitation()" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#753230] text-[#FFF0E5] font-medium text-xs tracking-wider uppercase border border-[#B89C7A] shadow-xl hover:bg-[#8E3A37] hover:scale-105 active:scale-95 transition-all duration-300">
-            <svg class="w-4 h-4 text-[#B89C7A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-            </svg>
-            <span>Buka Undangan</span>
-        </button>
-    </div>
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+/*# sourceURL=wp-emoji-styles-inline-css */
+</style>
+<style id="global-styles-inline-css">
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgb(6,147,227) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgb(252,185,0) 0%,rgb(255,105,0) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgb(255,105,0) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgb(255, 255, 255), 6px 6px rgb(0, 0, 0);--wp--preset--shadow--crisp: 6px 6px 0px rgb(0, 0, 0);}.wp-block-button{--wp--preset--dimension--25: 25%;--wp--preset--dimension--50: 50%;--wp--preset--dimension--75: 75%;--wp--preset--dimension--100: 100%;}:root { --wp--style--global--content-size: 800px;--wp--style--global--wide-size: 1200px; }:where(body) { margin: 0; }.wp-site-blocks > .alignleft { float: left; margin-right: 2em; }.wp-site-blocks > .alignright { float: right; margin-left: 2em; }.wp-site-blocks > .aligncenter { justify-content: center; margin-left: auto; margin-right: auto; }:where(.wp-site-blocks) > * { margin-block-start: 24px; margin-block-end: 0; }:where(.wp-site-blocks) > :first-child { margin-block-start: 0; }:where(.wp-site-blocks) > :last-child { margin-block-end: 0; }:root { --wp--style--block-gap: 24px; }:root :where(.is-layout-flow) > :first-child{margin-block-start: 0;}:root :where(.is-layout-flow) > :last-child{margin-block-end: 0;}:root :where(.is-layout-flow) > *{margin-block-start: 24px;margin-block-end: 0;}:root :where(.is-layout-constrained) > :first-child{margin-block-start: 0;}:root :where(.is-layout-constrained) > :last-child{margin-block-end: 0;}:root :where(.is-layout-constrained) > *{margin-block-start: 24px;margin-block-end: 0;}:root :where(.is-layout-flex){gap: 24px;}:root :where(.is-layout-grid){gap: 24px;}.is-layout-flow > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}.is-layout-flow > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}.is-layout-flow > .aligncenter{margin-left: auto !important;margin-right: auto !important;}.is-layout-constrained > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}.is-layout-constrained > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}.is-layout-constrained > .aligncenter{margin-left: auto !important;margin-right: auto !important;}.is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)){max-width: var(--wp--style--global--content-size);margin-left: auto !important;margin-right: auto !important;}.is-layout-constrained > .alignwide{max-width: var(--wp--style--global--wide-size);}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}body{padding-top: 0px;padding-right: 0px;padding-bottom: 0px;padding-left: 0px;}:root :where(.wp-element-button, .wp-block-button__link){background-color: #32373c;border-width: 0;color: #fff;font-family: inherit;font-size: inherit;font-style: inherit;font-weight: inherit;letter-spacing: inherit;line-height: inherit;padding-top: calc(0.667em + 2px);padding-right: calc(1.333em + 2px);padding-bottom: calc(0.667em + 2px);padding-left: calc(1.333em + 2px);text-decoration: none;text-transform: inherit;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+:root :where(.wp-block-icon svg){width: 24px;}
+:root :where(.wp-block-pullquote){font-size: 1.5em;line-height: 1.6;}
+/*# sourceURL=global-styles-inline-css */
+</style>
+<link rel='stylesheet' id='hello-elementor-css' href='https://inv.punakawandigital.id/wp-content/themes/hello-elementor/assets/css/reset.css?ver=3.5.1' media='all' />
+<link rel='stylesheet' id='hello-elementor-theme-style-css' href='https://inv.punakawandigital.id/wp-content/themes/hello-elementor/assets/css/theme.css?ver=3.5.1' media='all' />
+<link rel='stylesheet' id='hello-elementor-header-footer-css' href='https://inv.punakawandigital.id/wp-content/themes/hello-elementor/assets/css/header-footer.css?ver=3.5.1' media='all' />
+<link rel='stylesheet' id='elementor-frontend-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/css/frontend.min.css?ver=4.2.3' media='all' />
+<link rel='stylesheet' id='elementor-post-4-css' href='https://inv.punakawandigital.id/wp-content/uploads/elementor/css/post-4.css?ver=1791310182' media='all' />
+<link rel='stylesheet' id='idb-photo-gallery-widgets-style-css' href='https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/css/gallery.775628f9.css?ver=775628f9' media='all' />
+<link rel='stylesheet' id='bisdev-use-any-font-legacy-css' href='https://inv.punakawandigital.id/wp-content/uploads/useanyfont/uaf.css?ver=1782529970' media='all' />
+<link rel='stylesheet' id='elementor-icons-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/lib/eicons/css/elementor-icons.min.css?ver=5.53.0' media='all' />
+<link rel='stylesheet' id='widget-heading-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/css/widget-heading.min.css?ver=4.2.3' media='all' />
+<link rel='stylesheet' id='widget-spacer-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/css/widget-spacer.min.css?ver=4.2.3' media='all' />
+<link rel='stylesheet' id='widget-image-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/css/widget-image.min.css?ver=4.2.3' media='all' />
+<link rel='stylesheet' id='e-animation-fadeInDown-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/lib/animations/styles/fadeInDown.min.css?ver=4.2.3' media='all' />
+<link rel='stylesheet' id='bisdev-social-icons-widget-style-css' href='https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/css/social-icons.d016fd0b.css?ver=d016fd0b' media='all' />
+<link rel='stylesheet' id='elementor-icons-shared-0-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/lib/font-awesome/css/fontawesome.min.css?ver=5.15.3' media='all' />
+<link rel='stylesheet' id='elementor-icons-fa-solid-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/lib/font-awesome/css/solid.min.css?ver=5.15.3' media='all' />
+<link rel='stylesheet' id='elementor-icons-fa-brands-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/lib/font-awesome/css/brands.min.css?ver=5.15.3' media='all' />
+<link rel='stylesheet' id='bisdev-countdown-widget-style-css' href='https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/css/countdown.d88ec802.css?ver=d88ec802' media='all' />
+<link rel='stylesheet' id='widget-divider-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/css/widget-divider.min.css?ver=4.2.3' media='all' />
+<link rel='stylesheet' id='bisdev-invite-video-widget-style-css' href='https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/css/invite-video.c31f4224.css?ver=c31f4224' media='all' />
+<link rel='stylesheet' id='swiper-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/lib/swiper/v8/css/swiper.min.css?ver=8.4.5' media='all' />
+<link rel='stylesheet' id='e-swiper-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/css/conditionals/e-swiper.min.css?ver=4.2.3' media='all' />
+<link rel='stylesheet' id='widget-gallery-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor-pro/assets/css/widget-gallery.min.css?ver=4.2.2' media='all' />
+<link rel='stylesheet' id='elementor-gallery-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/lib/e-gallery/css/e-gallery.min.css?ver=1.2.0' media='all' />
+<link rel='stylesheet' id='e-transitions-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor-pro/assets/css/conditionals/transitions.min.css?ver=4.2.2' media='all' />
+<link rel='stylesheet' id='idb-reveal-style-css' href='https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/css/reveal.15681c8f.css?ver=15681c8f' media='all' />
+<link rel='stylesheet' id='bisdev-timeline-widget-style-css' href='https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/css/timeline.b7b7b82b.css?ver=b7b7b82b' media='all' />
+<link rel='stylesheet' id='bisdev-copy-rekening-widget-style-css' href='https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/css/copy-rekening.565fcadf.css?ver=565fcadf' media='all' />
+<link rel='stylesheet' id='bisdev-kirim-hadiah-widget-style-css' href='https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/css/kirim-hadiah.a1a6ce9a.css?ver=a1a6ce9a' media='all' />
+<link rel='stylesheet' id='e-animation-zoomIn-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/lib/animations/styles/zoomIn.min.css?ver=4.2.3' media='all' />
+<link rel='stylesheet' id='bisdev-konfirmasi-transfer-widget-style-css' href='https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/css/konfirmasi-transfer.0a1407f6.css?ver=0a1407f6' media='all' />
+<link rel='stylesheet' id='niku-rsvp-css' href='https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/css/rsvp.14496a03.css?ver=14496a03' media='all' />
+<link rel='stylesheet' id='e-animation-fadeInUp-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/lib/animations/styles/fadeInUp.min.css?ver=4.2.3' media='all' />
+<link rel='stylesheet' id='widget-lottie-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor-pro/assets/css/widget-lottie.min.css?ver=4.2.2' media='all' />
+<link rel='stylesheet' id='e-sticky-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor-pro/assets/css/modules/sticky.min.css?ver=4.2.2' media='all' />
+<link rel='stylesheet' id='bisdev-musik-widget-style-css' href='https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/css/musik.3623714a.css?ver=3623714a' media='all' />
+<link rel='stylesheet' id='elementor-post-30947-css' href='https://inv.punakawandigital.id/wp-content/uploads/elementor/css/post-30947.css?ver=1791311293' media='all' />
+<link rel='stylesheet' id='bisdev-watermark-branding-css' href='https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/css/watermark.c03279ad.css?ver=c03279ad' media='all' />
+<style id="idb-hide-section-toggle-fallback-inline-css">
+body.idb-hide-love-story .ls-section{display:none!important}body.idb-hide-wedding-gift .gift-con,body.idb-hide-wedding-gift .idb-copy-rek{display:none!important}body.idb-hide-kirim-hadiah .kh-con,body.idb-hide-kirim-hadiah .idb-kirim-hadiah{display:none!important}body.idb-hide-live-streaming .stream-con{display:none!important}body.idb-hide-wedding-gift.idb-hide-kirim-hadiah .amplop-section{display:none!important}
+/*# sourceURL=idb-hide-section-toggle-fallback-inline-css */
+</style>
+<style id="idb-ios-input-zoom-fix-inline-css">
+@media screen and (max-width:768px){input[type="text"],input[type="email"],input[type="tel"],input[type="number"],input[type="search"],input[type="url"],input[type="password"],input:not([type]),textarea,select{font-size:16px!important;}}
+/*# sourceURL=idb-ios-input-zoom-fix-inline-css */
+</style>
+<link rel='stylesheet' id='elementor-gf-roboto-css' href='https://fonts.googleapis.com/css?family=Roboto:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic&#038;display=swap' media='all' />
+<link rel='stylesheet' id='elementor-gf-robotoslab-css' href='https://fonts.googleapis.com/css?family=Roboto+Slab:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic&#038;display=swap' media='all' />
+<link rel='stylesheet' id='elementor-gf-caudex-css' href='https://fonts.googleapis.com/css?family=Caudex:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic&#038;display=swap' media='all' />
+<link rel='stylesheet' id='elementor-gf-cormorantgaramond-css' href='https://fonts.googleapis.com/css?family=Cormorant+Garamond:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic&#038;display=swap' media='all' />
+<link rel='stylesheet' id='elementor-gf-adamina-css' href='https://fonts.googleapis.com/css?family=Adamina:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic&#038;display=swap' media='all' />
+<link rel='stylesheet' id='elementor-gf-arima-css' href='https://fonts.googleapis.com/css?family=Arima:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic&#038;display=swap' media='all' />
+<link rel='stylesheet' id='elementor-gf-jura-css' href='https://fonts.googleapis.com/css?family=Jura:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic&#038;display=swap' media='all' />
+<link rel='stylesheet' id='elementor-gf-quicksand-css' href='https://fonts.googleapis.com/css?family=Quicksand:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic&#038;display=swap' media='all' />
+<link rel='stylesheet' id='elementor-gf-montserrat-css' href='https://fonts.googleapis.com/css?family=Montserrat:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic&#038;display=swap' media='all' />
+<link rel='stylesheet' id='elementor-icons-fa-regular-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/lib/font-awesome/css/regular.min.css?ver=5.15.3' media='all' />
+<script id="jquery-core-js" src="https://inv.punakawandigital.id/wp-includes/js/jquery/jquery.min.js?ver=3.7.1"></script>
+<script id="jquery-migrate-js" src="https://inv.punakawandigital.id/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1"></script>
 
-    <!-- Bottom Ornament -->
-    <div class="pb-4 text-center">
-        <p class="text-[10px] text-[#B89C7A]/80 tracking-widest">PUNAKAWAN DIGITAL PREMIUM</p>
-    </div>
-</div>
 
-<!-- ========================================== -->
-<!-- 2. HERO SECTION                            -->
-<!-- ========================================== -->
-<section id="hero" class="relative min-h-[90vh] flex flex-col justify-center items-center text-center p-6 bg-cover bg-center overflow-hidden"
-         style="background-image: linear-gradient(to bottom, rgba(255,240,229,0.8), rgba(255,240,229,0.95)), url('{{ $setting->hero_photo ?? 'https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-3.webp' }}');">
-    
-    <div class="relative z-10 max-w-xs mx-auto py-12">
-        <div class="w-16 h-16 mx-auto mb-4 rounded-full border-2 border-[#B89C7A] p-1 flex items-center justify-center bg-[#753230]">
-            <span class="font-cormorant text-xl font-bold text-[#FFF0E5]">{{ substr($setting->groom_nickname ?? 'H', 0, 1) }}&{{ substr($setting->bride_nickname ?? 'A', 0, 1) }}</span>
-        </div>
 
-        <p class="font-cormorant italic text-sm tracking-widest text-[#753230] mb-2 uppercase">The Wedding of</p>
-        
-        <h1 class="font-cormorant text-4xl sm:text-5xl font-bold tracking-wide text-[#753230] mb-3 leading-tight">
-            {{ $setting->groom_nickname ?? 'Habib' }}
-            <span class="block font-script text-3xl text-[#B89C7A] my-1">&</span>
-            {{ $setting->bride_nickname ?? 'Adiba' }}
-        </h1>
+<meta name="generator" content="WordPress 7.1.3" />
 
-        <div class="ornament-line mx-auto w-32 my-4"></div>
+<meta name="generator" content="Elementor 4.2.3; features: additional_custom_breakpoints; settings: css_print_method-external, google_font-enabled, font_display-swap">
+			<style>
+				.e-con.e-parent:nth-of-type(n+4):not(.e-lazyloaded):not(.e-no-lazyload),
+				.e-con.e-parent:nth-of-type(n+4):not(.e-lazyloaded):not(.e-no-lazyload) * {
+					background-image: none !important;
+				}
+				@media screen and (max-height: 1024px) {
+					.e-con.e-parent:nth-of-type(n+3):not(.e-lazyloaded):not(.e-no-lazyload),
+					.e-con.e-parent:nth-of-type(n+3):not(.e-lazyloaded):not(.e-no-lazyload) * {
+						background-image: none !important;
+					}
+				}
+				@media screen and (max-height: 640px) {
+					.e-con.e-parent:nth-of-type(n+2):not(.e-lazyloaded):not(.e-no-lazyload),
+					.e-con.e-parent:nth-of-type(n+2):not(.e-lazyloaded):not(.e-no-lazyload) * {
+						background-image: none !important;
+					}
+				}
+			</style>
+			<link rel="icon" href="https://inv.punakawandigital.id/wp-content/uploads/2025/03/cropped-PUNAKAWAN-32x32.png" sizes="32x32" />
+<link rel="icon" href="https://inv.punakawandigital.id/wp-content/uploads/2025/03/cropped-PUNAKAWAN-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://inv.punakawandigital.id/wp-content/uploads/2025/03/cropped-PUNAKAWAN-180x180.png" />
+<meta name="msapplication-TileImage" content="https://inv.punakawandigital.id/wp-content/uploads/2025/03/cropped-PUNAKAWAN-270x270.png" />
+<style id="idb-gift-confirm-off">.elementor-widget-bisdev_konfirmasi_transfer,.elementor-element[data-widget_type="bisdev_konfirmasi_transfer.default"],.idb-konfirmasi-transfer{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:hidden!important;visibility:hidden!important}</style><script id="idb-gift-confirm-off-js">document.addEventListener("DOMContentLoaded",function(){document.querySelectorAll(".elementor-widget-bisdev_konfirmasi_transfer,.elementor-element[data-widget_type=\"bisdev_konfirmasi_transfer.default\"],.idb-konfirmasi-transfer").forEach(function(el){try{el.remove();}catch(e){el.style.display="none";}});});</script><style id="wp-custom-css">
+.elementor-button-wrapper {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 
-        <p class="font-caudex text-sm font-semibold tracking-widest text-[#753230]">
-            {{ $setting->wedding_date ? $setting->wedding_date->translatedFormat('l, d F Y') : 'Senin, 28 Desember 2026' }}
-        </p>
-    </div>
-</section>
+p {
+    margin-top: 0;
+    margin-bottom: 0;
+}
 
-<!-- ========================================== -->
-<!-- 3. AYAT SUCI & GREETING                    -->
-<!-- ========================================== -->
-<section class="py-14 px-6 text-center bg-[#FAF4F4] relative border-y border-[#B89C7A]/20">
-    <div class="max-w-sm mx-auto">
-        <!-- Bismillah -->
-        <p class="font-serif text-2xl text-[#753230] mb-4">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
-        
-        <!-- Arabic Quote (if available) -->
-        @if(!empty($setting->quote_arabic))
-            <p class="font-serif text-lg leading-loose text-[#5D2625] mb-4 text-right sm:text-center" dir="rtl">
-                {{ $setting->quote_arabic }}
-            </p>
-        @endif
 
-        <!-- Quote Translation -->
-        <blockquote class="font-caudex italic text-xs leading-relaxed text-[#5E6060] mb-3">
-            "{{ $setting->quote_text ?? 'Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir.' }}"
-        </blockquote>
-        <p class="font-cormorant font-bold text-xs tracking-wider text-[#753230] mb-8">{{ $setting->quote_source ?? '(Qs. Ar-Rum : 21)' }}</p>
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover maximum-scale=1.0, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" /></head>
+<body class="wp-singular page-template-default page page-id-30947 wp-custom-logo wp-embed-responsive wp-theme-hello-elementor hello-elementor-default elementor-default elementor-template-canvas elementor-kit-4 elementor-page elementor-page-30947 idb-slot-empty-cover idb-slot-empty-opening idb-slot-empty-closing idb-slot-empty-mempelai1 idb-slot-empty-mempelai2">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Bisdev-gift/elementor-script@main/css/anti-cubit.css?v=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Bisdev-gift/elementor-script@main/css/foto.css?v=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Bisdev-gift/elementor-script@main/css/reveal-masuk-dulu.css?v=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Bisdev-gift/elementor-script@main/css/jarak-button-teks.css?v=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Bisdev-gift/elementor-script@main/css/res-desktop.css?v=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Bisdev-gift/elementor-script@main/reveal/reveal.css?v=1">
+<script defer src="https://cdn.jsdelivr.net/gh/Bisdev-gift/elementor-script@main/reveal/reveal.js?v=1"></script>
+<script defer src="https://cdn.jsdelivr.net/gh/Bisdev-gift/elementor-script@main/js/reveal-masuk-dulu.js?v=1"></script>
+<script defer src="https://cdn.jsdelivr.net/gh/Bisdev-gift/elementor-script@main/js/vh.js?v=1"></script>
+<script defer src="https://cdn.jsdelivr.net/gh/Bisdev-gift/elementor-script@main/js/vid.js?v=1"></script>
 
-        <div class="ornament-line mx-auto w-24 my-6"></div>
-
-        <p class="font-caudex text-xs leading-relaxed text-[#373838]">
-            Tanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i serta kerabat sekalian untuk menghadiri acara pernikahan kami:
-        </p>
-    </div>
-</section>
-
-<!-- ========================================== -->
-<!-- 4. PROFIL MEMPELAI                         -->
-<!-- ========================================== -->
-<section id="mempelai" class="py-16 px-6 bg-pattern text-center">
-    <div class="max-w-sm mx-auto space-y-12">
-        
-        <!-- Mempelai Pria -->
-        <div class="p-6 rounded-3xl bg-white/70 backdrop-blur-sm border border-[#B89C7A]/40 shadow-xl transition-all">
-            <!-- Oval Frame Photo -->
-            <div class="relative w-36 h-48 mx-auto mb-5 rounded-[50%] p-1.5 border-2 border-[#B89C7A] overflow-hidden shadow-md">
-                <img src="{{ $setting->groom_photo ?? 'https://inv.punakawandigital.id/wp-content/uploads/2026/06/awal-3.jpg' }}" 
-                     alt="{{ $setting->groom_name ?? 'Habib Yulianto' }}" 
-                     class="w-full h-full object-cover rounded-[50%]">
-            </div>
-
-            <h3 class="font-cormorant text-2xl font-bold text-[#753230] mb-2">{{ $setting->groom_name ?? 'Habib Yulianto' }}</h3>
-            <p class="font-caudex text-xs text-[#5E6060] leading-relaxed mb-4">
-                {{ $setting->groom_parent_status ?? 'Putra Kedua dari Bapak M. Dawam & (Almh) Ibu Dewi Sudarwati' }}
-            </p>
-
-            @if($setting->groom_instagram)
-                <a href="https://instagram.com/{{ ltrim($setting->groom_instagram, '@') }}" target="_blank" rel="noopener noreferrer"
-                   class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#B89C7A] text-[#753230] text-[11px] font-medium hover:bg-[#753230] hover:text-[#FFF0E5] transition-all">
-                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                    </svg>
-                    <span>{{ str_starts_with($setting->groom_instagram, '@') ? $setting->groom_instagram : '@' . $setting->groom_instagram }}</span>
-                </a>
-            @endif
-        </div>
-
-        <!-- Ampersand Divider -->
-        <div class="flex items-center justify-center">
-            <span class="font-script text-4xl text-[#753230]">&</span>
-        </div>
-
-        <!-- Mempelai Wanita -->
-        <div class="p-6 rounded-3xl bg-white/70 backdrop-blur-sm border border-[#B89C7A]/40 shadow-xl transition-all">
-            <!-- Oval Frame Photo -->
-            <div class="relative w-36 h-48 mx-auto mb-5 rounded-[50%] p-1.5 border-2 border-[#B89C7A] overflow-hidden shadow-md">
-                <img src="{{ $setting->bride_photo ?? 'https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co.jpg' }}" 
-                     alt="{{ $setting->bride_name ?? 'Adiba Putri Syakila' }}" 
-                     class="w-full h-full object-cover rounded-[50%]">
-            </div>
-
-            <h3 class="font-cormorant text-2xl font-bold text-[#753230] mb-2">{{ $setting->bride_name ?? 'Adiba Putri Syakila' }}</h3>
-            <p class="font-caudex text-xs text-[#5E6060] leading-relaxed mb-4">
-                {{ $setting->bride_parent_status ?? 'Putri Pertama dari Bapak Anas Rifai & Ibu Kholifah' }}
-            </p>
-
-            @if($setting->bride_instagram)
-                <a href="https://instagram.com/{{ ltrim($setting->bride_instagram, '@') }}" target="_blank" rel="noopener noreferrer"
-                   class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#B89C7A] text-[#753230] text-[11px] font-medium hover:bg-[#753230] hover:text-[#FFF0E5] transition-all">
-                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                    </svg>
-                    <span>{{ str_starts_with($setting->bride_instagram, '@') ? $setting->bride_instagram : '@' . $setting->bride_instagram }}</span>
-                </a>
-            @endif
-        </div>
-
-    </div>
-</section>
-
-<!-- ========================================== -->
-<!-- 5. COUNTDOWN TIMER                         -->
-<!-- ========================================== -->
-<section class="py-14 px-6 text-center bg-[#753230] text-[#FFF0E5]">
-    <div class="max-w-sm mx-auto">
-        <p class="font-cormorant italic text-xs tracking-widest text-[#B89C7A] mb-1">Save The Date</p>
-        <h2 class="font-cormorant text-2xl font-bold tracking-wider mb-6">Menuju Hari Bahagia</h2>
-
-        <div class="grid grid-cols-4 gap-2 mb-6">
-            <div class="p-3 rounded-2xl bg-[#582422]/70 border border-[#B89C7A]/40">
-                <span id="days" class="font-cormorant text-2xl sm:text-3xl font-bold text-[#FFF0E5] block">0</span>
-                <span class="text-[10px] text-[#B89C7A] uppercase tracking-wider">Hari</span>
-            </div>
-            <div class="p-3 rounded-2xl bg-[#582422]/70 border border-[#B89C7A]/40">
-                <span id="hours" class="font-cormorant text-2xl sm:text-3xl font-bold text-[#FFF0E5] block">0</span>
-                <span class="text-[10px] text-[#B89C7A] uppercase tracking-wider">Jam</span>
-            </div>
-            <div class="p-3 rounded-2xl bg-[#582422]/70 border border-[#B89C7A]/40">
-                <span id="minutes" class="font-cormorant text-2xl sm:text-3xl font-bold text-[#FFF0E5] block">0</span>
-                <span class="text-[10px] text-[#B89C7A] uppercase tracking-wider">Menit</span>
-            </div>
-            <div class="p-3 rounded-2xl bg-[#582422]/70 border border-[#B89C7A]/40">
-                <span id="seconds" class="font-cormorant text-2xl sm:text-3xl font-bold text-[#FFF0E5] block">0</span>
-                <span class="text-[10px] text-[#B89C7A] uppercase tracking-wider">Detik</span>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ========================================== -->
-<!-- 6. RANGKAIAN ACARA                         -->
-<!-- ========================================== -->
-<section id="acara" class="py-16 px-6 bg-[#FAF4F4] text-center">
-    <div class="max-w-sm mx-auto">
-        <p class="font-cormorant italic text-xs tracking-widest text-[#B89C7A] mb-1">Our Special Day</p>
-        <h2 class="font-cormorant text-3xl font-bold text-[#753230] mb-8">Rangkaian Acara</h2>
-
-        <div class="space-y-8">
-            @foreach($events as $event)
-                <div class="p-6 rounded-3xl bg-white border border-[#B89C7A]/40 shadow-lg relative overflow-hidden">
-                    <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-[#FFF0E5] border border-[#B89C7A] flex items-center justify-center text-[#753230]">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
+		<div data-elementor-type="wp-page" data-elementor-id="30947" class="elementor elementor-30947" data-elementor-post-type="page">
+				<div class="elementor-element elementor-element-4390f5ef e-con-full e-flex e-con e-parent" data-id="4390f5ef" data-element_type="container" data-e-type="container" id="sec">
+		<div class="elementor-element elementor-element-77ad0467 e-con-full e-flex e-con e-child" data-id="77ad0467" data-element_type="container" data-e-type="container" id="kolom" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-c1ff688 elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="200" style="transition-duration: 2000ms; transition-delay: 200ms;" data-id="c1ff688" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">The Wedding of</h2>				</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-49b1f0b9 elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="400" style="transition-duration: 2000ms; transition-delay: 400ms;" data-id="49b1f0b9" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">{{ $setting->groom_nickname ?? "Habib" }} &amp; {{ $setting->bride_nickname ?? "Adiba" }}</h2>				</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-130e9e1c elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="600" style="transition-duration: 2000ms; transition-delay: 600ms;" data-id="130e9e1c" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">Dear</h2>				</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-336fec00 elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="800" style="transition-duration: 2000ms; transition-delay: 800ms;" data-id="336fec00" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">{{ $guestName }}</h2>				</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-282e9274 elementor-align-center elementor-widget__width-inherit elementor-widget elementor-widget-button" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="1000" style="transition-duration: 2000ms; transition-delay: 1000ms;" data-id="282e9274" data-element_type="widget" data-e-type="widget" id="open" data-widget_type="button.default">
+				<div class="elementor-widget-container">
+									<div class="elementor-button-wrapper">
+					<a class="elementor-button elementor-size-xs" role="button">
+						<span class="elementor-button-content-wrapper">
+									<span class="elementor-button-text">Buka Undangan</span>
+					</span>
+					</a>
+				</div>
+								</div>
+				</div>
+				<div class="elementor-element elementor-element-2f45a492 elementor-widget elementor-widget-spacer" data-id="2f45a492" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-spacer">
+			<div class="elementor-spacer-inner"></div>
+		</div>
+						</div>
+				</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-53abcb12 e-con-full e-flex e-con e-parent" data-id="53abcb12" data-element_type="container" data-e-type="container">
+		<div class="elementor-element elementor-element-1468e5d0 e-con-full elementor-hidden-tablet elementor-hidden-mobile e-flex e-con e-child" data-id="1468e5d0" data-element_type="container" data-e-type="container" id="desk_cov" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-7cfcad43 elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="200" style="transition-duration: 2000ms; transition-delay: 200ms;" data-id="7cfcad43" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<p class="elementor-heading-title elementor-size-default">The Wedding of</p>				</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-3f49816 elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="400" style="transition-duration: 2000ms; transition-delay: 400ms;" data-id="3f49816" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<p class="elementor-heading-title elementor-size-default">Habib &amp; Adiba</p>				</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-48c5c30b elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="600" style="transition-duration: 2000ms; transition-delay: 600ms;" data-id="48c5c30b" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<p class="elementor-heading-title elementor-size-default">28. 12. 2026</p>				</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-70200ae7 e-con-full e-flex e-con e-child" data-id="70200ae7" data-element_type="container" data-e-type="container">
+		<div class="elementor-element elementor-element-3946b3b4 e-con-full slideAwal e-flex e-con e-child" data-id="3946b3b4" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;video&quot;,&quot;background_video_link&quot;:&quot;https:\/\/inv.punakawandigital.id\/wp-content\/uploads\/2025\/08\/PREMIUM-VINTAGE-03.mp4&quot;,&quot;background_play_once&quot;:&quot;yes&quot;,&quot;background_play_on_mobile&quot;:&quot;yes&quot;,&quot;background_video_start&quot;:0.1}">
+		<div class="elementor-background-video-container">
+							<video class="elementor-background-video-hosted" role="presentation" autoplay muted playsinline></video>
+					</div>		<div class="idb-reveal idb-ef zoom-bottom-right elementor-element elementor-element-5483a2b3 elementor-absolute pulse2 elementor-widget__width-inherit elementor-widget elementor-widget-image" data-reveal-offset="0" data-reveal-duration="2000" data-reveal-delay="11000" style="transition-duration: 2000ms; transition-delay: 11000ms;" data-id="5483a2b3" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_position&quot;:&quot;absolute&quot;}" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img fetchpriority="high" decoding="async" width="564" height="415" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-1.png" class="attachment-full size-full wp-image-33945" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-1.png 564w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-1-300x221.png 300w" sizes="(max-width: 564px) 100vw, 564px" />															</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-bottom-left elementor-element elementor-element-5f2c8dc elementor-absolute pulse1 elementor-widget__width-inherit elementor-widget elementor-widget-image" data-reveal-offset="0" data-reveal-duration="2000" data-reveal-delay="11000" style="transition-duration: 2000ms; transition-delay: 11000ms;" data-id="5f2c8dc" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_position&quot;:&quot;absolute&quot;}" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img decoding="async" width="418" height="458" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-2.png" class="attachment-full size-full wp-image-33946" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-2.png 418w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-2-274x300.png 274w" sizes="(max-width: 418px) 100vw, 418px" />															</div>
+				</div>
+		<div class="idb-reveal idb-ef zoom-out elementor-element elementor-element-1bd47f0f e-con-full e-flex e-con e-child" data-reveal-offset="0" data-reveal-duration="2000" data-reveal-delay="11000" style="transition-duration: 2000ms; transition-delay: 11000ms;" data-id="1bd47f0f" data-element_type="container" data-e-type="container">
+				<div class="elementor-element elementor-element-33fd4f72 elementor-absolute animasi-bunga2 e-transform elementor-widget__width-inherit elementor-widget elementor-widget-image" data-id="33fd4f72" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_position&quot;:&quot;absolute&quot;,&quot;_transform_flipX_effect&quot;:&quot;transform&quot;}" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img decoding="async" width="484" height="580" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-3.webp" class="attachment-full size-full wp-image-33947" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-3.webp 484w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-3-250x300.webp 250w" sizes="(max-width: 484px) 100vw, 484px" />															</div>
+				</div>
+				<div class="elementor-element elementor-element-5b7ab223 elementor-absolute animasi-bunga elementor-widget__width-inherit elementor-widget elementor-widget-image" data-id="5b7ab223" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_position&quot;:&quot;absolute&quot;}" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img decoding="async" width="484" height="580" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-3.webp" class="attachment-full size-full wp-image-33947" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-3.webp 484w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-3-250x300.webp 250w" sizes="(max-width: 484px) 100vw, 484px" />															</div>
+				</div>
+				<div class="elementor-element elementor-element-2de1aa7f elementor-widget elementor-widget-heading" data-id="2de1aa7f" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">The Wedding of</h2>				</div>
+				</div>
+				<div class="elementor-element elementor-element-5e883ffe profil1 elementor-widget elementor-widget-image" data-id="5e883ffe" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img loading="lazy" decoding="async" width="1000" height="1498" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co.jpg" class="attachment-full size-full wp-image-33948" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co.jpg 1000w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-200x300.jpg 200w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-684x1024.jpg 684w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-768x1150.jpg 768w" sizes="(max-width: 1000px) 100vw, 1000px" />															</div>
+				</div>
+				<div class="elementor-element elementor-element-7b4164dc elementor-widget elementor-widget-heading" data-id="7b4164dc" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">{{ $setting->groom_nickname ?? "Habib" }} &amp; {{ $setting->bride_nickname ?? "Adiba" }}</h2>				</div>
+				</div>
+				<div class="elementor-element elementor-element-344af349 elementor-widget elementor-widget-text-editor" data-id="344af349" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									Senin, 28 Desember 2026								</div>
+				</div>
+				<div class="elementor-element elementor-element-b3817b9 elementor-align-center elementor-mobile-align-center elementor-widget elementor-widget-button" data-id="b3817b9" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_animation_mobile&quot;:&quot;fadeInDown&quot;}" data-widget_type="button.default">
+				<div class="elementor-widget-container">
+									<div class="elementor-button-wrapper">
+					<a class="elementor-button elementor-size-sm" role="button">
+						<span class="elementor-button-content-wrapper">
+									<span class="elementor-button-text">I</span>
+					</span>
+					</a>
+				</div>
+								</div>
+				</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-133c2beb e-con-full e-flex e-con e-child" data-id="133c2beb" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="elementor-element elementor-element-169600a0 elementor-widget elementor-widget-spacer" data-id="169600a0" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-spacer">
+			<div class="elementor-spacer-inner"></div>
+		</div>
+						</div>
+				</div>
+		<div class="elementor-element elementor-element-25a5634d e-con-full e-flex e-con e-child" data-id="25a5634d" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-58a14973 elementor-absolute animasi-bunga3 e-transform elementor-widget elementor-widget-image" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="58a14973" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_position&quot;:&quot;absolute&quot;,&quot;_transform_rotateZ_effect&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:15,&quot;sizes&quot;:[]},&quot;_transform_rotateZ_effect_tablet&quot;:{&quot;unit&quot;:&quot;deg&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:[]},&quot;_transform_rotateZ_effect_mobile&quot;:{&quot;unit&quot;:&quot;deg&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:[]}}" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img loading="lazy" decoding="async" width="122" height="178" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-5-e1692004377852.png" class="attachment-full size-full wp-image-33951" alt="" />															</div>
+				</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-7af836a1 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="7af836a1" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									&#8220;Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir.&#8221;<br><br>(Qs. Ar-Rum : 21)								</div>
+				</div>
+				<div class="elementor-element elementor-element-2da13bce elementor-widget elementor-widget-spacer" data-id="2da13bce" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-spacer">
+			<div class="elementor-spacer-inner"></div>
+		</div>
+						</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-78ac5800 e-con-full e-flex e-con e-child" data-id="78ac5800" data-element_type="container" data-e-type="container">
+				<div class="elementor-element elementor-element-15ba0854 elementor-widget elementor-widget-spacer" data-id="15ba0854" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-spacer">
+			<div class="elementor-spacer-inner"></div>
+		</div>
+						</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-123fafa0 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="123fafa0" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									Tanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i serta kerabat sekalian untuk menghadiri acara pernikahan kami.								</div>
+				</div>
+				<div class="elementor-element elementor-element-2193293e elementor-widget elementor-widget-spacer" data-id="2193293e" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-spacer">
+			<div class="elementor-spacer-inner"></div>
+		</div>
+						</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-6b0b4b9d profil1 elementor-widget elementor-widget-image" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="6b0b4b9d" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img loading="lazy" decoding="async" width="1000" height="1498" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co.jpg" class="attachment-full size-full wp-image-33948" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co.jpg 1000w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-200x300.jpg 200w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-684x1024.jpg 684w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-768x1150.jpg 768w" sizes="(max-width: 1000px) 100vw, 1000px" />															</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-4ca654ba elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="4ca654ba" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<p class="elementor-heading-title elementor-size-default">Habib Yulianto</p>				</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-7deaa6a9 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="7deaa6a9" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									Putra Kedua dari <span class="ayah-marker" data-idb-mempelai-side="pria">Bapak M. Dawam</span><br>
+<span class="ibu-marker" data-idb-mempelai-side="pria">(Almh) Ibu Dewi Sudarwati</span>								</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-5aad0627 elementor-widget elementor-widget-bisdev_social_icons" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="5aad0627" data-element_type="widget" data-e-type="widget" data-widget_type="bisdev_social_icons.default">
+				<div class="elementor-widget-container">
+					        <div class="idb-social-icons is-auto-columns  is-shape-circle" style="">
+                                            <a
+                    class="idb-social-icons__item elementor-animation-grow"
+                    href="https://www.instagram.com/"
+                    aria-label="Instagram"
+                    title="Instagram"
+                    style=""
+                                        target="_blank"                    rel="nofollow noopener noreferrer"                >
+                    <i class="fab fa-instagram" aria-hidden="true"></i>                                    </a>
                     </div>
-
-                    <h3 class="font-cormorant text-2xl font-bold text-[#753230] mb-2">{{ $event->title }}</h3>
-                    <p class="font-caudex text-xs font-semibold text-[#5D2625] mb-1">{{ $event->date_text }}</p>
-                    <p class="font-caudex text-xs text-[#753230] mb-3">{{ $event->time_text }}</p>
-
-                    <div class="ornament-line mx-auto w-20 my-3"></div>
-
-                    <p class="font-caudex text-xs font-bold text-[#373838] uppercase mb-1">{{ $event->venue_name }}</p>
-                    <p class="text-[11px] text-[#5E6060] leading-relaxed mb-6">{{ $event->venue_address }}</p>
-
-                    <div class="flex flex-col sm:flex-row items-center justify-center gap-2">
-                        @if($event->maps_url)
-                            <a href="{{ $event->maps_url }}" target="_blank" rel="noopener noreferrer"
-                               class="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full bg-[#753230] text-[#FFF0E5] text-[11px] font-medium border border-[#B89C7A] hover:bg-[#8E3A37] transition-all">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                </svg>
-                                <span>Lihat Lokasi</span>
-                            </a>
-                        @endif
-
-                        @if($event->calendar_url)
-                            <a href="{{ $event->calendar_url }}" target="_blank" rel="noopener noreferrer"
-                               class="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full border border-[#B89C7A] text-[#753230] text-[11px] font-medium hover:bg-[#FFF0E5] transition-all">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                </svg>
-                                <span>Simpan Tanggal</span>
-                            </a>
-                        @endif
+        				</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-25b532ba elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="25b532ba" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">&amp;</h2>				</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-5cbe7682 profil1  elementor-widget elementor-widget-image" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="5cbe7682" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img loading="lazy" decoding="async" width="497" height="662" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/awal-3.jpg" class="attachment-full size-full wp-image-33955" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/awal-3.jpg 497w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/awal-3-225x300.jpg 225w" sizes="(max-width: 497px) 100vw, 497px" />															</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-1f499b1a elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="1f499b1a" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<p class="elementor-heading-title elementor-size-default">Adiba Putri Syakila</p>				</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-6403adf5 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="6403adf5" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									Putri Pertama dari <span class="ayah-marker" data-idb-mempelai-side="wanita">Bapak Anas Rifai</span><br>
+<span class="ibu-marker" data-idb-mempelai-side="wanita">Ibu Kholifah</span>								</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-33ad61ca elementor-widget elementor-widget-bisdev_social_icons" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="33ad61ca" data-element_type="widget" data-e-type="widget" data-widget_type="bisdev_social_icons.default">
+				<div class="elementor-widget-container">
+					        <div class="idb-social-icons is-auto-columns  is-shape-circle" style="">
+                                            <a
+                    class="idb-social-icons__item elementor-animation-grow"
+                    href="https://www.instagram.com/"
+                    aria-label="Instagram"
+                    title="Instagram"
+                    style=""
+                                        target="_blank"                    rel="nofollow noopener noreferrer"                >
+                    <i class="fab fa-instagram" aria-hidden="true"></i>                                    </a>
                     </div>
-                </div>
-            @endforeach
-        </div>
-
-    </div>
-</section>
-
-<!-- ========================================== -->
-<!-- 7. LIVE STREAMING (OPTIONAL)               -->
-<!-- ========================================== -->
-@if($setting->stream_enabled)
-<section class="py-14 px-6 bg-[#753230] text-[#FFF0E5] text-center border-t border-[#B89C7A]/40">
-    <div class="max-w-sm mx-auto p-6 rounded-3xl bg-[#582422]/80 border border-[#B89C7A]/40 shadow-xl">
-        <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-[#753230] border border-[#B89C7A] flex items-center justify-center text-[#B89C7A]">
-            <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-            </svg>
-        </div>
-
-        <h3 class="font-cormorant text-2xl font-bold tracking-wide mb-2">Live Streaming</h3>
-        <p class="text-xs text-[#D8C3A8] leading-relaxed mb-4">
-            Kami mengundang Bapak/Ibu/Saudara/i untuk menyaksikan pernikahan kami secara virtual melalui siaran langsung media sosial berikut:
-        </p>
-
-        <p class="font-caudex text-xs font-semibold text-[#FFF0E5] mb-4">{{ $setting->stream_time }}</p>
-
-        <a href="{{ $setting->stream_url ?? '#' }}" target="_blank" rel="noopener noreferrer"
-           class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#B89C7A] text-[#1C1514] font-semibold text-xs tracking-wider uppercase hover:bg-[#D8C3A8] transition-all">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
-            </svg>
-            <span>Tonton Live Streaming</span>
-        </a>
-    </div>
-</section>
-@endif
-
-<!-- ========================================== -->
-<!-- 8. LOVE STORY                              -->
-<!-- ========================================== -->
-@if($stories->isNotEmpty())
-<section class="py-16 px-6 bg-[#FFF0E5] text-center">
-    <div class="max-w-sm mx-auto">
-        <p class="font-cormorant italic text-xs tracking-widest text-[#B89C7A] mb-1">Our Journey</p>
-        <h2 class="font-cormorant text-3xl font-bold text-[#753230] mb-8">Love Story</h2>
-
-        <div class="relative border-l-2 border-[#B89C7A]/50 ml-4 sm:ml-6 pl-6 space-y-10 text-left">
-            @foreach($stories as $story)
-                <div class="relative">
-                    <!-- Dot -->
-                    <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-[#753230] border-2 border-[#FFF0E5] shadow-md"></div>
-                    
-                    <div class="p-5 rounded-2xl bg-white border border-[#B89C7A]/30 shadow-md">
-                        @if($story->year_or_date)
-                            <span class="inline-block px-2.5 py-0.5 rounded-full bg-[#FFF0E5] text-[#753230] text-[10px] font-semibold tracking-wider mb-2">
-                                {{ $story->year_or_date }}
-                            </span>
-                        @endif
-                        <h3 class="font-cormorant text-xl font-bold text-[#753230] mb-2">{{ $story->title }}</h3>
-                        
-                        @if($story->image)
-                            <img src="{{ $story->image }}" alt="{{ $story->title }}" class="w-full h-36 object-cover rounded-xl mb-3 border border-[#B89C7A]/20">
-                        @endif
-
-                        <p class="text-xs text-[#5E6060] leading-relaxed">{{ $story->story }}</p>
+        				</div>
+				</div>
+				<div class="elementor-element elementor-element-2e83c275 elementor-widget elementor-widget-spacer" data-id="2e83c275" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-spacer">
+			<div class="elementor-spacer-inner"></div>
+		</div>
+						</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-bottom-right elementor-element elementor-element-12563aa2 elementor-absolute pulse2 elementor-widget__width-inherit elementor-widget elementor-widget-image" data-reveal-offset="0" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="12563aa2" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_position&quot;:&quot;absolute&quot;}" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img fetchpriority="high" decoding="async" width="564" height="415" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-1.png" class="attachment-full size-full wp-image-33945" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-1.png 564w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-1-300x221.png 300w" sizes="(max-width: 564px) 100vw, 564px" />															</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-bottom-left elementor-element elementor-element-5ade9edc elementor-absolute pulse1 elementor-widget__width-inherit elementor-widget elementor-widget-image" data-reveal-offset="0" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="5ade9edc" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_position&quot;:&quot;absolute&quot;}" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img decoding="async" width="418" height="458" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-2.png" class="attachment-full size-full wp-image-33946" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-2.png 418w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-2-274x300.png 274w" sizes="(max-width: 418px) 100vw, 418px" />															</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-5d9c5240 e-con-full e-flex e-con e-child" data-id="5d9c5240" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="elementor-element elementor-element-639e3cb2 elementor-widget elementor-widget-spacer" data-id="639e3cb2" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-spacer">
+			<div class="elementor-spacer-inner"></div>
+		</div>
+						</div>
+				</div>
+		<div class="elementor-element elementor-element-446a2243 e-con-full e-flex e-con e-child" data-id="446a2243" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="idb-reveal idb-ef zoom-out elementor-element elementor-element-459e4e62 story elementor-widget elementor-widget-image" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="459e4e62" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img loading="lazy" decoding="async" width="597" height="480" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/1-e1740985931589.jpg" class="attachment-full size-full wp-image-33960" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/1-e1740985931589.jpg 597w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/1-e1740985931589-300x241.jpg 300w" sizes="(max-width: 597px) 100vw, 597px" />															</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-7ceadf8f elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="7ceadf8f" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">Menuju Hari Bahagia</h2>				</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-5431c61 elementor-widget__width-inherit elementor-widget elementor-widget-bisdev_countdown" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="5431c61" data-element_type="widget" data-e-type="widget" data-widget_type="bisdev_countdown.default">
+				<div class="elementor-widget-container">
+					<div class="idb-countdown" data-target="1798426800000" data-target-iso="2026-12-28T03:00:00+00:00" data-show-days="1" data-show-hours="1" data-show-minutes="1" data-show-seconds="1" data-label-days="Hari" data-label-hours="Jam" data-label-minutes="Menit" data-label-seconds="Detik">  <div class="idb-countdown__row"><div class="idb-countdown__item" data-part="days">  <div class="idb-countdown__num" data-role="num">0</div>  <div class="idb-countdown__label" data-role="label">Hari</div></div><div class="idb-countdown__item" data-part="hours">  <div class="idb-countdown__num" data-role="num">0</div>  <div class="idb-countdown__label" data-role="label">Jam</div></div><div class="idb-countdown__item" data-part="minutes">  <div class="idb-countdown__num" data-role="num">0</div>  <div class="idb-countdown__label" data-role="label">Menit</div></div><div class="idb-countdown__item" data-part="seconds">  <div class="idb-countdown__num" data-role="num">0</div>  <div class="idb-countdown__label" data-role="label">Detik</div></div>  </div></div>				</div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-373494f7 elementor-widget elementor-widget-spacer" data-id="373494f7" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-spacer">
+			<div class="elementor-spacer-inner"></div>
+		</div>
+						</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-29be295d luap e-con-full e-flex e-con e-child" data-id="29be295d" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="elementor-element elementor-element-8925dc4 elementor-absolute pulse elementor-widget elementor-widget-image" data-id="8925dc4" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_position&quot;:&quot;absolute&quot;}" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img loading="lazy" decoding="async" width="954" height="739" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-07.webp" class="attachment-full size-full wp-image-33963" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-07.webp 954w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-07-300x232.webp 300w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-07-768x595.webp 768w" sizes="(max-width: 954px) 100vw, 954px" />															</div>
+				</div>
+		<div class="elementor-element elementor-element-1ad2f2d0 e-con-full acara-con e-flex e-con e-child" data-id="1ad2f2d0" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-5ef4622a elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="5ef4622a" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default"><span class="nama-acara-marker" data-event-index="0">Akad Nikah</span></h2>				</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-bf23b94 elementor-widget-divider--view-line elementor-widget elementor-widget-divider" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="bf23b94" data-element_type="widget" data-e-type="widget" data-widget_type="divider.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-divider">
+			<span class="elementor-divider-separator">
+						</span>
+		</div>
+						</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-2d0c61af elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="2d0c61af" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									Senin, 28 Desember 2026								</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-10f77c13 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="10f77c13" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									Pukul : 08.00 WIB								</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-766b8b67 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="766b8b67" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									Tempat : <span class="niku-multiline"><strong>KEDIAMAN MEMPELAI WANITA</strong><br class="niku-lb">Ds Pagu, Wates, Kediri, <br class="niku-lb">Jawa Timur</span>								</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-2ff1b86b elementor-widget elementor-widget-bisdev_social_icons" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="2ff1b86b" data-element_type="widget" data-e-type="widget" data-widget_type="bisdev_social_icons.default">
+				<div class="elementor-widget-container">
+					        <div class="idb-social-icons is-auto-columns is-location-buttons is-shape-circle" style="--idb-loc-btn-text:#FFFFFF;">
+                                            <a
+                    class="idb-social-icons__item elementor-animation-grow"
+                    href="https://maps.app.goo.gl/GgLwpE6Qq8GZYBJh9"
+                    aria-label="Akad Nikah"
+                    title="Akad Nikah"
+                    style=""
+                    data-idb-maps-link="1"                    target="_blank"                    rel="nofollow noopener noreferrer"                >
+                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>                                                                    <span class="idb-social-icons__text">Lihat Lokasi</span>
+                                    </a>
                     </div>
-                </div>
-            @endforeach
-        </div>
-    </div>
-</section>
-@endif
-
-<!-- ========================================== -->
-<!-- 9. GALERI PREWEDDING & VIDEO               -->
-<!-- ========================================== -->
-<section id="galeri" class="py-16 px-6 bg-[#FAF4F4] text-center">
-    <div class="max-w-sm mx-auto">
-        <p class="font-cormorant italic text-xs tracking-widest text-[#B89C7A] mb-1">Sweet Moments</p>
-        <h2 class="font-cormorant text-3xl font-bold text-[#753230] mb-8">Galeri Foto</h2>
-
-        <!-- Gallery Grid -->
-        <div class="grid grid-cols-2 gap-3 mb-10">
-            @foreach($galleries as $gallery)
-                <div class="group relative rounded-2xl overflow-hidden shadow-md cursor-pointer aspect-square border border-[#B89C7A]/30"
-                     onclick="openLightbox('{{ $gallery->image_url }}', '{{ $gallery->caption }}')">
-                    <img src="{{ $gallery->image_url }}" alt="{{ $gallery->caption }}"
-                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-[#753230]/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
-                        </svg>
+        				</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-57aba0e e-con-full acara-con e-flex e-con e-child" data-id="57aba0e" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-11674f6c elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="11674f6c" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default"><span class="nama-acara-marker" data-event-index="1">Resepsi</span></h2>				</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-2e2e583b elementor-widget-divider--view-line elementor-widget elementor-widget-divider" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="2e2e583b" data-element_type="widget" data-e-type="widget" data-widget_type="divider.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-divider">
+			<span class="elementor-divider-separator">
+						</span>
+		</div>
+						</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-28f0d57c elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="28f0d57c" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									Senin, 28 Desember 2026								</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-6f144195 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="6f144195" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									Pukul : 10.00 WIB &#8211; Selesai								</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-129ef3eb elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="129ef3eb" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									Tempat : <span class="niku-multiline"><strong>KEDIAMAN MEMPELAI WANITA<br class="niku-lb"></strong>Ds Pagu, Wates, Kediri, <br class="niku-lb">Jawa Timur</span>								</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-6f70bbc2 elementor-widget elementor-widget-bisdev_social_icons" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="6f70bbc2" data-element_type="widget" data-e-type="widget" data-widget_type="bisdev_social_icons.default">
+				<div class="elementor-widget-container">
+					        <div class="idb-social-icons is-auto-columns is-location-buttons is-shape-circle" style="--idb-loc-btn-text:#FFFFFF;">
+                                            <a
+                    class="idb-social-icons__item elementor-animation-grow"
+                    href="https://www.google.com/maps"
+                    aria-label="Resepsi"
+                    title="Resepsi"
+                    style=""
+                    data-idb-maps-link="1"                    target="_blank"                    rel="nofollow noopener noreferrer"                >
+                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>                                                                    <span class="idb-social-icons__text">Lihat Lokasi</span>
+                                    </a>
                     </div>
-                </div>
-            @endforeach
-        </div>
-
-        <!-- Video Prewedding (if available) -->
-        @if(!empty($setting->video_url))
-            <div class="p-4 rounded-3xl bg-white border border-[#B89C7A]/40 shadow-lg">
-                <h3 class="font-cormorant text-xl font-bold text-[#753230] mb-3">Video Prewedding</h3>
-                <div class="relative w-full rounded-2xl overflow-hidden aspect-video bg-black shadow-md">
-                    @php
-                        $videoEmbed = $setting->video_url;
-                        if (str_contains($videoEmbed, 'watch?v=')) {
-                            $videoEmbed = str_replace('watch?v=', 'embed/', $videoEmbed);
-                        } elseif (str_contains($videoEmbed, 'youtu.be/')) {
-                            $videoEmbed = str_replace('youtu.be/', 'www.youtube.com/embed/', $videoEmbed);
-                        }
-                    @endphp
-                    <iframe src="{{ $videoEmbed }}" class="w-full h-full" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
+        				</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-2599c18b e-con-full acara-con e-flex e-con e-child" data-id="2599c18b" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-26c9f7a7 elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="26c9f7a7" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default"><span class="nama-acara-marker" data-event-index="2"></span></h2>				</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-6439e5e8 elementor-widget-divider--view-line elementor-widget elementor-widget-divider" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="6439e5e8" data-element_type="widget" data-e-type="widget" data-widget_type="divider.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-divider">
+			<span class="elementor-divider-separator">
+						</span>
+		</div>
+						</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-2a439cf3 e-con-full stream-con e-flex e-con e-child" data-id="2a439cf3" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-b838c51 elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="b838c51" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">Live Streaming</h2>				</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-314f3881 elementor-widget-divider--view-line elementor-widget elementor-widget-divider" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="314f3881" data-element_type="widget" data-e-type="widget" data-widget_type="divider.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-divider">
+			<span class="elementor-divider-separator">
+						</span>
+		</div>
+						</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-261d667c elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="261d667c" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									Kami mengundang Bapak/Ibu/Saudara/i untuk menyaksikan pernikahan kami secara virtual yang disiarkan langsung melalui media sosial di bawah ini								</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-9635ac3 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="9635ac3" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									Senin, 28 Desember 2026								</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-4c743599 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="4c743599" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									Pukul : 08.00 WIB								</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-16287c93 elementor-widget elementor-widget-bisdev_social_icons" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="16287c93" data-element_type="widget" data-e-type="widget" data-widget_type="bisdev_social_icons.default">
+				<div class="elementor-widget-container">
+					        <div class="idb-social-icons is-auto-columns is-streaming-buttons is-shape-circle" style="--idb-loc-btn-text:#FFFFFF;">
+                                            <a
+                    class="idb-social-icons__item elementor-animation-grow"
+                    href="https://www.instagram.com/"
+                    aria-label="Instagram"
+                    title="Instagram"
+                    style=""
+                                        target="_blank"                    rel="nofollow noopener noreferrer"                >
+                    <i class="fab fa-instagram" aria-hidden="true"></i>                                                                    <span class="idb-social-icons__text">@Habib</span>
+                                    </a>
+                    </div>
+        				</div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-18014394 elementor-widget elementor-widget-spacer" data-id="18014394" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-spacer">
+			<div class="elementor-spacer-inner"></div>
+		</div>
+						</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-bottom-right elementor-element elementor-element-43e57b18 elementor-absolute pulse2 elementor-widget__width-inherit elementor-widget elementor-widget-image" data-reveal-offset="0" data-reveal-duration="2000" data-reveal-delay="11000" style="transition-duration: 2000ms; transition-delay: 11000ms;" data-id="43e57b18" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_position&quot;:&quot;absolute&quot;}" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img fetchpriority="high" decoding="async" width="564" height="415" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-1.png" class="attachment-full size-full wp-image-33945" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-1.png 564w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-1-300x221.png 300w" sizes="(max-width: 564px) 100vw, 564px" />															</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-bottom-left elementor-element elementor-element-60006be8 elementor-absolute pulse1 elementor-widget__width-inherit elementor-widget elementor-widget-image" data-reveal-offset="0" data-reveal-duration="2000" data-reveal-delay="11000" style="transition-duration: 2000ms; transition-delay: 11000ms;" data-id="60006be8" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_position&quot;:&quot;absolute&quot;}" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img decoding="async" width="418" height="458" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-2.png" class="attachment-full size-full wp-image-33946" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-2.png 418w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-2-274x300.png 274w" sizes="(max-width: 418px) 100vw, 418px" />															</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-4cd3c09c e-con-full e-flex e-con e-child" data-id="4cd3c09c" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-4d6512d1 elementor-widget__width-initial elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="4d6512d1" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									<p>Galeri Foto</p>								</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-2adffe22 elementor-widget__width-inherit elementor-widget elementor-widget-bisdev_invite_video" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="2adffe22" data-element_type="widget" data-e-type="widget" data-widget_type="bisdev_invite_video.default">
+				<div class="elementor-widget-container">
+					        <div class="bisdev-invite-video" data-video-type="youtube" data-duck-music="1" data-biv-id="bisdev-invite-video-2adffe22">
+            <div class="bisdev-invite-video__inner">
+                <iframe id="bisdev-invite-video-2adffe22" class="bisdev-invite-video__iframe"
+                    src="https://www.youtube-nocookie.com/embed/8h7pbb4A4JI?playsinline=1&#038;rel=0&#038;iv_load_policy=3&#038;modestbranding=1&#038;autoplay=1&#038;mute=1&#038;loop=1&#038;playlist=8h7pbb4A4JI&#038;enablejsapi=1&#038;origin=https%3A%2F%2Finv.punakawandigital.id"
+                    title="Video undangan"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen
+                    loading="lazy"></iframe>
             </div>
-        @endif
-    </div>
-</section>
-
-<!-- ========================================== -->
-<!-- 10. AMPLOP DIGITAL & KIRIM KADO            -->
-<!-- ========================================== -->
-<section id="hadiah" class="py-16 px-6 bg-[#FFF0E5] text-center">
-    <div class="max-w-sm mx-auto">
-        <p class="font-cormorant italic text-xs tracking-widest text-[#B89C7A] mb-1">Wedding Gift</p>
-        <h2 class="font-cormorant text-3xl font-bold text-[#753230] mb-3">Amplop Digital</h2>
-        <p class="text-xs text-[#5E6060] leading-relaxed mb-8">
-            Doa restu Anda merupakan karunia yang sangat berarti bagi kami. Namun jika memberi adalah ungkapan tanda kasih, Anda dapat memberi kado secara cashless di bawah ini:
-        </p>
-
-        <!-- Bank Accounts -->
-        <div class="space-y-4 mb-8">
-            @foreach($bankAccounts as $account)
-                <div class="p-5 rounded-2xl bg-white border border-[#B89C7A]/40 shadow-md text-left relative overflow-hidden">
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="px-3 py-1 rounded-full bg-[#753230] text-[#FFF0E5] text-[11px] font-bold tracking-wider">
-                            {{ $account->bank_name }}
-                        </span>
-                        <svg class="w-5 h-5 text-[#B89C7A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-                        </svg>
-                    </div>
-
-                    <p class="text-[11px] text-[#5E6060] mb-0.5">Nomor Rekening:</p>
-                    <p class="font-mono text-base font-bold text-[#753230] tracking-wide mb-2" id="rek-{{ $account->id }}">
-                        {{ $account->account_number }}
-                    </p>
-
-                    <p class="text-[11px] text-[#5E6060] mb-4">a.n {{ $account->account_holder }}</p>
-
-                    <button onclick="copyToClipboard('{{ $account->account_number }}', 'Nomor rekening {{ $account->bank_name }} berhasil disalin!')"
-                            class="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl bg-[#FAF4F4] hover:bg-[#753230] text-[#753230] hover:text-[#FFF0E5] text-xs font-medium border border-[#B89C7A] transition-all">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
-                        </svg>
-                        <span>Salin No. Rekening</span>
-                    </button>
-                </div>
-            @endforeach
         </div>
+        				</div>
+				</div>
+				<div class="elementor-element elementor-element-a9597da elementor-widget elementor-widget-gallery" data-id="a9597da" data-element_type="widget" data-e-type="widget" data-settings="{&quot;gallery_layout&quot;:&quot;justified&quot;,&quot;ideal_row_height&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:300,&quot;sizes&quot;:[]},&quot;ideal_row_height_mobile&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:300,&quot;sizes&quot;:[]},&quot;ideal_row_height_tablet&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:400,&quot;sizes&quot;:[]},&quot;gap&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:10,&quot;sizes&quot;:[]},&quot;gap_tablet&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:10,&quot;sizes&quot;:[]},&quot;gap_mobile&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:10,&quot;sizes&quot;:[]},&quot;link_to&quot;:&quot;file&quot;,&quot;content_hover_animation&quot;:&quot;fade-in&quot;}" data-widget_type="gallery.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-gallery__container">
+							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/awal-3-1.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="awal-3-1.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5NjksInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcL2F3YWwtMy0xLmpwZyIsInNsaWRlc2hvdyI6ImE5NTk3ZGEifQ%3D%3D">
+					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/awal-3-1.jpg" data-width="497" data-height="662" aria-label="" role="img" ></div>
+														</a>
+							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-2.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="23RSW2031-co-2.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5NzEsInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcLzIzUlNXMjAzMS1jby0yLmpwZyIsInNsaWRlc2hvdyI6ImE5NTk3ZGEifQ%3D%3D">
+					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-2.jpg" data-width="1000" data-height="1498" aria-label="" role="img" ></div>
+														</a>
+							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/8-.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="8-.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5NzMsInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcLzgtLmpwZyIsInNsaWRlc2hvdyI6ImE5NTk3ZGEifQ%3D%3D">
+					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/8-.jpg" data-width="640" data-height="958" aria-label="" role="img" ></div>
+														</a>
+							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/7-.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="7-.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5NzUsInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcLzctLmpwZyIsInNsaWRlc2hvdyI6ImE5NTk3ZGEifQ%3D%3D">
+					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/7-.jpg" data-width="640" data-height="958" aria-label="" role="img" ></div>
+														</a>
+							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/5-.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="5-.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5NzYsInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcLzUtLmpwZyIsInNsaWRlc2hvdyI6ImE5NTk3ZGEifQ%3D%3D">
+					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/5-.jpg" data-width="719" data-height="480" aria-label="" role="img" ></div>
+														</a>
+							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/4-e1692005649211.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="4-e1692005649211.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5NzgsInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcLzQtZTE2OTIwMDU2NDkyMTEuanBnIiwic2xpZGVzaG93IjoiYTk1OTdkYSJ9">
+					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/4-e1692005649211.jpg" data-width="663" data-height="370" aria-label="" role="img" ></div>
+														</a>
+							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/4-1-1-1.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="4-1-1-1.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5ODAsInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcLzQtMS0xLTEuanBnIiwic2xpZGVzaG93IjoiYTk1OTdkYSJ9">
+					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/4-1-1-1.jpg" data-width="663" data-height="480" aria-label="" role="img" ></div>
+														</a>
+							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/3-.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="3-.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5ODIsInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcLzMtLmpwZyIsInNsaWRlc2hvdyI6ImE5NTk3ZGEifQ%3D%3D">
+					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/3-.jpg" data-width="640" data-height="958" aria-label="" role="img" ></div>
+														</a>
+							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/2-1-2.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="2-1-2.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5ODQsInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcLzItMS0yLmpwZyIsInNsaWRlc2hvdyI6ImE5NTk3ZGEifQ%3D%3D">
+					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/2-1-2.jpg" data-width="640" data-height="958" aria-label="" role="img" ></div>
+														</a>
+							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/6-.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="6-.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5ODYsInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcLzYtLmpwZyIsInNsaWRlc2hvdyI6ImE5NTk3ZGEifQ%3D%3D">
+					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/6-.jpg" data-width="640" data-height="958" aria-label="" role="img" ></div>
+														</a>
+							<a class="e-gallery-item elementor-gallery-item elementor-animated-content" href="https://inv.punakawandigital.id/wp-content/uploads/2026/06/1-e1740985931589.jpg" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="a9597da" data-elementor-lightbox-title="1-e1740985931589.jpg" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MzM5NjAsInVybCI6Imh0dHBzOlwvXC9pbnYucHVuYWthd2FuZGlnaXRhbC5pZFwvd3AtY29udGVudFwvdXBsb2Fkc1wvMjAyNlwvMDZcLzEtZTE3NDA5ODU5MzE1ODkuanBnIiwic2xpZGVzaG93IjoiYTk1OTdkYSJ9">
+					<div class="e-gallery-image elementor-gallery-item__image" data-thumbnail="https://inv.punakawandigital.id/wp-content/uploads/2026/06/1-e1740985931589.jpg" data-width="597" data-height="480" aria-label="" role="img" ></div>
+														</a>
+					</div>
+					</div>
+				</div>
+				<div class="elementor-element elementor-element-5a3fad7c elementor-widget elementor-widget-spacer" data-id="5a3fad7c" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-spacer">
+			<div class="elementor-spacer-inner"></div>
+		</div>
+						</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-5272d9f6 e-con-full e-flex e-con e-child" data-id="5272d9f6" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="elementor-element elementor-element-582d761e elementor-widget elementor-widget-spacer" data-id="582d761e" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-spacer">
+			<div class="elementor-spacer-inner"></div>
+		</div>
+						</div>
+				</div>
+		<div class="elementor-element elementor-element-3cc9a1f8 e-con-full ls-section e-flex e-con e-child" data-id="3cc9a1f8" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-69166f87 elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="69166f87" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">Love Story</h2>				</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-78de8c41 story elementor-widget elementor-widget-image" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="78de8c41" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img loading="lazy" decoding="async" width="597" height="480" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/1-e1740985931589.jpg" class="attachment-full size-full wp-image-33960" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/1-e1740985931589.jpg 597w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/1-e1740985931589-300x241.jpg 300w" sizes="(max-width: 597px) 100vw, 597px" />															</div>
+				</div>
+				<div class="elementor-element elementor-element-3ed11137 ls-con idb-tl-title-align-center idb-tl-desc-align-center elementor-widget elementor-widget-bisdev_timeline" data-id="3ed11137" data-element_type="widget" data-e-type="widget" data-widget_type="bisdev_timeline.default">
+				<div class="elementor-widget-container">
+					        <div class="idb-timeline idb-timeline--effect-zoom-up idb-timeline--content-only"
+                          data-reveal-offset="100"
+             data-reveal-delay="180"
+             data-reveal-duration="2500"
+             style="--idb-tl-reveal-delay: 180ms; --idb-tl-reveal-duration: 2500ms;"
+             >
+            <div class="idb-timeline__list">
+                                                                                        <div class="idb-timeline__item">
+                                                <div class="idb-timeline__content idb-reveal idb-ef zoom-up"
+                                                          data-reveal-offset="100"
+                             data-reveal-duration="2500"
+                             data-reveal-delay="0"
+                             style="transition-duration: 2500ms;"
+                             >
+                                                                                        <h3 class="idb-timeline__title">Awal Cerita</h3>
+                                                                                        <div class="idb-timeline__desc"><span class="niku-multiline">Berawal dari pertemuan sederhana, kami saling mengenal dan mulai berbagi banyak cerita. Tanpa disadari, kebersamaan itu tumbuh menjadi rasa nyaman yang semakin kuat dari hari ke hari.</span></div>
+                                                    </div>
+                    </div>
+                                                        <div class="idb-timeline__item">
+                                                <div class="idb-timeline__content idb-reveal idb-ef zoom-up"
+                                                          data-reveal-offset="100"
+                             data-reveal-duration="2500"
+                             data-reveal-delay="180"
+                             style="transition-duration: 2500ms; transition-delay: 180ms;"
+                             >
+                                                                                        <h3 class="idb-timeline__title">Lamaran</h3>
+                                                                                        <div class="idb-timeline__desc"><span class="niku-multiline">Dengan niat yang tulus dan restu keluarga, kami memutuskan untuk melangkah ke tahap yang lebih serius. Momen lamaran menjadi awal dari perjalanan baru yang penuh harapan dan doa baik.</span></div>
+                                                    </div>
+                    </div>
+                                                        <div class="idb-timeline__item">
+                                                <div class="idb-timeline__content idb-reveal idb-ef zoom-up"
+                                                          data-reveal-offset="100"
+                             data-reveal-duration="2500"
+                             data-reveal-delay="360"
+                             style="transition-duration: 2500ms; transition-delay: 360ms;"
+                             >
+                                                                                        <h3 class="idb-timeline__title">Pernikahan</h3>
+                                                                                        <div class="idb-timeline__desc"><span class="niku-multiline">Kini kami sampai pada hari yang kami nantikan, hari di mana dua hati dipersatukan dalam ikatan suci pernikahan. Semoga langkah ini menjadi awal kehidupan baru yang penuh cinta, kebahagiaan, dan keberkahan.</span></div>
+                                                    </div>
+                    </div>
+                            </div>
+        </div>
+        				</div>
+				</div>
+				<div class="elementor-element elementor-element-6c545977 elementor-widget elementor-widget-spacer" data-id="6c545977" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-spacer">
+			<div class="elementor-spacer-inner"></div>
+		</div>
+						</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-4ed6eb88 e-con-full amplop-section e-flex e-con e-child" data-id="4ed6eb88" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="elementor-element elementor-element-34b5b8dd elementor-widget elementor-widget-spacer" data-id="34b5b8dd" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-spacer">
+			<div class="elementor-spacer-inner"></div>
+		</div>
+						</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-6dc3d8b1 elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="6dc3d8b1" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">Amplop Digital</h2>				</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-595ff834 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="595ff834" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									Doa restu Anda merupakan karunia yang sangat berarti bagi kami, dan jika memberi adalah ungkapan tanda kasih, Anda dapat memberi kado secara cashless.								</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-3be8d1b elementor-align-center elementor-widget elementor-widget-button" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="3be8d1b" data-element_type="widget" data-e-type="widget" id="klik" data-widget_type="button.default">
+				<div class="elementor-widget-container">
+									<div class="elementor-button-wrapper">
+					<a class="elementor-button elementor-size-sm" role="button">
+						<span class="elementor-button-content-wrapper">
+									<span class="elementor-button-text">Klik Disini</span>
+					</span>
+					</a>
+				</div>
+								</div>
+				</div>
+		<div class="elementor-element elementor-element-77e57170 e-con-full e-flex e-con e-child" data-id="77e57170" data-element_type="container" data-e-type="container" id="amplop">
+				<div class="elementor-element elementor-element-7e46926e elementor-widget elementor-widget-bisdev_copy_rekening" data-id="7e46926e" data-element_type="widget" data-e-type="widget" data-widget_type="bisdev_copy_rekening.default">
+				<div class="elementor-widget-container">
+					<script>
+            (function(){
+              if (window.__idbBisdevEntranceZoomInit) return;
+              window.__idbBisdevEntranceZoomInit = true;
+              var selVisible = ".idb-copy-rek.elementor-invisible[data-settings], .idb-kirim-hadiah.elementor-invisible[data-settings]";
+              var selAll = ".idb-copy-rek[data-settings], .idb-kirim-hadiah[data-settings]";
+              var zoomCycle = 1;
+              function parseSettings(el){
+                var raw = el.getAttribute("data-settings") || "{}";
+                try { return JSON.parse(raw); } catch(e){ return {}; }
+              }
+              function applyZoom(scope){
+                var root = scope && scope.querySelectorAll ? scope : document;
+                var items = root.querySelectorAll(selVisible);
+                items.forEach(function(el){
+                  if ((el.__idbZoomCycleApplied || 0) >= zoomCycle) return;
+                  var st = parseSettings(el);
+                  var anim = (st._animation || "zoomIn").toString();
+                  var delay = parseInt(st._animation_delay || 0, 10) || 0;
+                  if (!el.__idbEverShown) delay = Math.max(0, delay - 20);
+                  if (el.offsetParent === null) return;
+                  el.__idbZoomCycleApplied = zoomCycle;
+                  el.__idbEverShown = true;
+                  setTimeout(function(){
+                    if ((el.__idbZoomCycleApplied || 0) !== zoomCycle) return;
+                    el.classList.remove("elementor-invisible");
+                    el.classList.add("animated", anim);
+                  }, Math.max(0, delay));
+                });
+              }
+              function replayZoom(scope){
+                var root = scope && scope.querySelectorAll ? scope : document;
+                var items = root.querySelectorAll(selAll);
+                zoomCycle += 1;
+                items.forEach(function(el){
+                  if (el.offsetParent === null) return;
+                  el.classList.remove("animated", "zoomIn");
+                  el.classList.add("elementor-invisible");
+                  el.__idbZoomCycleApplied = 0;
+                });
+                setTimeout(function(){ schedule(root); }, 40);
+              }
+              function syncVisibleStateAndReplay(scope){
+                var root = scope && scope.querySelectorAll ? scope : document;
+                var items = root.querySelectorAll(selAll);
+                var shouldReplay = false;
+                items.forEach(function(el){
+                  var isVisible = (el.offsetParent !== null);
+                  if (isVisible && !el.__idbWasVisible) {
+                    el.__idbWasVisible = true;
+                    shouldReplay = true;
+                  } else if (!isVisible && el.__idbWasVisible) {
+                    el.__idbWasVisible = false;
+                  }
+                });
+                if (shouldReplay) replayZoom(root);
+              }
+              var raf = 0;
+              function schedule(scope){
+                if (raf) cancelAnimationFrame(raf);
+                raf = requestAnimationFrame(function(){ applyZoom(scope); });
+              }
+              document.addEventListener("DOMContentLoaded", function(){ schedule(document); });
+              window.addEventListener("load", function(){ schedule(document); });
+              document.addEventListener("app:content-ready", function(){ schedule(document); });
+              document.addEventListener("app:navigated", function(){ schedule(document); });
+              document.addEventListener("idb:rekening-shown", function(){ replayZoom(document); });
+              if (window.elementorFrontend && window.elementorFrontend.hooks) {
+                window.elementorFrontend.hooks.addAction("frontend/element_ready/global", function($scope){
+                  try { schedule(($scope && $scope[0]) ? $scope[0] : document); } catch(e){ schedule(document); }
+                });
+              }
+              var obs = new MutationObserver(function(){
+                schedule(document);
+                syncVisibleStateAndReplay(document);
+              });
+              obs.observe(document.documentElement, { attributes:true, childList:true, subtree:true, attributeFilter:["class","style"] });
+              syncVisibleStateAndReplay(document);
+              schedule(document);
+            })();
+            </script>                                <div class="idb-copy-rek idb-copy-rek--auto elementor-invisible is-stack is-btn-right is-hide-bankname" id="idb-copy-rek-7e46926e-0"
+                     data-settings='{&quot;_animation&quot;:&quot;zoomIn&quot;,&quot;_animation_delay&quot;:20}'
+                     data-copy="12345678"
+                     data-success="Tersalin."
+                     data-fail="Gagal menyalin. Coba lagi."
+                     data-trigger-text="0"
+                     data-trigger-btn="1">
+                    <div class="idb-copy-rek__box">
+                        <div class="idb-copy-rek__info">
+                                                            <div class="idb-copy-rek__label is-logo-right" >
+                                                                                                                                                                <span class="idb-copy-rek__banklogo" style="margin-left:auto;"><img decoding="async" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/BCA_5770.webp" alt="" loading="lazy"></span>
+                                                                                                            </div>
+                                                        
+                            <div class="idb-copy-rek__number "
+                                 >
+                                                                    <div class="idb-copy-rek__chipimg"><img decoding="async" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/chip-atm-1-2-1-1-1-3-1-1.png" alt="" loading="lazy"></div>
+                                                                <div class="idb-copy-rek__numtext"><span class="no-rekening-marker" data-gift-index="0">12345678</span></div>
+                            </div>
 
-        <!-- Kirim Hadiah Fisik -->
-        @if(!empty($setting->gift_address))
-            <div class="p-5 rounded-2xl bg-white border border-[#B89C7A]/40 shadow-md text-left">
-                <div class="flex items-center gap-2 mb-3">
-                    <svg class="w-5 h-5 text-[#753230]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V6a2 2 0 10-2 2h2zm0 0H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V10a2 2 0 00-2-2h-8z"></path>
-                    </svg>
-                    <h3 class="font-cormorant text-xl font-bold text-[#753230]">Kirim Kado Fisik</h3>
+                                                            <div class="idb-copy-rek__name">Habib</div>
+                                                    </div>
+
+                                                    <button type="button" class="idb-copy-rek__btn">
+                                                                    <span class="idb-copy-rek__icon idb-is-left"><i aria-hidden="true" class="fas fa-copy"></i></span>
+                                                                <span class="idb-copy-rek__btntext">Copy</span>
+                                                            </button>
+                                                <div class="idb-copy-rek__toast" aria-live="polite" aria-atomic="true"></div>
+                    </div>
                 </div>
+                				</div>
+				</div>
+				<div class="elementor-element elementor-element-425f85f1 elementor-widget elementor-widget-bisdev_kirim_hadiah" data-id="425f85f1" data-element_type="widget" data-e-type="widget" data-widget_type="bisdev_kirim_hadiah.default">
+				<div class="elementor-widget-container">
+					        <div class="idb-kirim-hadiah idb-kirim-hadiah--auto elementor-invisible" data-settings="{&quot;_animation&quot;:&quot;zoomIn&quot;,&quot;_animation_delay&quot;:20}">
+            <div class="idb-kirim-hadiah__box">
+                <div class="idb-kirim-hadiah__icon" aria-hidden="true">
+                    <i aria-hidden="true" class="fas fa-gift"></i>                </div>
 
-                <div class="text-xs text-[#5E6060] space-y-1 mb-4">
-                    <p><strong class="text-[#373838]">Penerima:</strong> {{ $setting->gift_recipient_name }}</p>
-                    <p><strong class="text-[#373838]">No. HP:</strong> {{ $setting->gift_phone }}</p>
-                    <p><strong class="text-[#373838]">Alamat:</strong> {{ $setting->gift_address }}</p>
-                </div>
+                                    <div class="idb-kirim-hadiah__title">Kirim Hadiah</div>
+                
+                <div class="idb-kirim-hadiah__content">
+                                    <div class="idb-kirim-hadiah__line">
+                        <span class="idb-kirim-hadiah__label">Nama Penerima</span>
+                        <span class="idb-kirim-hadiah__sep">:</span>
+                        <span class="idb-kirim-hadiah__value">Habib Yulianto</span>
+                    </div>
+                
+                                    <div class="idb-kirim-hadiah__line">
+                        <span class="idb-kirim-hadiah__label">No. HP</span>
+                        <span class="idb-kirim-hadiah__sep">:</span>
+                        <span class="idb-kirim-hadiah__value">1234567890</span>
+                    </div>
+                
+                                    <div class="idb-kirim-hadiah__line idb-kirim-hadiah__line--alamat">
+                        <span class="idb-kirim-hadiah__label">Alamat</span>
+                        <span class="idb-kirim-hadiah__sep">:</span>
+                        <span class="idb-kirim-hadiah__value">Ds Pagu Kec.Wates Kab. Kediri</span>
+                    </div>
+                                                    </div>
 
-                <button onclick="copyToClipboard('{{ $setting->gift_recipient_name }} - {{ $setting->gift_phone }}\n{{ $setting->gift_address }}', 'Alamat pengiriman kado berhasil disalin!')"
-                        class="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl bg-[#FAF4F4] hover:bg-[#753230] text-[#753230] hover:text-[#FFF0E5] text-xs font-medium border border-[#B89C7A] transition-all">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
-                    </svg>
-                    <span>Salin Alamat Pengiriman</span>
-                </button>
-            </div>
-        @endif
+                            </div>
+        </div>
+        				</div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-41e1d3d4 elementor-widget elementor-widget-spacer" data-id="41e1d3d4" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-spacer">
+			<div class="elementor-spacer-inner"></div>
+		</div>
+						</div>
+				</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-3075fd87 e-con-full e-flex e-con e-child" data-id="3075fd87" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="elementor-element elementor-element-2962c0 elementor-widget elementor-widget-heading" data-id="2962c0" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">Ucapkan Sesuatu</h2>				</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-3a25b32b elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="3a25b32b" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									Berikan Ucapan &amp; Doa Restu								</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-up elementor-element elementor-element-19c9f7b0 ef slide-up elementor-widget elementor-widget-niku-rsvp" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="19c9f7b0" data-element_type="widget" data-e-type="widget" data-widget_type="niku-rsvp.default">
+				<div class="elementor-widget-container">
+					        <div class="rsvp-card"
+             data-post-id="30947"
+             data-ui-tr="0"
+             data-suffix-jumlah-tamu="Tamu"
+             data-msg-success="Terima kasih, ucapan kamu sudah terkirim."
+             data-msg-invalid-link="Mohon maaf! Khusus untuk tamu undangan."
+             data-msg-name-required="Nama wajib diisi."
+             data-msg-content-required="Ucapan / doa wajib diisi."
+             data-msg-content-max="Ucapan maksimal 1000 karakter."
+             data-msg-max-length="1000"
+             data-msg-presence-required="Pilih konfirmasi kehadiran."
+             data-msg-delete-confirm="Hapus komentar ini?"
+             data-msg-delete-fail="Gagal menghapus komentar."
+             data-msg-connection="Terjadi kesalahan koneksi. Coba lagi."
+             data-msg-page-fail="Gagal memuat halaman."
+             data-msg-invalid-response="Respon tidak valid."
+             data-msg-submit-fail="Gagal mengirim ucapan."
+             data-msg-just-now="Baru saja"
+             data-guest-to=""
+             data-comment-permission="db_only"
+             data-require-to="0"
+             data-require-param="0"
+             data-require-db="0"
+             data-allow-public="1"
+             data-use-presence="1"
+             data-show-avatar="1"
+             data-show-jumlah-tamu="0"
+             data-label-jumlah-tamu="Jumlah Tamu"
+             data-max-jumlah-tamu="2"
+             data-editor-preview="0"
+             data-static-error="Mohon maaf! Khusus untuk tamu undangan."
 
-    </div>
-</section>
+             data-send-wa="0"
+             data-wa-number=""
 
-<!-- ========================================== -->
-<!-- 11. BUKU TAMU & RSVP                       -->
-<!-- ========================================== -->
-<section id="rsvp" class="py-16 px-6 bg-[#FAF4F4] text-center">
-    <div class="max-w-sm mx-auto">
-        <p class="font-cormorant italic text-xs tracking-widest text-[#B89C7A] mb-1">Wishes & Prayers</p>
-        <h2 class="font-cormorant text-3xl font-bold text-[#753230] mb-2">Buku Tamu & RSVP</h2>
-        <p class="text-xs text-[#5E6060] leading-relaxed mb-8">
-            Berikan konfirmasi kehadiran serta doa restu Anda untuk kami.
-        </p>
+             data-wa-popup="0"
+             data-wa-popup-title="Konfirmasi WhatsApp"
+             data-wa-popup-text="Apakah Anda ingin melanjutkan mengirim konfirmasi melalui WhatsApp?"
+             data-wa-popup-yes="Ya, Kirim"
+             data-wa-popup-no="Batal"
 
-        <!-- Form RSVP -->
-        <form id="rsvp-form" class="p-6 rounded-3xl bg-white border border-[#B89C7A]/40 shadow-lg text-left mb-10">
-            @csrf
+             data-can-delete="0"
+             data-del-nonce="b068ee17ab"
+             data-show-stats="0"
+        >
+
+
+                            <!-- Template ikon avatar default -->
+                <span class="rsvp-ava-template" style="display:none;">
+                    <svg class="rsvp-ava-icon rsvp-ava-icon-inline" focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" role="img" aria-label="user circle icon">
+  <circle cx="248" cy="256" r="248" fill="currentColor"/>
+  <circle cx="248" cy="192" r="80" class="rsvp-ava-silhouette"/>
+  <path d="M248 296c-68.48 0-124 48.14-124 107.52V408c34.32 34.97 82.14 56 124 56s89.68-21.03 124-56v-4.48C372 344.14 316.48 296 248 296z" class="rsvp-ava-silhouette"/>
+</svg>
+                </span>
             
-            <div class="mb-4">
-                <label for="rsvp-name" class="block text-xs font-medium text-[#753230] mb-1">Nama Lengkap</label>
-                <input type="text" id="rsvp-name" name="name" required value="{{ $guestName !== 'Tamu Undangan' ? $guestName : '' }}"
-                       placeholder="Masukkan nama Anda"
-                       class="w-full px-3.5 py-2.5 rounded-xl border border-[#B89C7A]/50 bg-[#FAF4F4] text-xs text-[#373838] focus:outline-none focus:ring-1 focus:ring-[#753230]">
-            </div>
+            <div class="rsvp-error-top" role="alert" style="display:none;">
+                Mohon maaf! Khusus untuk tamu undangan.            </div>
 
-            <div class="mb-4">
-                <label class="block text-xs font-medium text-[#753230] mb-1">Konfirmasi Kehadiran</label>
-                <div class="grid grid-cols-3 gap-2 text-center text-xs">
-                    <label class="cursor-pointer">
-                        <input type="radio" name="attendance" value="hadir" checked class="peer sr-only">
-                        <div class="py-2 px-1 rounded-xl border border-[#B89C7A]/50 peer-checked:bg-[#753230] peer-checked:text-[#FFF0E5] peer-checked:border-[#753230] text-[#5E6060] transition-all">
-                            Hadir
-                        </div>
-                    </label>
-                    <label class="cursor-pointer">
-                        <input type="radio" name="attendance" value="tidak_hadir" class="peer sr-only">
-                        <div class="py-2 px-1 rounded-xl border border-[#B89C7A]/50 peer-checked:bg-[#753230] peer-checked:text-[#FFF0E5] peer-checked:border-[#753230] text-[#5E6060] transition-all">
-                            Tidak Hadir
-                        </div>
-                    </label>
-                    <label class="cursor-pointer">
-                        <input type="radio" name="attendance" value="ragu" class="peer sr-only">
-                        <div class="py-2 px-1 rounded-xl border border-[#B89C7A]/50 peer-checked:bg-[#753230] peer-checked:text-[#FFF0E5] peer-checked:border-[#753230] text-[#5E6060] transition-all">
-                            Ragu-ragu
-                        </div>
-                    </label>
-                </div>
-            </div>
-
-            <div class="mb-4">
-                <label for="rsvp-count" class="block text-xs font-medium text-[#753230] mb-1">Jumlah Tamu (Pax)</label>
-                <select id="rsvp-count" name="guest_count"
-                        class="w-full px-3 py-2 rounded-xl border border-[#B89C7A]/50 bg-[#FAF4F4] text-xs text-[#373838] focus:outline-none focus:ring-1 focus:ring-[#753230]">
-                    <option value="1">1 Orang</option>
-                    <option value="2">2 Orang</option>
-                    <option value="3">3 Orang</option>
-                    <option value="4">4 Orang</option>
-                </select>
-            </div>
-
-            <div class="mb-5">
-                <label for="rsvp-message" class="block text-xs font-medium text-[#753230] mb-1">Ucapan & Doa Restu</label>
-                <textarea id="rsvp-message" name="message" rows="3" required
-                          placeholder="Tuliskan ucapan dan doa terbaik untuk kedua mempelai..."
-                          class="w-full px-3.5 py-2.5 rounded-xl border border-[#B89C7A]/50 bg-[#FAF4F4] text-xs text-[#373838] focus:outline-none focus:ring-1 focus:ring-[#753230] resize-none"></textarea>
-            </div>
-
-            <button type="submit" id="rsvp-submit-btn"
-                    class="w-full py-3 rounded-full bg-[#753230] text-[#FFF0E5] font-medium text-xs tracking-wider uppercase border border-[#B89C7A] hover:bg-[#8E3A37] transition-all flex items-center justify-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                </svg>
-                <span>Kirim Ucapan</span>
-            </button>
-        </form>
-
-        <!-- Daftar Ucapan -->
-        <div class="text-left">
-            <h3 class="font-cormorant text-xl font-bold text-[#753230] mb-4 text-center">Ucapan Doa Restu ({{ count($wishes) }})</h3>
             
-            <div id="wishes-list" class="space-y-3 max-h-96 overflow-y-auto pr-1">
-                @foreach($wishes as $wish)
-                    <div class="p-4 rounded-2xl bg-white border border-[#B89C7A]/30 shadow-sm">
-                        <div class="flex items-center justify-between mb-1.5">
-                            <span class="font-cormorant font-bold text-sm text-[#753230]">{{ $wish->name }}</span>
-                            <span class="px-2 py-0.5 rounded-full text-[9px] font-semibold
-                                @if($wish->attendance === 'hadir') bg-emerald-100 text-emerald-800 border border-emerald-300
-                                @elseif($wish->attendance === 'tidak_hadir') bg-rose-100 text-rose-800 border border-rose-300
-                                @else bg-amber-100 text-amber-800 border border-amber-300 @endif">
-                                {{ ucfirst(str_replace('_', ' ', $wish->attendance)) }}
-                            </span>
+            <!-- FORM RSVP -->
+            <div class="rsvp-form">
+                <!-- Nama -->
+                <div class="rsvp-field">
+                <input
+                  type="text"
+                  class="rsvp-input"
+                  data-rsvp="name"
+                  placeholder="Nama Kamu"
+                  autocomplete="name"
+                  value=""
+                                  />
+
+                
+                <input type="text"
+                   data-rsvp="hp"
+                   tabindex="-1"
+                   autocomplete="nope"
+                   style="position:absolute;opacity:0;pointer-events:none;width:1px;height:1px;overflow:hidden;"
+                   aria-hidden="true">
+
+                <div class="rsvp-error rsvp-error--name" role="alert" style="display:none">
+                    Mohon maaf! Khusus untuk tamu undangan.                </div>
+                </div>
+
+                <!-- Ucapan -->
+                <div class="rsvp-field">
+                    <textarea
+                        class="rsvp-textarea"
+                        data-rsvp="message"
+                        rows="4"
+                        maxlength="1000"
+                        placeholder="Berikan Ucapan &amp; Do&#039;a"></textarea>
+                    <div class="rsvp-error rsvp-error--message" role="alert" style="display:none;"></div>
+                </div>
+
+                <!-- Konfirmasi Kehadiran -->
+                                    <div class="rsvp-field rsvp-presence">
+                        <div class="rsvp-presence-label">
+                            Konfirmasi Kehadiran ?                        </div>
+                        <div class="rsvp-pills" data-rsvp="presence">
+                            <button type="button"
+                                    class="rsvp-pill rsvp-pill--hadir"
+                                    data-rsvp-pill="hadir"
+                                    data-active="0">
+                                <span class="pill-icon"><img loading="lazy" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDI0IDEwMjQiIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0iSGFkaXIiPgogIDx0aXRsZT5IYWRpcjwvdGl0bGU+CiAgPHBhdGggZD0iTSA1MTIuMDAgNjIuMDAgTCA1MTUuOTYgNTcuNjkgTCA1MjAuMDAgNTMuODQgTCA1MjQuMDggNTAuODMgTCA1MjguMTcgNDguOTcgTCA1MzIuMjQgNDguNDQgTCA1MzYuMjUgNDkuMzIgTCA1NDAuMTYgNTEuNTMgTCA1NDMuOTYgNTQuODkgTCA1NDcuNjUgNTkuMDcgTCA1NTEuMjIgNjMuNzEgTCA1NTQuNzIgNjguMzggTCA1NTguMTggNzIuNjUgTCA1NjEuNjYgNzYuMTUgTCA1NjUuMjIgNzguNTcgTCA1NjguOTEgNzkuNzMgTCA1NzIuNzcgNzkuNTYgTCA1NzYuODQgNzguMTQgTCA1ODEuMTEgNzUuNjcgTCA1ODUuNTYgNzIuNDQgTCA1OTAuMTQgNjguODQgTCA1OTQuNzkgNjUuMjggTCA1OTkuNDMgNjIuMTkgTCA2MDMuOTcgNTkuOTQgTCA2MDguMzMgNTguODEgTCA2MTIuNDMgNTkuMDAgTCA2MTYuMjIgNjAuNTYgTCA2MTkuNjkgNjMuNDIgTCA2MjIuODYgNjcuMzggTCA2MjUuNzUgNzIuMTUgTCA2MjguNDcgNzcuMzMgTCA2MzEuMTAgODIuNTQgTCA2MzMuNzcgODcuMzQgTCA2MzYuNTkgOTEuMzkgTCA2MzkuNjcgOTQuNDAgTCA2NDMuMTEgOTYuMTggTCA2NDYuOTQgOTYuNjkgTCA2NTEuMTkgOTYuMDAgTCA2NTUuODMgOTQuMzAgTCA2NjAuNzcgOTEuODkgTCA2NjUuOTEgODkuMTQgTCA2NzEuMTEgODYuNDUgTCA2NzYuMjEgODQuMjEgTCA2ODEuMDggODIuNzcgTCA2ODUuNTYgODIuNDIgTCA2ODkuNTcgODMuMzIgTCA2OTMuMDMgODUuNTIgTCA2OTUuOTUgODguOTQgTCA2OTguMzggOTMuMzkgTCA3MDAuNDEgOTguNTggTCA3MDIuMTggMTA0LjE2IEwgNzAzLjg3IDEwOS43NCBMIDcwNS42NiAxMTQuOTQgTCA3MDcuNzQgMTE5LjQyIEwgNzEwLjI1IDEyMi45MSBMIDcxMy4zMiAxMjUuMjYgTCA3MTcuMDEgMTI2LjQzIEwgNzIxLjMyIDEyNi40OSBMIDcyNi4xNyAxMjUuNjIgTCA3MzEuNDYgMTI0LjExIEwgNzM3LjAwIDEyMi4yOSBMIDc0Mi41OSAxMjAuNTQgTCA3NDguMDEgMTE5LjIyIEwgNzUzLjA0IDExOC42NSBMIDc1Ny41MiAxMTkuMDkgTCA3NjEuMzEgMTIwLjY3IEwgNzY0LjM0IDEyMy40MyBMIDc2Ni42MiAxMjcuMzEgTCA3NjguMjQgMTMyLjExIEwgNzY5LjMzIDEzNy41OCBMIDc3MC4xMSAxNDMuMzggTCA3NzAuODAgMTQ5LjE3IEwgNzcxLjY3IDE1NC42MCBMIDc3Mi45MyAxNTkuMzcgTCA3NzQuODAgMTYzLjI1IEwgNzc3LjQyIDE2Ni4xMCBMIDc4MC44NSAxNjcuODkgTCA3ODUuMDggMTY4LjY5IEwgNzkwLjAyIDE2OC42OCBMIDc5NS40OCAxNjguMTEgTCA4MDEuMjUgMTY3LjI4IEwgODA3LjA2IDE2Ni41MyBMIDgxMi42MyAxNjYuMTcgTCA4MTcuNjggMTY2LjQ5IEwgODIyLjAyIDE2Ny42OSBMIDgyNS40NyAxNjkuOTAgTCA4MjcuOTggMTczLjE1IEwgODI5LjU2IDE3Ny4zNyBMIDgzMC4zMSAxODIuMzggTCA4MzAuNDQgMTg3Ljk1IEwgODMwLjIwIDE5My44MCBMIDgyOS44OCAxOTkuNjIgTCA4MjkuNzggMjA1LjEyIEwgODMwLjIwIDIxMC4wNCBMIDgzMS4zNyAyMTQuMTggTCA4MzMuNDUgMjE3LjQ0IEwgODM2LjUyIDIxOS44MCBMIDg0MC41NSAyMjEuMzMgTCA4NDUuNDEgMjIyLjE3IEwgODUwLjg5IDIyMi41NiBMIDg1Ni43MiAyMjIuNzUgTCA4NjIuNTcgMjIzLjAxIEwgODY4LjExIDIyMy42MyBMIDg3My4wNCAyMjQuODIgTCA4NzcuMTAgMjI2Ljc1IEwgODgwLjEyIDIyOS41MyBMIDg4Mi4wMiAyMzMuMTcgTCA4ODIuODQgMjM3LjU5IEwgODgyLjcyIDI0Mi42NiBMIDg4MS44NyAyNDguMTcgTCA4ODAuNjIgMjUzLjg5IEwgODc5LjI5IDI1OS41NyBMIDg3OC4yNCAyNjQuOTYgTCA4NzcuODAgMjY5Ljg4IEwgODc4LjI0IDI3NC4xNiBMIDg3OS43MiAyNzcuNzQgTCA4ODIuMzMgMjgwLjU5IEwgODg2LjAzIDI4Mi43OSBMIDg5MC42NyAyODQuNDcgTCA4OTYuMDEgMjg1LjgwIEwgOTAxLjcxIDI4Ny4wMCBMIDkwNy40MyAyODguMjggTCA5MTIuNzggMjg5Ljg1IEwgOTE3LjQyIDI5MS44NyBMIDkyMS4wOCAyOTQuNDkgTCA5MjMuNTcgMjk3Ljc1IEwgOTI0LjgyIDMwMS42NiBMIDkyNC44NiAzMDYuMTYgTCA5MjMuODUgMzExLjEzIEwgOTIyLjA3IDMxNi40MSBMIDkxOS44NCAzMjEuODIgTCA5MTcuNTUgMzI3LjE4IEwgOTE1LjU4IDMzMi4zMiBMIDkxNC4yOSAzMzcuMDggTCA5MTMuOTcgMzQxLjM3IEwgOTE0LjgxIDM0NS4xNSBMIDkxNi44OSAzNDguNDEgTCA5MjAuMTUgMzUxLjIzIEwgOTI0LjQzIDM1My42OCBMIDkyOS40NSAzNTUuOTIgTCA5MzQuODYgMzU4LjA5IEwgOTQwLjI3IDM2MC4zNCBMIDk0NS4yNiAzNjIuODIgTCA5NDkuNDkgMzY1LjYyIEwgOTUyLjY0IDM2OC44MyBMIDk1NC41MiAzNzIuNDcgTCA5NTUuMDcgMzc2LjU0IEwgOTU0LjMzIDM4MC45OCBMIDk1Mi40OCAzODUuNjkgTCA5NDkuODAgMzkwLjU5IEwgOTQ2LjY3IDM5NS41MyBMIDk0My40OCA0MDAuNDEgTCA5NDAuNjUgNDA1LjEzIEwgOTM4LjU1IDQwOS41OSBMIDkzNy40OSA0MTMuNzcgTCA5MzcuNjcgNDE3LjYzIEwgOTM5LjE0IDQyMS4yMSBMIDk0MS44NyA0MjQuNTQgTCA5NDUuNjUgNDI3LjcxIEwgOTUwLjIxIDQzMC43OCBMIDk1NS4xNiA0MzMuODYgTCA5NjAuMTAgNDM3LjAxIEwgOTY0LjU5IDQ0MC4zMiBMIDk2OC4yNiA0NDMuODEgTCA5NzAuODEgNDQ3LjUyIEwgOTcyLjAzIDQ1MS40NCBMIDk3MS44NiA0NTUuNTQgTCA5NzAuMzYgNDU5Ljc4IEwgOTY3LjcyIDQ2NC4xMCBMIDk2NC4yMyA0NjguNDUgTCA5NjAuMjkgNDcyLjc4IEwgOTU2LjMwIDQ3Ny4wMyBMIDk1Mi42OSA0ODEuMTggTCA5NDkuODYgNDg1LjIyIEwgOTQ4LjA5IDQ4OS4xNSBMIDk0Ny41OSA0OTIuOTggTCA5NDguNDIgNDk2Ljc2IEwgOTUwLjUyIDUwMC41MiBMIDk1My43MCA1MDQuMjkgTCA5NTcuNjYgNTA4LjExIEwgOTYyLjAwIDUxMi4wMCBMIDk2Ni4zMSA1MTUuOTYgTCA5NzAuMTYgNTIwLjAwIEwgOTczLjE3IDUyNC4wOCBMIDk3NS4wMyA1MjguMTcgTCA5NzUuNTYgNTMyLjI0IEwgOTc0LjY4IDUzNi4yNSBMIDk3Mi40NyA1NDAuMTYgTCA5NjkuMTEgNTQzLjk2IEwgOTY0LjkzIDU0Ny42NSBMIDk2MC4yOSA1NTEuMjIgTCA5NTUuNjIgNTU0LjcyIEwgOTUxLjM1IDU1OC4xOCBMIDk0Ny44NSA1NjEuNjYgTCA5NDUuNDMgNTY1LjIyIEwgOTQ0LjI3IDU2OC45MSBMIDk0NC40NCA1NzIuNzcgTCA5NDUuODYgNTc2Ljg0IEwgOTQ4LjMzIDU4MS4xMSBMIDk1MS41NiA1ODUuNTYgTCA5NTUuMTYgNTkwLjE0IEwgOTU4LjcyIDU5NC43OSBMIDk2MS44MSA1OTkuNDMgTCA5NjQuMDYgNjAzLjk3IEwgOTY1LjE5IDYwOC4zMyBMIDk2NS4wMCA2MTIuNDMgTCA5NjMuNDQgNjE2LjIyIEwgOTYwLjU4IDYxOS42OSBMIDk1Ni42MiA2MjIuODYgTCA5NTEuODUgNjI1Ljc1IEwgOTQ2LjY3IDYyOC40NyBMIDk0MS40NiA2MzEuMTAgTCA5MzYuNjYgNjMzLjc3IEwgOTMyLjYxIDYzNi41OSBMIDkyOS42MCA2MzkuNjcgTCA5MjcuODIgNjQzLjExIEwgOTI3LjMxIDY0Ni45NCBMIDkyOC4wMCA2NTEuMTkgTCA5MjkuNzAgNjU1LjgzIEwgOTMyLjExIDY2MC43NyBMIDkzNC44NiA2NjUuOTEgTCA5MzcuNTUgNjcxLjExIEwgOTM5Ljc5IDY3Ni4yMSBMIDk0MS4yMyA2ODEuMDggTCA5NDEuNTggNjg1LjU2IEwgOTQwLjY4IDY4OS41NyBMIDkzOC40OCA2OTMuMDMgTCA5MzUuMDYgNjk1Ljk1IEwgOTMwLjYxIDY5OC4zOCBMIDkyNS40MiA3MDAuNDEgTCA5MTkuODQgNzAyLjE4IEwgOTE0LjI2IDcwMy44NyBMIDkwOS4wNiA3MDUuNjYgTCA5MDQuNTggNzA3Ljc0IEwgOTAxLjA5IDcxMC4yNSBMIDg5OC43NCA3MTMuMzIgTCA4OTcuNTcgNzE3LjAxIEwgODk3LjUxIDcyMS4zMiBMIDg5OC4zOCA3MjYuMTcgTCA4OTkuODkgNzMxLjQ2IEwgOTAxLjcxIDczNy4wMCBMIDkwMy40NiA3NDIuNTkgTCA5MDQuNzggNzQ4LjAxIEwgOTA1LjM1IDc1My4wNCBMIDkwNC45MSA3NTcuNTIgTCA5MDMuMzMgNzYxLjMxIEwgOTAwLjU3IDc2NC4zNCBMIDg5Ni42OSA3NjYuNjIgTCA4OTEuODkgNzY4LjI0IEwgODg2LjQyIDc2OS4zMyBMIDg4MC42MiA3NzAuMTEgTCA4NzQuODMgNzcwLjgwIEwgODY5LjQwIDc3MS42NyBMIDg2NC42MyA3NzIuOTMgTCA4NjAuNzUgNzc0LjgwIEwgODU3LjkwIDc3Ny40MiBMIDg1Ni4xMSA3ODAuODUgTCA4NTUuMzEgNzg1LjA4IEwgODU1LjMyIDc5MC4wMiBMIDg1NS44OSA3OTUuNDggTCA4NTYuNzIgODAxLjI1IEwgODU3LjQ3IDgwNy4wNiBMIDg1Ny44MyA4MTIuNjMgTCA4NTcuNTEgODE3LjY4IEwgODU2LjMxIDgyMi4wMiBMIDg1NC4xMCA4MjUuNDcgTCA4NTAuODUgODI3Ljk4IEwgODQ2LjYzIDgyOS41NiBMIDg0MS42MiA4MzAuMzEgTCA4MzYuMDUgODMwLjQ0IEwgODMwLjIwIDgzMC4yMCBMIDgyNC4zOCA4MjkuODggTCA4MTguODggODI5Ljc4IEwgODEzLjk2IDgzMC4yMCBMIDgwOS44MiA4MzEuMzcgTCA4MDYuNTYgODMzLjQ1IEwgODA0LjIwIDgzNi41MiBMIDgwMi42NyA4NDAuNTUgTCA4MDEuODMgODQ1LjQxIEwgODAxLjQ0IDg1MC44OSBMIDgwMS4yNSA4NTYuNzIgTCA4MDAuOTkgODYyLjU3IEwgODAwLjM3IDg2OC4xMSBMIDc5OS4xOCA4NzMuMDQgTCA3OTcuMjUgODc3LjEwIEwgNzk0LjQ3IDg4MC4xMiBMIDc5MC44MyA4ODIuMDIgTCA3ODYuNDEgODgyLjg0IEwgNzgxLjM0IDg4Mi43MiBMIDc3NS44MyA4ODEuODcgTCA3NzAuMTEgODgwLjYyIEwgNzY0LjQzIDg3OS4yOSBMIDc1OS4wNCA4NzguMjQgTCA3NTQuMTIgODc3LjgwIEwgNzQ5Ljg0IDg3OC4yNCBMIDc0Ni4yNiA4NzkuNzIgTCA3NDMuNDEgODgyLjMzIEwgNzQxLjIxIDg4Ni4wMyBMIDczOS41MyA4OTAuNjcgTCA3MzguMjAgODk2LjAxIEwgNzM3LjAwIDkwMS43MSBMIDczNS43MiA5MDcuNDMgTCA3MzQuMTUgOTEyLjc4IEwgNzMyLjEzIDkxNy40MiBMIDcyOS41MSA5MjEuMDggTCA3MjYuMjUgOTIzLjU3IEwgNzIyLjM0IDkyNC44MiBMIDcxNy44NCA5MjQuODYgTCA3MTIuODcgOTIzLjg1IEwgNzA3LjU5IDkyMi4wNyBMIDcwMi4xOCA5MTkuODQgTCA2OTYuODIgOTE3LjU1IEwgNjkxLjY4IDkxNS41OCBMIDY4Ni45MiA5MTQuMjkgTCA2ODIuNjMgOTEzLjk3IEwgNjc4Ljg1IDkxNC44MSBMIDY3NS41OSA5MTYuODkgTCA2NzIuNzcgOTIwLjE1IEwgNjcwLjMyIDkyNC40MyBMIDY2OC4wOCA5MjkuNDUgTCA2NjUuOTEgOTM0Ljg2IEwgNjYzLjY2IDk0MC4yNyBMIDY2MS4xOCA5NDUuMjYgTCA2NTguMzggOTQ5LjQ5IEwgNjU1LjE3IDk1Mi42NCBMIDY1MS41MyA5NTQuNTIgTCA2NDcuNDYgOTU1LjA3IEwgNjQzLjAyIDk1NC4zMyBMIDYzOC4zMSA5NTIuNDggTCA2MzMuNDEgOTQ5LjgwIEwgNjI4LjQ3IDk0Ni42NyBMIDYyMy41OSA5NDMuNDggTCA2MTguODcgOTQwLjY1IEwgNjE0LjQxIDkzOC41NSBMIDYxMC4yMyA5MzcuNDkgTCA2MDYuMzcgOTM3LjY3IEwgNjAyLjc5IDkzOS4xNCBMIDU5OS40NiA5NDEuODcgTCA1OTYuMjkgOTQ1LjY1IEwgNTkzLjIyIDk1MC4yMSBMIDU5MC4xNCA5NTUuMTYgTCA1ODYuOTkgOTYwLjEwIEwgNTgzLjY4IDk2NC41OSBMIDU4MC4xOSA5NjguMjYgTCA1NzYuNDggOTcwLjgxIEwgNTcyLjU2IDk3Mi4wMyBMIDU2OC40NiA5NzEuODYgTCA1NjQuMjIgOTcwLjM2IEwgNTU5LjkwIDk2Ny43MiBMIDU1NS41NSA5NjQuMjMgTCA1NTEuMjIgOTYwLjI5IEwgNTQ2Ljk3IDk1Ni4zMCBMIDU0Mi44MiA5NTIuNjkgTCA1MzguNzggOTQ5Ljg2IEwgNTM0Ljg1IDk0OC4wOSBMIDUzMS4wMiA5NDcuNTkgTCA1MjcuMjQgOTQ4LjQyIEwgNTIzLjQ4IDk1MC41MiBMIDUxOS43MSA5NTMuNzAgTCA1MTUuODkgOTU3LjY2IEwgNTEyLjAwIDk2Mi4wMCBMIDUwOC4wNCA5NjYuMzEgTCA1MDQuMDAgOTcwLjE2IEwgNDk5LjkyIDk3My4xNyBMIDQ5NS44MyA5NzUuMDMgTCA0OTEuNzYgOTc1LjU2IEwgNDg3Ljc1IDk3NC42OCBMIDQ4My44NCA5NzIuNDcgTCA0ODAuMDQgOTY5LjExIEwgNDc2LjM1IDk2NC45MyBMIDQ3Mi43OCA5NjAuMjkgTCA0NjkuMjggOTU1LjYyIEwgNDY1LjgyIDk1MS4zNSBMIDQ2Mi4zNCA5NDcuODUgTCA0NTguNzggOTQ1LjQzIEwgNDU1LjA5IDk0NC4yNyBMIDQ1MS4yMyA5NDQuNDQgTCA0NDcuMTYgOTQ1Ljg2IEwgNDQyLjg5IDk0OC4zMyBMIDQzOC40NCA5NTEuNTYgTCA0MzMuODYgOTU1LjE2IEwgNDI5LjIxIDk1OC43MiBMIDQyNC41NyA5NjEuODEgTCA0MjAuMDMgOTY0LjA2IEwgNDE1LjY3IDk2NS4xOSBMIDQxMS41NyA5NjUuMDAgTCA0MDcuNzggOTYzLjQ0IEwgNDA0LjMxIDk2MC41OCBMIDQwMS4xNCA5NTYuNjIgTCAzOTguMjUgOTUxLjg1IEwgMzk1LjUzIDk0Ni42NyBMIDM5Mi45MCA5NDEuNDYgTCAzOTAuMjMgOTM2LjY2IEwgMzg3LjQxIDkzMi42MSBMIDM4NC4zMyA5MjkuNjAgTCAzODAuODkgOTI3LjgyIEwgMzc3LjA2IDkyNy4zMSBMIDM3Mi44MSA5MjguMDAgTCAzNjguMTcgOTI5LjcwIEwgMzYzLjIzIDkzMi4xMSBMIDM1OC4wOSA5MzQuODYgTCAzNTIuODkgOTM3LjU1IEwgMzQ3Ljc5IDkzOS43OSBMIDM0Mi45MiA5NDEuMjMgTCAzMzguNDQgOTQxLjU4IEwgMzM0LjQzIDk0MC42OCBMIDMzMC45NyA5MzguNDggTCAzMjguMDUgOTM1LjA2IEwgMzI1LjYyIDkzMC42MSBMIDMyMy41OSA5MjUuNDIgTCAzMjEuODIgOTE5Ljg0IEwgMzIwLjEzIDkxNC4yNiBMIDMxOC4zNCA5MDkuMDYgTCAzMTYuMjYgOTA0LjU4IEwgMzEzLjc1IDkwMS4wOSBMIDMxMC42OCA4OTguNzQgTCAzMDYuOTkgODk3LjU3IEwgMzAyLjY4IDg5Ny41MSBMIDI5Ny44MyA4OTguMzggTCAyOTIuNTQgODk5Ljg5IEwgMjg3LjAwIDkwMS43MSBMIDI4MS40MSA5MDMuNDYgTCAyNzUuOTkgOTA0Ljc4IEwgMjcwLjk2IDkwNS4zNSBMIDI2Ni40OCA5MDQuOTEgTCAyNjIuNjkgOTAzLjMzIEwgMjU5LjY2IDkwMC41NyBMIDI1Ny4zOCA4OTYuNjkgTCAyNTUuNzYgODkxLjg5IEwgMjU0LjY3IDg4Ni40MiBMIDI1My44OSA4ODAuNjIgTCAyNTMuMjAgODc0LjgzIEwgMjUyLjMzIDg2OS40MCBMIDI1MS4wNyA4NjQuNjMgTCAyNDkuMjAgODYwLjc1IEwgMjQ2LjU4IDg1Ny45MCBMIDI0My4xNSA4NTYuMTEgTCAyMzguOTIgODU1LjMxIEwgMjMzLjk4IDg1NS4zMiBMIDIyOC41MiA4NTUuODkgTCAyMjIuNzUgODU2LjcyIEwgMjE2Ljk0IDg1Ny40NyBMIDIxMS4zNyA4NTcuODMgTCAyMDYuMzIgODU3LjUxIEwgMjAxLjk4IDg1Ni4zMSBMIDE5OC41MyA4NTQuMTAgTCAxOTYuMDIgODUwLjg1IEwgMTk0LjQ0IDg0Ni42MyBMIDE5My42OSA4NDEuNjIgTCAxOTMuNTYgODM2LjA1IEwgMTkzLjgwIDgzMC4yMCBMIDE5NC4xMiA4MjQuMzggTCAxOTQuMjIgODE4Ljg4IEwgMTkzLjgwIDgxMy45NiBMIDE5Mi42MyA4MDkuODIgTCAxOTAuNTUgODA2LjU2IEwgMTg3LjQ4IDgwNC4yMCBMIDE4My40NSA4MDIuNjcgTCAxNzguNTkgODAxLjgzIEwgMTczLjExIDgwMS40NCBMIDE2Ny4yOCA4MDEuMjUgTCAxNjEuNDMgODAwLjk5IEwgMTU1Ljg5IDgwMC4zNyBMIDE1MC45NiA3OTkuMTggTCAxNDYuOTAgNzk3LjI1IEwgMTQzLjg4IDc5NC40NyBMIDE0MS45OCA3OTAuODMgTCAxNDEuMTYgNzg2LjQxIEwgMTQxLjI4IDc4MS4zNCBMIDE0Mi4xMyA3NzUuODMgTCAxNDMuMzggNzcwLjExIEwgMTQ0LjcxIDc2NC40MyBMIDE0NS43NiA3NTkuMDQgTCAxNDYuMjAgNzU0LjEyIEwgMTQ1Ljc2IDc0OS44NCBMIDE0NC4yOCA3NDYuMjYgTCAxNDEuNjcgNzQzLjQxIEwgMTM3Ljk3IDc0MS4yMSBMIDEzMy4zMyA3MzkuNTMgTCAxMjcuOTkgNzM4LjIwIEwgMTIyLjI5IDczNy4wMCBMIDExNi41NyA3MzUuNzIgTCAxMTEuMjIgNzM0LjE1IEwgMTA2LjU4IDczMi4xMyBMIDEwMi45MiA3MjkuNTEgTCAxMDAuNDMgNzI2LjI1IEwgOTkuMTggNzIyLjM0IEwgOTkuMTQgNzE3Ljg0IEwgMTAwLjE1IDcxMi44NyBMIDEwMS45MyA3MDcuNTkgTCAxMDQuMTYgNzAyLjE4IEwgMTA2LjQ1IDY5Ni44MiBMIDEwOC40MiA2OTEuNjggTCAxMDkuNzEgNjg2LjkyIEwgMTEwLjAzIDY4Mi42MyBMIDEwOS4xOSA2NzguODUgTCAxMDcuMTEgNjc1LjU5IEwgMTAzLjg1IDY3Mi43NyBMIDk5LjU3IDY3MC4zMiBMIDk0LjU1IDY2OC4wOCBMIDg5LjE0IDY2NS45MSBMIDgzLjczIDY2My42NiBMIDc4Ljc0IDY2MS4xOCBMIDc0LjUxIDY1OC4zOCBMIDcxLjM2IDY1NS4xNyBMIDY5LjQ4IDY1MS41MyBMIDY4LjkzIDY0Ny40NiBMIDY5LjY3IDY0My4wMiBMIDcxLjUyIDYzOC4zMSBMIDc0LjIwIDYzMy40MSBMIDc3LjMzIDYyOC40NyBMIDgwLjUyIDYyMy41OSBMIDgzLjM1IDYxOC44NyBMIDg1LjQ1IDYxNC40MSBMIDg2LjUxIDYxMC4yMyBMIDg2LjMzIDYwNi4zNyBMIDg0Ljg2IDYwMi43OSBMIDgyLjEzIDU5OS40NiBMIDc4LjM1IDU5Ni4yOSBMIDczLjc5IDU5My4yMiBMIDY4Ljg0IDU5MC4xNCBMIDYzLjkwIDU4Ni45OSBMIDU5LjQxIDU4My42OCBMIDU1Ljc0IDU4MC4xOSBMIDUzLjE5IDU3Ni40OCBMIDUxLjk3IDU3Mi41NiBMIDUyLjE0IDU2OC40NiBMIDUzLjY0IDU2NC4yMiBMIDU2LjI4IDU1OS45MCBMIDU5Ljc3IDU1NS41NSBMIDYzLjcxIDU1MS4yMiBMIDY3LjcwIDU0Ni45NyBMIDcxLjMxIDU0Mi44MiBMIDc0LjE0IDUzOC43OCBMIDc1LjkxIDUzNC44NSBMIDc2LjQxIDUzMS4wMiBMIDc1LjU4IDUyNy4yNCBMIDczLjQ4IDUyMy40OCBMIDcwLjMwIDUxOS43MSBMIDY2LjM0IDUxNS44OSBMIDYyLjAwIDUxMi4wMCBMIDU3LjY5IDUwOC4wNCBMIDUzLjg0IDUwNC4wMCBMIDUwLjgzIDQ5OS45MiBMIDQ4Ljk3IDQ5NS44MyBMIDQ4LjQ0IDQ5MS43NiBMIDQ5LjMyIDQ4Ny43NSBMIDUxLjUzIDQ4My44NCBMIDU0Ljg5IDQ4MC4wNCBMIDU5LjA3IDQ3Ni4zNSBMIDYzLjcxIDQ3Mi43OCBMIDY4LjM4IDQ2OS4yOCBMIDcyLjY1IDQ2NS44MiBMIDc2LjE1IDQ2Mi4zNCBMIDc4LjU3IDQ1OC43OCBMIDc5LjczIDQ1NS4wOSBMIDc5LjU2IDQ1MS4yMyBMIDc4LjE0IDQ0Ny4xNiBMIDc1LjY3IDQ0Mi44OSBMIDcyLjQ0IDQzOC40NCBMIDY4Ljg0IDQzMy44NiBMIDY1LjI4IDQyOS4yMSBMIDYyLjE5IDQyNC41NyBMIDU5Ljk0IDQyMC4wMyBMIDU4LjgxIDQxNS42NyBMIDU5LjAwIDQxMS41NyBMIDYwLjU2IDQwNy43OCBMIDYzLjQyIDQwNC4zMSBMIDY3LjM4IDQwMS4xNCBMIDcyLjE1IDM5OC4yNSBMIDc3LjMzIDM5NS41MyBMIDgyLjU0IDM5Mi45MCBMIDg3LjM0IDM5MC4yMyBMIDkxLjM5IDM4Ny40MSBMIDk0LjQwIDM4NC4zMyBMIDk2LjE4IDM4MC44OSBMIDk2LjY5IDM3Ny4wNiBMIDk2LjAwIDM3Mi44MSBMIDk0LjMwIDM2OC4xNyBMIDkxLjg5IDM2My4yMyBMIDg5LjE0IDM1OC4wOSBMIDg2LjQ1IDM1Mi44OSBMIDg0LjIxIDM0Ny43OSBMIDgyLjc3IDM0Mi45MiBMIDgyLjQyIDMzOC40NCBMIDgzLjMyIDMzNC40MyBMIDg1LjUyIDMzMC45NyBMIDg4Ljk0IDMyOC4wNSBMIDkzLjM5IDMyNS42MiBMIDk4LjU4IDMyMy41OSBMIDEwNC4xNiAzMjEuODIgTCAxMDkuNzQgMzIwLjEzIEwgMTE0Ljk0IDMxOC4zNCBMIDExOS40MiAzMTYuMjYgTCAxMjIuOTEgMzEzLjc1IEwgMTI1LjI2IDMxMC42OCBMIDEyNi40MyAzMDYuOTkgTCAxMjYuNDkgMzAyLjY4IEwgMTI1LjYyIDI5Ny44MyBMIDEyNC4xMSAyOTIuNTQgTCAxMjIuMjkgMjg3LjAwIEwgMTIwLjU0IDI4MS40MSBMIDExOS4yMiAyNzUuOTkgTCAxMTguNjUgMjcwLjk2IEwgMTE5LjA5IDI2Ni40OCBMIDEyMC42NyAyNjIuNjkgTCAxMjMuNDMgMjU5LjY2IEwgMTI3LjMxIDI1Ny4zOCBMIDEzMi4xMSAyNTUuNzYgTCAxMzcuNTggMjU0LjY3IEwgMTQzLjM4IDI1My44OSBMIDE0OS4xNyAyNTMuMjAgTCAxNTQuNjAgMjUyLjMzIEwgMTU5LjM3IDI1MS4wNyBMIDE2My4yNSAyNDkuMjAgTCAxNjYuMTAgMjQ2LjU4IEwgMTY3Ljg5IDI0My4xNSBMIDE2OC42OSAyMzguOTIgTCAxNjguNjggMjMzLjk4IEwgMTY4LjExIDIyOC41MiBMIDE2Ny4yOCAyMjIuNzUgTCAxNjYuNTMgMjE2Ljk0IEwgMTY2LjE3IDIxMS4zNyBMIDE2Ni40OSAyMDYuMzIgTCAxNjcuNjkgMjAxLjk4IEwgMTY5LjkwIDE5OC41MyBMIDE3My4xNSAxOTYuMDIgTCAxNzcuMzcgMTk0LjQ0IEwgMTgyLjM4IDE5My42OSBMIDE4Ny45NSAxOTMuNTYgTCAxOTMuODAgMTkzLjgwIEwgMTk5LjYyIDE5NC4xMiBMIDIwNS4xMiAxOTQuMjIgTCAyMTAuMDQgMTkzLjgwIEwgMjE0LjE4IDE5Mi42MyBMIDIxNy40NCAxOTAuNTUgTCAyMTkuODAgMTg3LjQ4IEwgMjIxLjMzIDE4My40NSBMIDIyMi4xNyAxNzguNTkgTCAyMjIuNTYgMTczLjExIEwgMjIyLjc1IDE2Ny4yOCBMIDIyMy4wMSAxNjEuNDMgTCAyMjMuNjMgMTU1Ljg5IEwgMjI0LjgyIDE1MC45NiBMIDIyNi43NSAxNDYuOTAgTCAyMjkuNTMgMTQzLjg4IEwgMjMzLjE3IDE0MS45OCBMIDIzNy41OSAxNDEuMTYgTCAyNDIuNjYgMTQxLjI4IEwgMjQ4LjE3IDE0Mi4xMyBMIDI1My44OSAxNDMuMzggTCAyNTkuNTcgMTQ0LjcxIEwgMjY0Ljk2IDE0NS43NiBMIDI2OS44OCAxNDYuMjAgTCAyNzQuMTYgMTQ1Ljc2IEwgMjc3Ljc0IDE0NC4yOCBMIDI4MC41OSAxNDEuNjcgTCAyODIuNzkgMTM3Ljk3IEwgMjg0LjQ3IDEzMy4zMyBMIDI4NS44MCAxMjcuOTkgTCAyODcuMDAgMTIyLjI5IEwgMjg4LjI4IDExNi41NyBMIDI4OS44NSAxMTEuMjIgTCAyOTEuODcgMTA2LjU4IEwgMjk0LjQ5IDEwMi45MiBMIDI5Ny43NSAxMDAuNDMgTCAzMDEuNjYgOTkuMTggTCAzMDYuMTYgOTkuMTQgTCAzMTEuMTMgMTAwLjE1IEwgMzE2LjQxIDEwMS45MyBMIDMyMS44MiAxMDQuMTYgTCAzMjcuMTggMTA2LjQ1IEwgMzMyLjMyIDEwOC40MiBMIDMzNy4wOCAxMDkuNzEgTCAzNDEuMzcgMTEwLjAzIEwgMzQ1LjE1IDEwOS4xOSBMIDM0OC40MSAxMDcuMTEgTCAzNTEuMjMgMTAzLjg1IEwgMzUzLjY4IDk5LjU3IEwgMzU1LjkyIDk0LjU1IEwgMzU4LjA5IDg5LjE0IEwgMzYwLjM0IDgzLjczIEwgMzYyLjgyIDc4Ljc0IEwgMzY1LjYyIDc0LjUxIEwgMzY4LjgzIDcxLjM2IEwgMzcyLjQ3IDY5LjQ4IEwgMzc2LjU0IDY4LjkzIEwgMzgwLjk4IDY5LjY3IEwgMzg1LjY5IDcxLjUyIEwgMzkwLjU5IDc0LjIwIEwgMzk1LjUzIDc3LjMzIEwgNDAwLjQxIDgwLjUyIEwgNDA1LjEzIDgzLjM1IEwgNDA5LjU5IDg1LjQ1IEwgNDEzLjc3IDg2LjUxIEwgNDE3LjYzIDg2LjMzIEwgNDIxLjIxIDg0Ljg2IEwgNDI0LjU0IDgyLjEzIEwgNDI3LjcxIDc4LjM1IEwgNDMwLjc4IDczLjc5IEwgNDMzLjg2IDY4Ljg0IEwgNDM3LjAxIDYzLjkwIEwgNDQwLjMyIDU5LjQxIEwgNDQzLjgxIDU1Ljc0IEwgNDQ3LjUyIDUzLjE5IEwgNDUxLjQ0IDUxLjk3IEwgNDU1LjU0IDUyLjE0IEwgNDU5Ljc4IDUzLjY0IEwgNDY0LjEwIDU2LjI4IEwgNDY4LjQ1IDU5Ljc3IEwgNDcyLjc4IDYzLjcxIEwgNDc3LjAzIDY3LjcwIEwgNDgxLjE4IDcxLjMxIEwgNDg1LjIyIDc0LjE0IEwgNDg5LjE1IDc1LjkxIEwgNDkyLjk4IDc2LjQxIEwgNDk2Ljc2IDc1LjU4IEwgNTAwLjUyIDczLjQ4IEwgNTA0LjI5IDcwLjMwIEwgNTA4LjExIDY2LjM0IFoiIGZpbGw9IiMyRkFFNEYiLz4KICA8cGF0aCBkPSJNIDI2OSA1NTQgTCA0MjMgNzA4IEwgNzU1IDI5NSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjExOCIgc3Ryb2tlLWxpbmVjYXA9InNxdWFyZSIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIvPgo8L3N2Zz4K" class="pill-icon-elm rsvp-pill-icon-img" width="14" height="14" alt="" aria-hidden="true" decoding="async" /></span>
+                                <span>Hadir</span>
+                            </button>
+
+                            <button type="button"
+                                    class="rsvp-pill rsvp-pill--tidak"
+                                    data-rsvp-pill="tidak"
+                                    data-active="0">
+                                <span class="pill-icon"><img loading="lazy" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDI0IDEwMjQiIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0iVGlkYWsgSGFkaXIiPgogIDx0aXRsZT5UaWRhayBIYWRpcjwvdGl0bGU+CiAgPHBhdGggZD0iTSA1MTIuMDAgNjIuMDAgTCA1MTUuOTYgNTcuNjkgTCA1MjAuMDAgNTMuODQgTCA1MjQuMDggNTAuODMgTCA1MjguMTcgNDguOTcgTCA1MzIuMjQgNDguNDQgTCA1MzYuMjUgNDkuMzIgTCA1NDAuMTYgNTEuNTMgTCA1NDMuOTYgNTQuODkgTCA1NDcuNjUgNTkuMDcgTCA1NTEuMjIgNjMuNzEgTCA1NTQuNzIgNjguMzggTCA1NTguMTggNzIuNjUgTCA1NjEuNjYgNzYuMTUgTCA1NjUuMjIgNzguNTcgTCA1NjguOTEgNzkuNzMgTCA1NzIuNzcgNzkuNTYgTCA1NzYuODQgNzguMTQgTCA1ODEuMTEgNzUuNjcgTCA1ODUuNTYgNzIuNDQgTCA1OTAuMTQgNjguODQgTCA1OTQuNzkgNjUuMjggTCA1OTkuNDMgNjIuMTkgTCA2MDMuOTcgNTkuOTQgTCA2MDguMzMgNTguODEgTCA2MTIuNDMgNTkuMDAgTCA2MTYuMjIgNjAuNTYgTCA2MTkuNjkgNjMuNDIgTCA2MjIuODYgNjcuMzggTCA2MjUuNzUgNzIuMTUgTCA2MjguNDcgNzcuMzMgTCA2MzEuMTAgODIuNTQgTCA2MzMuNzcgODcuMzQgTCA2MzYuNTkgOTEuMzkgTCA2MzkuNjcgOTQuNDAgTCA2NDMuMTEgOTYuMTggTCA2NDYuOTQgOTYuNjkgTCA2NTEuMTkgOTYuMDAgTCA2NTUuODMgOTQuMzAgTCA2NjAuNzcgOTEuODkgTCA2NjUuOTEgODkuMTQgTCA2NzEuMTEgODYuNDUgTCA2NzYuMjEgODQuMjEgTCA2ODEuMDggODIuNzcgTCA2ODUuNTYgODIuNDIgTCA2ODkuNTcgODMuMzIgTCA2OTMuMDMgODUuNTIgTCA2OTUuOTUgODguOTQgTCA2OTguMzggOTMuMzkgTCA3MDAuNDEgOTguNTggTCA3MDIuMTggMTA0LjE2IEwgNzAzLjg3IDEwOS43NCBMIDcwNS42NiAxMTQuOTQgTCA3MDcuNzQgMTE5LjQyIEwgNzEwLjI1IDEyMi45MSBMIDcxMy4zMiAxMjUuMjYgTCA3MTcuMDEgMTI2LjQzIEwgNzIxLjMyIDEyNi40OSBMIDcyNi4xNyAxMjUuNjIgTCA3MzEuNDYgMTI0LjExIEwgNzM3LjAwIDEyMi4yOSBMIDc0Mi41OSAxMjAuNTQgTCA3NDguMDEgMTE5LjIyIEwgNzUzLjA0IDExOC42NSBMIDc1Ny41MiAxMTkuMDkgTCA3NjEuMzEgMTIwLjY3IEwgNzY0LjM0IDEyMy40MyBMIDc2Ni42MiAxMjcuMzEgTCA3NjguMjQgMTMyLjExIEwgNzY5LjMzIDEzNy41OCBMIDc3MC4xMSAxNDMuMzggTCA3NzAuODAgMTQ5LjE3IEwgNzcxLjY3IDE1NC42MCBMIDc3Mi45MyAxNTkuMzcgTCA3NzQuODAgMTYzLjI1IEwgNzc3LjQyIDE2Ni4xMCBMIDc4MC44NSAxNjcuODkgTCA3ODUuMDggMTY4LjY5IEwgNzkwLjAyIDE2OC42OCBMIDc5NS40OCAxNjguMTEgTCA4MDEuMjUgMTY3LjI4IEwgODA3LjA2IDE2Ni41MyBMIDgxMi42MyAxNjYuMTcgTCA4MTcuNjggMTY2LjQ5IEwgODIyLjAyIDE2Ny42OSBMIDgyNS40NyAxNjkuOTAgTCA4MjcuOTggMTczLjE1IEwgODI5LjU2IDE3Ny4zNyBMIDgzMC4zMSAxODIuMzggTCA4MzAuNDQgMTg3Ljk1IEwgODMwLjIwIDE5My44MCBMIDgyOS44OCAxOTkuNjIgTCA4MjkuNzggMjA1LjEyIEwgODMwLjIwIDIxMC4wNCBMIDgzMS4zNyAyMTQuMTggTCA4MzMuNDUgMjE3LjQ0IEwgODM2LjUyIDIxOS44MCBMIDg0MC41NSAyMjEuMzMgTCA4NDUuNDEgMjIyLjE3IEwgODUwLjg5IDIyMi41NiBMIDg1Ni43MiAyMjIuNzUgTCA4NjIuNTcgMjIzLjAxIEwgODY4LjExIDIyMy42MyBMIDg3My4wNCAyMjQuODIgTCA4NzcuMTAgMjI2Ljc1IEwgODgwLjEyIDIyOS41MyBMIDg4Mi4wMiAyMzMuMTcgTCA4ODIuODQgMjM3LjU5IEwgODgyLjcyIDI0Mi42NiBMIDg4MS44NyAyNDguMTcgTCA4ODAuNjIgMjUzLjg5IEwgODc5LjI5IDI1OS41NyBMIDg3OC4yNCAyNjQuOTYgTCA4NzcuODAgMjY5Ljg4IEwgODc4LjI0IDI3NC4xNiBMIDg3OS43MiAyNzcuNzQgTCA4ODIuMzMgMjgwLjU5IEwgODg2LjAzIDI4Mi43OSBMIDg5MC42NyAyODQuNDcgTCA4OTYuMDEgMjg1LjgwIEwgOTAxLjcxIDI4Ny4wMCBMIDkwNy40MyAyODguMjggTCA5MTIuNzggMjg5Ljg1IEwgOTE3LjQyIDI5MS44NyBMIDkyMS4wOCAyOTQuNDkgTCA5MjMuNTcgMjk3Ljc1IEwgOTI0LjgyIDMwMS42NiBMIDkyNC44NiAzMDYuMTYgTCA5MjMuODUgMzExLjEzIEwgOTIyLjA3IDMxNi40MSBMIDkxOS44NCAzMjEuODIgTCA5MTcuNTUgMzI3LjE4IEwgOTE1LjU4IDMzMi4zMiBMIDkxNC4yOSAzMzcuMDggTCA5MTMuOTcgMzQxLjM3IEwgOTE0LjgxIDM0NS4xNSBMIDkxNi44OSAzNDguNDEgTCA5MjAuMTUgMzUxLjIzIEwgOTI0LjQzIDM1My42OCBMIDkyOS40NSAzNTUuOTIgTCA5MzQuODYgMzU4LjA5IEwgOTQwLjI3IDM2MC4zNCBMIDk0NS4yNiAzNjIuODIgTCA5NDkuNDkgMzY1LjYyIEwgOTUyLjY0IDM2OC44MyBMIDk1NC41MiAzNzIuNDcgTCA5NTUuMDcgMzc2LjU0IEwgOTU0LjMzIDM4MC45OCBMIDk1Mi40OCAzODUuNjkgTCA5NDkuODAgMzkwLjU5IEwgOTQ2LjY3IDM5NS41MyBMIDk0My40OCA0MDAuNDEgTCA5NDAuNjUgNDA1LjEzIEwgOTM4LjU1IDQwOS41OSBMIDkzNy40OSA0MTMuNzcgTCA5MzcuNjcgNDE3LjYzIEwgOTM5LjE0IDQyMS4yMSBMIDk0MS44NyA0MjQuNTQgTCA5NDUuNjUgNDI3LjcxIEwgOTUwLjIxIDQzMC43OCBMIDk1NS4xNiA0MzMuODYgTCA5NjAuMTAgNDM3LjAxIEwgOTY0LjU5IDQ0MC4zMiBMIDk2OC4yNiA0NDMuODEgTCA5NzAuODEgNDQ3LjUyIEwgOTcyLjAzIDQ1MS40NCBMIDk3MS44NiA0NTUuNTQgTCA5NzAuMzYgNDU5Ljc4IEwgOTY3LjcyIDQ2NC4xMCBMIDk2NC4yMyA0NjguNDUgTCA5NjAuMjkgNDcyLjc4IEwgOTU2LjMwIDQ3Ny4wMyBMIDk1Mi42OSA0ODEuMTggTCA5NDkuODYgNDg1LjIyIEwgOTQ4LjA5IDQ4OS4xNSBMIDk0Ny41OSA0OTIuOTggTCA5NDguNDIgNDk2Ljc2IEwgOTUwLjUyIDUwMC41MiBMIDk1My43MCA1MDQuMjkgTCA5NTcuNjYgNTA4LjExIEwgOTYyLjAwIDUxMi4wMCBMIDk2Ni4zMSA1MTUuOTYgTCA5NzAuMTYgNTIwLjAwIEwgOTczLjE3IDUyNC4wOCBMIDk3NS4wMyA1MjguMTcgTCA5NzUuNTYgNTMyLjI0IEwgOTc0LjY4IDUzNi4yNSBMIDk3Mi40NyA1NDAuMTYgTCA5NjkuMTEgNTQzLjk2IEwgOTY0LjkzIDU0Ny42NSBMIDk2MC4yOSA1NTEuMjIgTCA5NTUuNjIgNTU0LjcyIEwgOTUxLjM1IDU1OC4xOCBMIDk0Ny44NSA1NjEuNjYgTCA5NDUuNDMgNTY1LjIyIEwgOTQ0LjI3IDU2OC45MSBMIDk0NC40NCA1NzIuNzcgTCA5NDUuODYgNTc2Ljg0IEwgOTQ4LjMzIDU4MS4xMSBMIDk1MS41NiA1ODUuNTYgTCA5NTUuMTYgNTkwLjE0IEwgOTU4LjcyIDU5NC43OSBMIDk2MS44MSA1OTkuNDMgTCA5NjQuMDYgNjAzLjk3IEwgOTY1LjE5IDYwOC4zMyBMIDk2NS4wMCA2MTIuNDMgTCA5NjMuNDQgNjE2LjIyIEwgOTYwLjU4IDYxOS42OSBMIDk1Ni42MiA2MjIuODYgTCA5NTEuODUgNjI1Ljc1IEwgOTQ2LjY3IDYyOC40NyBMIDk0MS40NiA2MzEuMTAgTCA5MzYuNjYgNjMzLjc3IEwgOTMyLjYxIDYzNi41OSBMIDkyOS42MCA2MzkuNjcgTCA5MjcuODIgNjQzLjExIEwgOTI3LjMxIDY0Ni45NCBMIDkyOC4wMCA2NTEuMTkgTCA5MjkuNzAgNjU1LjgzIEwgOTMyLjExIDY2MC43NyBMIDkzNC44NiA2NjUuOTEgTCA5MzcuNTUgNjcxLjExIEwgOTM5Ljc5IDY3Ni4yMSBMIDk0MS4yMyA2ODEuMDggTCA5NDEuNTggNjg1LjU2IEwgOTQwLjY4IDY4OS41NyBMIDkzOC40OCA2OTMuMDMgTCA5MzUuMDYgNjk1Ljk1IEwgOTMwLjYxIDY5OC4zOCBMIDkyNS40MiA3MDAuNDEgTCA5MTkuODQgNzAyLjE4IEwgOTE0LjI2IDcwMy44NyBMIDkwOS4wNiA3MDUuNjYgTCA5MDQuNTggNzA3Ljc0IEwgOTAxLjA5IDcxMC4yNSBMIDg5OC43NCA3MTMuMzIgTCA4OTcuNTcgNzE3LjAxIEwgODk3LjUxIDcyMS4zMiBMIDg5OC4zOCA3MjYuMTcgTCA4OTkuODkgNzMxLjQ2IEwgOTAxLjcxIDczNy4wMCBMIDkwMy40NiA3NDIuNTkgTCA5MDQuNzggNzQ4LjAxIEwgOTA1LjM1IDc1My4wNCBMIDkwNC45MSA3NTcuNTIgTCA5MDMuMzMgNzYxLjMxIEwgOTAwLjU3IDc2NC4zNCBMIDg5Ni42OSA3NjYuNjIgTCA4OTEuODkgNzY4LjI0IEwgODg2LjQyIDc2OS4zMyBMIDg4MC42MiA3NzAuMTEgTCA4NzQuODMgNzcwLjgwIEwgODY5LjQwIDc3MS42NyBMIDg2NC42MyA3NzIuOTMgTCA4NjAuNzUgNzc0LjgwIEwgODU3LjkwIDc3Ny40MiBMIDg1Ni4xMSA3ODAuODUgTCA4NTUuMzEgNzg1LjA4IEwgODU1LjMyIDc5MC4wMiBMIDg1NS44OSA3OTUuNDggTCA4NTYuNzIgODAxLjI1IEwgODU3LjQ3IDgwNy4wNiBMIDg1Ny44MyA4MTIuNjMgTCA4NTcuNTEgODE3LjY4IEwgODU2LjMxIDgyMi4wMiBMIDg1NC4xMCA4MjUuNDcgTCA4NTAuODUgODI3Ljk4IEwgODQ2LjYzIDgyOS41NiBMIDg0MS42MiA4MzAuMzEgTCA4MzYuMDUgODMwLjQ0IEwgODMwLjIwIDgzMC4yMCBMIDgyNC4zOCA4MjkuODggTCA4MTguODggODI5Ljc4IEwgODEzLjk2IDgzMC4yMCBMIDgwOS44MiA4MzEuMzcgTCA4MDYuNTYgODMzLjQ1IEwgODA0LjIwIDgzNi41MiBMIDgwMi42NyA4NDAuNTUgTCA4MDEuODMgODQ1LjQxIEwgODAxLjQ0IDg1MC44OSBMIDgwMS4yNSA4NTYuNzIgTCA4MDAuOTkgODYyLjU3IEwgODAwLjM3IDg2OC4xMSBMIDc5OS4xOCA4NzMuMDQgTCA3OTcuMjUgODc3LjEwIEwgNzk0LjQ3IDg4MC4xMiBMIDc5MC44MyA4ODIuMDIgTCA3ODYuNDEgODgyLjg0IEwgNzgxLjM0IDg4Mi43MiBMIDc3NS44MyA4ODEuODcgTCA3NzAuMTEgODgwLjYyIEwgNzY0LjQzIDg3OS4yOSBMIDc1OS4wNCA4NzguMjQgTCA3NTQuMTIgODc3LjgwIEwgNzQ5Ljg0IDg3OC4yNCBMIDc0Ni4yNiA4NzkuNzIgTCA3NDMuNDEgODgyLjMzIEwgNzQxLjIxIDg4Ni4wMyBMIDczOS41MyA4OTAuNjcgTCA3MzguMjAgODk2LjAxIEwgNzM3LjAwIDkwMS43MSBMIDczNS43MiA5MDcuNDMgTCA3MzQuMTUgOTEyLjc4IEwgNzMyLjEzIDkxNy40MiBMIDcyOS41MSA5MjEuMDggTCA3MjYuMjUgOTIzLjU3IEwgNzIyLjM0IDkyNC44MiBMIDcxNy44NCA5MjQuODYgTCA3MTIuODcgOTIzLjg1IEwgNzA3LjU5IDkyMi4wNyBMIDcwMi4xOCA5MTkuODQgTCA2OTYuODIgOTE3LjU1IEwgNjkxLjY4IDkxNS41OCBMIDY4Ni45MiA5MTQuMjkgTCA2ODIuNjMgOTEzLjk3IEwgNjc4Ljg1IDkxNC44MSBMIDY3NS41OSA5MTYuODkgTCA2NzIuNzcgOTIwLjE1IEwgNjcwLjMyIDkyNC40MyBMIDY2OC4wOCA5MjkuNDUgTCA2NjUuOTEgOTM0Ljg2IEwgNjYzLjY2IDk0MC4yNyBMIDY2MS4xOCA5NDUuMjYgTCA2NTguMzggOTQ5LjQ5IEwgNjU1LjE3IDk1Mi42NCBMIDY1MS41MyA5NTQuNTIgTCA2NDcuNDYgOTU1LjA3IEwgNjQzLjAyIDk1NC4zMyBMIDYzOC4zMSA5NTIuNDggTCA2MzMuNDEgOTQ5LjgwIEwgNjI4LjQ3IDk0Ni42NyBMIDYyMy41OSA5NDMuNDggTCA2MTguODcgOTQwLjY1IEwgNjE0LjQxIDkzOC41NSBMIDYxMC4yMyA5MzcuNDkgTCA2MDYuMzcgOTM3LjY3IEwgNjAyLjc5IDkzOS4xNCBMIDU5OS40NiA5NDEuODcgTCA1OTYuMjkgOTQ1LjY1IEwgNTkzLjIyIDk1MC4yMSBMIDU5MC4xNCA5NTUuMTYgTCA1ODYuOTkgOTYwLjEwIEwgNTgzLjY4IDk2NC41OSBMIDU4MC4xOSA5NjguMjYgTCA1NzYuNDggOTcwLjgxIEwgNTcyLjU2IDk3Mi4wMyBMIDU2OC40NiA5NzEuODYgTCA1NjQuMjIgOTcwLjM2IEwgNTU5LjkwIDk2Ny43MiBMIDU1NS41NSA5NjQuMjMgTCA1NTEuMjIgOTYwLjI5IEwgNTQ2Ljk3IDk1Ni4zMCBMIDU0Mi44MiA5NTIuNjkgTCA1MzguNzggOTQ5Ljg2IEwgNTM0Ljg1IDk0OC4wOSBMIDUzMS4wMiA5NDcuNTkgTCA1MjcuMjQgOTQ4LjQyIEwgNTIzLjQ4IDk1MC41MiBMIDUxOS43MSA5NTMuNzAgTCA1MTUuODkgOTU3LjY2IEwgNTEyLjAwIDk2Mi4wMCBMIDUwOC4wNCA5NjYuMzEgTCA1MDQuMDAgOTcwLjE2IEwgNDk5LjkyIDk3My4xNyBMIDQ5NS44MyA5NzUuMDMgTCA0OTEuNzYgOTc1LjU2IEwgNDg3Ljc1IDk3NC42OCBMIDQ4My44NCA5NzIuNDcgTCA0ODAuMDQgOTY5LjExIEwgNDc2LjM1IDk2NC45MyBMIDQ3Mi43OCA5NjAuMjkgTCA0NjkuMjggOTU1LjYyIEwgNDY1LjgyIDk1MS4zNSBMIDQ2Mi4zNCA5NDcuODUgTCA0NTguNzggOTQ1LjQzIEwgNDU1LjA5IDk0NC4yNyBMIDQ1MS4yMyA5NDQuNDQgTCA0NDcuMTYgOTQ1Ljg2IEwgNDQyLjg5IDk0OC4zMyBMIDQzOC40NCA5NTEuNTYgTCA0MzMuODYgOTU1LjE2IEwgNDI5LjIxIDk1OC43MiBMIDQyNC41NyA5NjEuODEgTCA0MjAuMDMgOTY0LjA2IEwgNDE1LjY3IDk2NS4xOSBMIDQxMS41NyA5NjUuMDAgTCA0MDcuNzggOTYzLjQ0IEwgNDA0LjMxIDk2MC41OCBMIDQwMS4xNCA5NTYuNjIgTCAzOTguMjUgOTUxLjg1IEwgMzk1LjUzIDk0Ni42NyBMIDM5Mi45MCA5NDEuNDYgTCAzOTAuMjMgOTM2LjY2IEwgMzg3LjQxIDkzMi42MSBMIDM4NC4zMyA5MjkuNjAgTCAzODAuODkgOTI3LjgyIEwgMzc3LjA2IDkyNy4zMSBMIDM3Mi44MSA5MjguMDAgTCAzNjguMTcgOTI5LjcwIEwgMzYzLjIzIDkzMi4xMSBMIDM1OC4wOSA5MzQuODYgTCAzNTIuODkgOTM3LjU1IEwgMzQ3Ljc5IDkzOS43OSBMIDM0Mi45MiA5NDEuMjMgTCAzMzguNDQgOTQxLjU4IEwgMzM0LjQzIDk0MC42OCBMIDMzMC45NyA5MzguNDggTCAzMjguMDUgOTM1LjA2IEwgMzI1LjYyIDkzMC42MSBMIDMyMy41OSA5MjUuNDIgTCAzMjEuODIgOTE5Ljg0IEwgMzIwLjEzIDkxNC4yNiBMIDMxOC4zNCA5MDkuMDYgTCAzMTYuMjYgOTA0LjU4IEwgMzEzLjc1IDkwMS4wOSBMIDMxMC42OCA4OTguNzQgTCAzMDYuOTkgODk3LjU3IEwgMzAyLjY4IDg5Ny41MSBMIDI5Ny44MyA4OTguMzggTCAyOTIuNTQgODk5Ljg5IEwgMjg3LjAwIDkwMS43MSBMIDI4MS40MSA5MDMuNDYgTCAyNzUuOTkgOTA0Ljc4IEwgMjcwLjk2IDkwNS4zNSBMIDI2Ni40OCA5MDQuOTEgTCAyNjIuNjkgOTAzLjMzIEwgMjU5LjY2IDkwMC41NyBMIDI1Ny4zOCA4OTYuNjkgTCAyNTUuNzYgODkxLjg5IEwgMjU0LjY3IDg4Ni40MiBMIDI1My44OSA4ODAuNjIgTCAyNTMuMjAgODc0LjgzIEwgMjUyLjMzIDg2OS40MCBMIDI1MS4wNyA4NjQuNjMgTCAyNDkuMjAgODYwLjc1IEwgMjQ2LjU4IDg1Ny45MCBMIDI0My4xNSA4NTYuMTEgTCAyMzguOTIgODU1LjMxIEwgMjMzLjk4IDg1NS4zMiBMIDIyOC41MiA4NTUuODkgTCAyMjIuNzUgODU2LjcyIEwgMjE2Ljk0IDg1Ny40NyBMIDIxMS4zNyA4NTcuODMgTCAyMDYuMzIgODU3LjUxIEwgMjAxLjk4IDg1Ni4zMSBMIDE5OC41MyA4NTQuMTAgTCAxOTYuMDIgODUwLjg1IEwgMTk0LjQ0IDg0Ni42MyBMIDE5My42OSA4NDEuNjIgTCAxOTMuNTYgODM2LjA1IEwgMTkzLjgwIDgzMC4yMCBMIDE5NC4xMiA4MjQuMzggTCAxOTQuMjIgODE4Ljg4IEwgMTkzLjgwIDgxMy45NiBMIDE5Mi42MyA4MDkuODIgTCAxOTAuNTUgODA2LjU2IEwgMTg3LjQ4IDgwNC4yMCBMIDE4My40NSA4MDIuNjcgTCAxNzguNTkgODAxLjgzIEwgMTczLjExIDgwMS40NCBMIDE2Ny4yOCA4MDEuMjUgTCAxNjEuNDMgODAwLjk5IEwgMTU1Ljg5IDgwMC4zNyBMIDE1MC45NiA3OTkuMTggTCAxNDYuOTAgNzk3LjI1IEwgMTQzLjg4IDc5NC40NyBMIDE0MS45OCA3OTAuODMgTCAxNDEuMTYgNzg2LjQxIEwgMTQxLjI4IDc4MS4zNCBMIDE0Mi4xMyA3NzUuODMgTCAxNDMuMzggNzcwLjExIEwgMTQ0LjcxIDc2NC40MyBMIDE0NS43NiA3NTkuMDQgTCAxNDYuMjAgNzU0LjEyIEwgMTQ1Ljc2IDc0OS44NCBMIDE0NC4yOCA3NDYuMjYgTCAxNDEuNjcgNzQzLjQxIEwgMTM3Ljk3IDc0MS4yMSBMIDEzMy4zMyA3MzkuNTMgTCAxMjcuOTkgNzM4LjIwIEwgMTIyLjI5IDczNy4wMCBMIDExNi41NyA3MzUuNzIgTCAxMTEuMjIgNzM0LjE1IEwgMTA2LjU4IDczMi4xMyBMIDEwMi45MiA3MjkuNTEgTCAxMDAuNDMgNzI2LjI1IEwgOTkuMTggNzIyLjM0IEwgOTkuMTQgNzE3Ljg0IEwgMTAwLjE1IDcxMi44NyBMIDEwMS45MyA3MDcuNTkgTCAxMDQuMTYgNzAyLjE4IEwgMTA2LjQ1IDY5Ni44MiBMIDEwOC40MiA2OTEuNjggTCAxMDkuNzEgNjg2LjkyIEwgMTEwLjAzIDY4Mi42MyBMIDEwOS4xOSA2NzguODUgTCAxMDcuMTEgNjc1LjU5IEwgMTAzLjg1IDY3Mi43NyBMIDk5LjU3IDY3MC4zMiBMIDk0LjU1IDY2OC4wOCBMIDg5LjE0IDY2NS45MSBMIDgzLjczIDY2My42NiBMIDc4Ljc0IDY2MS4xOCBMIDc0LjUxIDY1OC4zOCBMIDcxLjM2IDY1NS4xNyBMIDY5LjQ4IDY1MS41MyBMIDY4LjkzIDY0Ny40NiBMIDY5LjY3IDY0My4wMiBMIDcxLjUyIDYzOC4zMSBMIDc0LjIwIDYzMy40MSBMIDc3LjMzIDYyOC40NyBMIDgwLjUyIDYyMy41OSBMIDgzLjM1IDYxOC44NyBMIDg1LjQ1IDYxNC40MSBMIDg2LjUxIDYxMC4yMyBMIDg2LjMzIDYwNi4zNyBMIDg0Ljg2IDYwMi43OSBMIDgyLjEzIDU5OS40NiBMIDc4LjM1IDU5Ni4yOSBMIDczLjc5IDU5My4yMiBMIDY4Ljg0IDU5MC4xNCBMIDYzLjkwIDU4Ni45OSBMIDU5LjQxIDU4My42OCBMIDU1Ljc0IDU4MC4xOSBMIDUzLjE5IDU3Ni40OCBMIDUxLjk3IDU3Mi41NiBMIDUyLjE0IDU2OC40NiBMIDUzLjY0IDU2NC4yMiBMIDU2LjI4IDU1OS45MCBMIDU5Ljc3IDU1NS41NSBMIDYzLjcxIDU1MS4yMiBMIDY3LjcwIDU0Ni45NyBMIDcxLjMxIDU0Mi44MiBMIDc0LjE0IDUzOC43OCBMIDc1LjkxIDUzNC44NSBMIDc2LjQxIDUzMS4wMiBMIDc1LjU4IDUyNy4yNCBMIDczLjQ4IDUyMy40OCBMIDcwLjMwIDUxOS43MSBMIDY2LjM0IDUxNS44OSBMIDYyLjAwIDUxMi4wMCBMIDU3LjY5IDUwOC4wNCBMIDUzLjg0IDUwNC4wMCBMIDUwLjgzIDQ5OS45MiBMIDQ4Ljk3IDQ5NS44MyBMIDQ4LjQ0IDQ5MS43NiBMIDQ5LjMyIDQ4Ny43NSBMIDUxLjUzIDQ4My44NCBMIDU0Ljg5IDQ4MC4wNCBMIDU5LjA3IDQ3Ni4zNSBMIDYzLjcxIDQ3Mi43OCBMIDY4LjM4IDQ2OS4yOCBMIDcyLjY1IDQ2NS44MiBMIDc2LjE1IDQ2Mi4zNCBMIDc4LjU3IDQ1OC43OCBMIDc5LjczIDQ1NS4wOSBMIDc5LjU2IDQ1MS4yMyBMIDc4LjE0IDQ0Ny4xNiBMIDc1LjY3IDQ0Mi44OSBMIDcyLjQ0IDQzOC40NCBMIDY4Ljg0IDQzMy44NiBMIDY1LjI4IDQyOS4yMSBMIDYyLjE5IDQyNC41NyBMIDU5Ljk0IDQyMC4wMyBMIDU4LjgxIDQxNS42NyBMIDU5LjAwIDQxMS41NyBMIDYwLjU2IDQwNy43OCBMIDYzLjQyIDQwNC4zMSBMIDY3LjM4IDQwMS4xNCBMIDcyLjE1IDM5OC4yNSBMIDc3LjMzIDM5NS41MyBMIDgyLjU0IDM5Mi45MCBMIDg3LjM0IDM5MC4yMyBMIDkxLjM5IDM4Ny40MSBMIDk0LjQwIDM4NC4zMyBMIDk2LjE4IDM4MC44OSBMIDk2LjY5IDM3Ny4wNiBMIDk2LjAwIDM3Mi44MSBMIDk0LjMwIDM2OC4xNyBMIDkxLjg5IDM2My4yMyBMIDg5LjE0IDM1OC4wOSBMIDg2LjQ1IDM1Mi44OSBMIDg0LjIxIDM0Ny43OSBMIDgyLjc3IDM0Mi45MiBMIDgyLjQyIDMzOC40NCBMIDgzLjMyIDMzNC40MyBMIDg1LjUyIDMzMC45NyBMIDg4Ljk0IDMyOC4wNSBMIDkzLjM5IDMyNS42MiBMIDk4LjU4IDMyMy41OSBMIDEwNC4xNiAzMjEuODIgTCAxMDkuNzQgMzIwLjEzIEwgMTE0Ljk0IDMxOC4zNCBMIDExOS40MiAzMTYuMjYgTCAxMjIuOTEgMzEzLjc1IEwgMTI1LjI2IDMxMC42OCBMIDEyNi40MyAzMDYuOTkgTCAxMjYuNDkgMzAyLjY4IEwgMTI1LjYyIDI5Ny44MyBMIDEyNC4xMSAyOTIuNTQgTCAxMjIuMjkgMjg3LjAwIEwgMTIwLjU0IDI4MS40MSBMIDExOS4yMiAyNzUuOTkgTCAxMTguNjUgMjcwLjk2IEwgMTE5LjA5IDI2Ni40OCBMIDEyMC42NyAyNjIuNjkgTCAxMjMuNDMgMjU5LjY2IEwgMTI3LjMxIDI1Ny4zOCBMIDEzMi4xMSAyNTUuNzYgTCAxMzcuNTggMjU0LjY3IEwgMTQzLjM4IDI1My44OSBMIDE0OS4xNyAyNTMuMjAgTCAxNTQuNjAgMjUyLjMzIEwgMTU5LjM3IDI1MS4wNyBMIDE2My4yNSAyNDkuMjAgTCAxNjYuMTAgMjQ2LjU4IEwgMTY3Ljg5IDI0My4xNSBMIDE2OC42OSAyMzguOTIgTCAxNjguNjggMjMzLjk4IEwgMTY4LjExIDIyOC41MiBMIDE2Ny4yOCAyMjIuNzUgTCAxNjYuNTMgMjE2Ljk0IEwgMTY2LjE3IDIxMS4zNyBMIDE2Ni40OSAyMDYuMzIgTCAxNjcuNjkgMjAxLjk4IEwgMTY5LjkwIDE5OC41MyBMIDE3My4xNSAxOTYuMDIgTCAxNzcuMzcgMTk0LjQ0IEwgMTgyLjM4IDE5My42OSBMIDE4Ny45NSAxOTMuNTYgTCAxOTMuODAgMTkzLjgwIEwgMTk5LjYyIDE5NC4xMiBMIDIwNS4xMiAxOTQuMjIgTCAyMTAuMDQgMTkzLjgwIEwgMjE0LjE4IDE5Mi42MyBMIDIxNy40NCAxOTAuNTUgTCAyMTkuODAgMTg3LjQ4IEwgMjIxLjMzIDE4My40NSBMIDIyMi4xNyAxNzguNTkgTCAyMjIuNTYgMTczLjExIEwgMjIyLjc1IDE2Ny4yOCBMIDIyMy4wMSAxNjEuNDMgTCAyMjMuNjMgMTU1Ljg5IEwgMjI0LjgyIDE1MC45NiBMIDIyNi43NSAxNDYuOTAgTCAyMjkuNTMgMTQzLjg4IEwgMjMzLjE3IDE0MS45OCBMIDIzNy41OSAxNDEuMTYgTCAyNDIuNjYgMTQxLjI4IEwgMjQ4LjE3IDE0Mi4xMyBMIDI1My44OSAxNDMuMzggTCAyNTkuNTcgMTQ0LjcxIEwgMjY0Ljk2IDE0NS43NiBMIDI2OS44OCAxNDYuMjAgTCAyNzQuMTYgMTQ1Ljc2IEwgMjc3Ljc0IDE0NC4yOCBMIDI4MC41OSAxNDEuNjcgTCAyODIuNzkgMTM3Ljk3IEwgMjg0LjQ3IDEzMy4zMyBMIDI4NS44MCAxMjcuOTkgTCAyODcuMDAgMTIyLjI5IEwgMjg4LjI4IDExNi41NyBMIDI4OS44NSAxMTEuMjIgTCAyOTEuODcgMTA2LjU4IEwgMjk0LjQ5IDEwMi45MiBMIDI5Ny43NSAxMDAuNDMgTCAzMDEuNjYgOTkuMTggTCAzMDYuMTYgOTkuMTQgTCAzMTEuMTMgMTAwLjE1IEwgMzE2LjQxIDEwMS45MyBMIDMyMS44MiAxMDQuMTYgTCAzMjcuMTggMTA2LjQ1IEwgMzMyLjMyIDEwOC40MiBMIDMzNy4wOCAxMDkuNzEgTCAzNDEuMzcgMTEwLjAzIEwgMzQ1LjE1IDEwOS4xOSBMIDM0OC40MSAxMDcuMTEgTCAzNTEuMjMgMTAzLjg1IEwgMzUzLjY4IDk5LjU3IEwgMzU1LjkyIDk0LjU1IEwgMzU4LjA5IDg5LjE0IEwgMzYwLjM0IDgzLjczIEwgMzYyLjgyIDc4Ljc0IEwgMzY1LjYyIDc0LjUxIEwgMzY4LjgzIDcxLjM2IEwgMzcyLjQ3IDY5LjQ4IEwgMzc2LjU0IDY4LjkzIEwgMzgwLjk4IDY5LjY3IEwgMzg1LjY5IDcxLjUyIEwgMzkwLjU5IDc0LjIwIEwgMzk1LjUzIDc3LjMzIEwgNDAwLjQxIDgwLjUyIEwgNDA1LjEzIDgzLjM1IEwgNDA5LjU5IDg1LjQ1IEwgNDEzLjc3IDg2LjUxIEwgNDE3LjYzIDg2LjMzIEwgNDIxLjIxIDg0Ljg2IEwgNDI0LjU0IDgyLjEzIEwgNDI3LjcxIDc4LjM1IEwgNDMwLjc4IDczLjc5IEwgNDMzLjg2IDY4Ljg0IEwgNDM3LjAxIDYzLjkwIEwgNDQwLjMyIDU5LjQxIEwgNDQzLjgxIDU1Ljc0IEwgNDQ3LjUyIDUzLjE5IEwgNDUxLjQ0IDUxLjk3IEwgNDU1LjU0IDUyLjE0IEwgNDU5Ljc4IDUzLjY0IEwgNDY0LjEwIDU2LjI4IEwgNDY4LjQ1IDU5Ljc3IEwgNDcyLjc4IDYzLjcxIEwgNDc3LjAzIDY3LjcwIEwgNDgxLjE4IDcxLjMxIEwgNDg1LjIyIDc0LjE0IEwgNDg5LjE1IDc1LjkxIEwgNDkyLjk4IDc2LjQxIEwgNDk2Ljc2IDc1LjU4IEwgNTAwLjUyIDczLjQ4IEwgNTA0LjI5IDcwLjMwIEwgNTA4LjExIDY2LjM0IFoiIGZpbGw9IiNGMjBEMTYiLz4KICA8ZyBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMTI0IiBzdHJva2UtbGluZWNhcD0ic3F1YXJlIiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KICAgIDxwYXRoIGQ9Ik0gMzE1IDMxNSBMIDcwOSA3MDkiLz4KICAgIDxwYXRoIGQ9Ik0gNzA5IDMxNSBMIDMxNSA3MDkiLz4KICA8L2c+Cjwvc3ZnPgo=" class="pill-icon-elm rsvp-pill-icon-img" width="14" height="14" alt="" aria-hidden="true" decoding="async" /></span>
+                                <span>Tidak Hadir</span>
+                            </button>
                         </div>
-                        <p class="text-xs text-[#5E6060] leading-relaxed mb-2">{{ $wish->message }}</p>
-                        <p class="text-[10px] text-[#A0A0A0]">{{ $wish->created_at ? $wish->created_at->diffForHumans() : 'Baru saja' }}</p>
-                    </div>
-                @endforeach
+                                            </div>
+                
+                <!-- Error + Tombol -->
+                <div class="rsvp-field rsvp-field--btn rsvp-btn-align-stretch">
+                    <button class="rsvp-send" data-rsvp="send" type="button">
+                        Kirim                    </button>
+                </div>
+
+
             </div>
+
+            <!-- live feedback -->
+            <div class="rsvp-live" aria-live="polite"></div>
+
+            <!-- LIST & PAGINATION -->
+            <div class="rsvp-comments-wrap"
+                 data-post="30947"
+                 data-per-page="10"
+                 data-has-pager="1">
+                <div class="rsvp-list-wrap"><ul class="rsvp-list"></ul></div>            </div>
+
+            <!-- Fallback tanpa JS -->
+            <noscript>
+              <div class="rsvp-error" role="alert">
+                JavaScript dibutuhkan untuk mengirim RSVP. Silakan aktifkan JavaScript di browser Anda.              </div>
+            
+              <form method="post" action="https://inv.punakawandigital.id/wp-admin/admin-post.php">
+                <input type="hidden" name="action" value="niku_rsvp_fallback">
+                <input type="hidden" name="post_id" value="30947">
+            
+                <input type="hidden" id="niku_rsvp_fb_nonce" name="niku_rsvp_fb_nonce" value="833c5599ce" /><input type="hidden" name="_wp_http_referer" value="/premium-03/" />            
+                <input type="hidden" name="guest_to" value="">
+            
+                <input type="text" name="name" placeholder="Nama Anda" required
+                       value=""
+                       >
+            
+                <textarea name="message" placeholder="Ucapan / Doa" required></textarea>
+                <button type="submit">Kirim</button>
+              </form>
+            </noscript>
+
+            
+
         </div>
+        				</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-7ceb75c1 luap e-con-full e-flex e-con e-child" data-id="7ceb75c1" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="elementor-element elementor-element-6c9fbe9f animated-slow elementor-absolute elementor-align-center elementor-invisible elementor-widget elementor-widget-lottie" data-id="6c9fbe9f" data-element_type="widget" data-e-type="widget" data-settings="{&quot;source_json&quot;:{&quot;url&quot;:&quot;https:\/\/inv.punakawandigital.id\/wp-content\/uploads\/2026\/06\/bird-hitam.json&quot;,&quot;id&quot;:&quot;33871&quot;,&quot;size&quot;:&quot;&quot;},&quot;loop&quot;:&quot;yes&quot;,&quot;_animation&quot;:&quot;fadeInUp&quot;,&quot;_position&quot;:&quot;absolute&quot;,&quot;source&quot;:&quot;media_file&quot;,&quot;caption_source&quot;:&quot;none&quot;,&quot;link_to&quot;:&quot;none&quot;,&quot;trigger&quot;:&quot;arriving_to_viewport&quot;,&quot;viewport&quot;:{&quot;unit&quot;:&quot;%&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:{&quot;start&quot;:0,&quot;end&quot;:100}},&quot;play_speed&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:1,&quot;sizes&quot;:[]},&quot;start_point&quot;:{&quot;unit&quot;:&quot;%&quot;,&quot;size&quot;:0,&quot;sizes&quot;:[]},&quot;end_point&quot;:{&quot;unit&quot;:&quot;%&quot;,&quot;size&quot;:100,&quot;sizes&quot;:[]},&quot;renderer&quot;:&quot;svg&quot;}" data-widget_type="lottie.default">
+				<div class="elementor-widget-container">
+					<div class="e-lottie__container"><div class="e-lottie__animation"></div></div>				</div>
+				</div>
+				<div class="elementor-element elementor-element-1b17ef72 elementor-widget elementor-widget-spacer" data-id="1b17ef72" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-spacer">
+			<div class="elementor-spacer-inner"></div>
+		</div>
+						</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-3966a0bd profil1 elementor-widget elementor-widget-image" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="3966a0bd" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img loading="lazy" decoding="async" width="1000" height="1498" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co.jpg" class="attachment-full size-full wp-image-33948" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co.jpg 1000w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-200x300.jpg 200w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-684x1024.jpg 684w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-768x1150.jpg 768w" sizes="(max-width: 1000px) 100vw, 1000px" />															</div>
+				</div>
+				<div class="elementor-element elementor-element-760fa375 elementor-widget elementor-widget-spacer" data-id="760fa375" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-spacer">
+			<div class="elementor-spacer-inner"></div>
+		</div>
+						</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-17397d6 elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="17397d6" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									Merupakan suatu kehormatan dan kebahagiaan bagi kami, apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu. Atas kehadiran dan doa restunya, kami mengucapkan terima kasih.								</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-30f260ab elementor-widget elementor-widget-text-editor" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="30f260ab" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									Kami yang berbahagia,								</div>
+				</div>
+				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-3ee12e elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="3ee12e" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">{{ $setting->groom_nickname ?? "Habib" }} &amp; {{ $setting->bride_nickname ?? "Adiba" }}</h2>				</div>
+				</div>
+				<div class="elementor-element elementor-element-45126e1d elementor-widget elementor-widget-spacer" data-id="45126e1d" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-spacer">
+			<div class="elementor-spacer-inner"></div>
+		</div>
+						</div>
+				</div>
+				<div class="elementor-element elementor-element-1fac39df elementor-absolute pulse elementor-widget elementor-widget-image" data-id="1fac39df" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_position&quot;:&quot;absolute&quot;}" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img decoding="async" width="418" height="458" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-2.png" class="attachment-full size-full wp-image-33946" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-2.png 418w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-2-274x300.png 274w" sizes="(max-width: 418px) 100vw, 418px" />															</div>
+				</div>
+				<div class="elementor-element elementor-element-1fe3428d elementor-absolute pulse2 elementor-widget elementor-widget-image" data-id="1fe3428d" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_position&quot;:&quot;absolute&quot;}" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img fetchpriority="high" decoding="async" width="564" height="415" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-1.png" class="attachment-full size-full wp-image-33945" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-1.png 564w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-1-300x221.png 300w" sizes="(max-width: 564px) 100vw, 564px" />															</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-9d5ba3 e-con-full e-flex e-con e-child" data-id="9d5ba3" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="elementor-element elementor-element-688c2ca0 elementor-widget elementor-widget-text-editor" data-id="688c2ca0" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									<div class="idb-watermark-block is-wm-order-logo_first" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;text-align:center;width:100%;max-width:100%"><span class="idb-watermark-text">Made with ❤ by Punakawan Digital</span></div>								</div>
+				</div>
+				<div class="elementor-element elementor-element-3cda54b elementor-widget elementor-widget-bisdev_social_icons" data-id="3cda54b" data-element_type="widget" data-e-type="widget" data-widget_type="bisdev_social_icons.default">
+				<div class="elementor-widget-container">
+					        <div class="idb-social-icons is-auto-columns  is-shape-circle" style="">
+                                            <a
+                    class="idb-social-icons__item elementor-animation-grow"
+                    href="https://www.tiktok.com/@punakawandigital?is_from_webapp=1&#038;sender_device=pc"
+                    aria-label="TikTok"
+                    title="TikTok"
+                    style=""
+                                        target="_blank"                    rel="nofollow noopener noreferrer"                >
+                    <i class="fab fa-tiktok" aria-hidden="true"></i>                                    </a>
+                                            <a
+                    class="idb-social-icons__item elementor-animation-grow"
+                    href="https://wa.me/6285727915000"
+                    aria-label="WhatsApp"
+                    title="WhatsApp"
+                    style=""
+                                        target="_blank"                    rel="nofollow noopener noreferrer"                >
+                    <i class="fab fa-whatsapp" aria-hidden="true"></i>                                    </a>
+                    </div>
+        				</div>
+				</div>
+				<div class="elementor-element elementor-element-68028c56 elementor-widget elementor-widget-bisdev_musik" data-id="68028c56" data-element_type="widget" data-e-type="widget" data-settings="{&quot;sticky&quot;:&quot;bottom&quot;,&quot;sticky_offset&quot;:50,&quot;sticky_on&quot;:[&quot;desktop&quot;,&quot;tablet&quot;,&quot;mobile&quot;],&quot;sticky_effects_offset&quot;:0,&quot;sticky_anchor_link_offset&quot;:0}" data-widget_type="bisdev_musik.default">
+				<div class="elementor-widget-container">
+					        <div class="idb-audio-box idb-align-right"
+         data-inited="0"
+         data-start="15"
+         data-end="0"
+         data-autoplay="0"
+         data-loop="1"
+         data-volume="0.8"
+         data-fadein="600"
+         data-fadeout="600"
+         data-rotate="1"
+         data-rotatespeed="12"
+         style="display:flex; align-items:center; gap:10px;"
+    >
+      <audio id="idb-audio-68028c56" class="idb-audio-el" preload="metadata" playsinline>
+        <source src="{{ $setting->background_music ?? "https://inv.punakawandigital.id/wp-content/uploads/2026/06/golden-hour-jvke-cinematic-violin-cover.mp3" }}" type="audio/mpeg">
+      </audio>
+
+      <!-- OFF (PAUSE) -->
+    <div class="elementor-icon-wrapper idb-mute-sound">
+      <div class="elementor-icon elementor-animation-shrink" role="button" tabindex="0" aria-label="Play musik">
+        <i aria-hidden="true" class="far fa-pause-circle"></i>      </div>
+    </div>
+    
+    <div class="elementor-icon-wrapper idb-unmute-sound" style="display:none;">
+      <div class="elementor-icon elementor-animation-shrink" role="button" tabindex="0" aria-label="Pause musik">
+        <i aria-hidden="true" class="fas fa-compact-disc"></i>      </div>
+    </div>
 
     </div>
-</section>
 
-<!-- ========================================== -->
-<!-- 12. PENUTUP & FOOTER                       -->
-<!-- ========================================== -->
-<footer class="pt-16 pb-28 px-6 bg-[#1C1514] text-[#FFF0E5] text-center">
-    <div class="max-w-sm mx-auto">
-        <p class="font-cormorant italic text-xs tracking-widest text-[#B89C7A] mb-2 uppercase">Thank You</p>
-        <p class="font-caudex text-xs leading-relaxed text-[#D8C3A8] mb-8">
-            Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu. Atas kehadiran dan doa restunya, kami mengucapkan terima kasih yang sebesar-besarnya.
-        </p>
+    				</div>
+				</div>
+				<div class="elementor-element elementor-element-3da4585c elementor-widget elementor-widget-html" data-id="3da4585c" data-element_type="widget" data-e-type="widget" id="h" data-widget_type="html.default">
+				<div class="elementor-widget-container">
+					<!-- Untuk Chrome & Opera -->
+<meta name="theme-color" content="#853638"/>
 
-        <p class="font-cormorant italic text-xs text-[#B89C7A] mb-1">Kami yang berbahagia,</p>
-        <h2 class="font-cormorant text-3xl font-bold tracking-wide text-[#FFF0E5] mb-8">
-            {{ $setting->groom_nickname ?? 'Habib' }} <span class="font-script text-2xl text-[#B89C7A]">&</span> {{ $setting->bride_nickname ?? 'Adiba' }}
-        </h2>
+<!-- Untuk Safari iOS -->
+<meta name="apple-mobile-web-app-status-bar-style" content="#853638"/>
 
-        <div class="ornament-line mx-auto w-32 my-6 opacity-40"></div>
+<!-- Untuk Windows Phone --> <meta name="msapplication-navbutton-color" content="#853638"/>				</div>
+				</div>
+				<div class="elementor-element elementor-element-6dd8e663 elementor-widget elementor-widget-html" data-id="6dd8e663" data-element_type="widget" data-e-type="widget" id="h" data-widget_type="html.default">
+				<div class="elementor-widget-container">
+					<script>
+jQuery(function () {
+  jQuery('#klik').on('click', function (e) {
+    e.preventDefault();
 
-        <p class="text-[10px] text-[#A0A0A0] tracking-wider">
-            Made with ❤ for {{ $setting->groom_nickname ?? 'Habib' }} & {{ $setting->bride_nickname ?? 'Adiba' }}
-        </p>
-    </div>
-</footer>
+    jQuery('#amplop').toggle(500);
+  });
+});
+</script>				</div>
+				</div>
+				<div class="elementor-element elementor-element-2cbcae87 elementor-widget elementor-widget-html" data-id="2cbcae87" data-element_type="widget" data-e-type="widget" id="h" data-widget_type="html.default">
+				<div class="elementor-widget-container">
+					<link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/Bisdev-gift/bisdev-cover-reveal@main/css/bisdev-cover.min.css">
 
-<!-- Lightbox Modal for Photos -->
-<div id="lightbox-modal" class="hidden fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center p-4">
-    <button onclick="closeLightbox()" class="absolute top-5 right-5 text-white/80 hover:text-white text-3xl font-bold">&times;</button>
-    <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[80vh] rounded-xl object-contain shadow-2xl mb-3">
-    <p id="lightbox-caption" class="text-xs text-[#FFF0E5] font-medium tracking-wide"></p>
-</div>
-
-@endsection
-
-@push('scripts')
 <script>
-    // Countdown Timer Logic
-    const targetDateStr = "{{ $setting->wedding_date ? $setting->wedding_date->format('Y-m-d H:i:s') : '2026-12-28 08:00:00' }}";
-    const targetDate = new Date(targetDateStr.replace(/-/g, '/')).getTime();
+(function(){
 
-    function updateCountdown() {
-        const now = new Date().getTime();
-        const difference = targetDate - now;
+function setVh(){
+  document.documentElement.style.setProperty(
+    '--vh',
+    (window.innerHeight * 0.01) + 'px'
+  );
+}
+setVh();
+window.addEventListener('resize', setVh);
 
-        if (difference > 0) {
-            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+let isLocked = true;
+let wasPlayingBeforeHide = false;
 
-            document.getElementById('days').innerText = days;
-            document.getElementById('hours').innerText = hours;
-            document.getElementById('minutes').innerText = minutes;
-            document.getElementById('seconds').innerText = seconds;
-        } else {
-            document.getElementById('days').innerText = '0';
-            document.getElementById('hours').innerText = '0';
-            document.getElementById('minutes').innerText = '0';
-            document.getElementById('seconds').innerText = '0';
+document.addEventListener('DOMContentLoaded', function(){
+  lockSection();
+  initReveal();
+  bindOpenButton();
+});
+
+function lockSection(){
+  if(!isLocked) return;
+
+  const { scrollX, scrollY } = window;
+  window.onscroll = () => window.scrollTo(scrollX, scrollY);
+
+  document.body.style.cssText = `
+    position:fixed;
+    height:calc(var(--vh, 1vh) * 100);
+    left:0; right:0;
+    overflow-y:scroll;
+  `;
+}
+
+function unlockSection(){
+  window.onscroll = null;
+
+  const kolom = document.getElementById('kolom');
+  if(kolom){
+    kolom.style.cssText =
+      'transform:translateY(-100%);transition:1.5s ease-in-out;';
+  }
+
+  const sec = document.getElementById('sec');
+  if(sec){
+    sec.style.cssText =
+      'opacity:0;transition:1.5s ease-in-out;';
+    setTimeout(()=>sec.style.visibility='hidden',1500);
+  }
+
+  document.body.style.cssText = '';
+  isLocked = false;
+}
+
+function showAw(){
+  const el = document.querySelector('.aw');
+  if(el) el.style.display='block';
+}
+
+function initReveal(){
+  if(document.body.classList.contains('elementor-editor-active')) return;
+  document.querySelectorAll('.af').forEach(el=>{
+    el.classList.add('active');
+  });
+}
+
+function getAudio(){
+  return document.querySelector('.idb-audio-box .idb-audio-el')
+      || document.getElementById('song');
+}
+
+function getPlayBtn(){
+  return document.querySelector('.idb-audio-box .idb-mute-sound');
+}
+
+function playMusic(){
+  window.__BISDEV_MUSIC_ALLOWED = true;
+
+  const btn = getPlayBtn();
+  if(btn){ btn.click(); return; }
+
+  const audio = getAudio();
+  if(audio) audio.play().catch(()=>{});
+}
+
+function pauseMusic(){
+  const a = getAudio();
+  if(!a) return;
+  wasPlayingBeforeHide = !a.paused;
+  a.pause();
+}
+
+function resumeMusic(){
+  if(!wasPlayingBeforeHide) return;
+
+  window.__BISDEV_MUSIC_ALLOWED = true;
+  const a = getAudio();
+  if(!a) return;
+
+  a.play().catch(()=>{
+    const btn = getPlayBtn();
+    if(btn){
+      btn.classList.add('idb-attention');
+      setTimeout(()=>btn.classList.remove('idb-attention'),2500);
+    }
+  });
+}
+
+function bindOpenButton(){
+  const btn = document.getElementById('open');
+  if(!btn) return;
+
+  btn.addEventListener('click',()=>{
+    unlockSection();
+    showAw();
+    playMusic();
+  },{ once:true });
+}
+
+document.addEventListener('visibilitychange',()=>{
+  document.hidden ? pauseMusic() : setTimeout(resumeMusic,200);
+});
+
+window.addEventListener('blur', pauseMusic);
+window.addEventListener('focus', ()=>setTimeout(resumeMusic,200));
+
+})();
+</script>
+				</div>
+				</div>
+				</div>
+				</div>
+				</div>
+				</div>
+		<script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/wp-*.php","/wp-admin/*","/wp-content/uploads/*","/wp-content/*","/wp-content/plugins/*","/wp-content/themes/hello-elementor/*","/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+			<script>
+				( () => {
+					const lazyloadRunObserver = () => {
+						const lazyloadBackgrounds = document.querySelectorAll( `.e-con.e-parent:not(.e-lazyloaded)` );
+						const lazyloadBackgroundObserver = new IntersectionObserver( ( entries ) => {
+							entries.forEach( ( entry ) => {
+								if ( entry.isIntersecting ) {
+									let lazyloadBackground = entry.target;
+									if( lazyloadBackground ) {
+										lazyloadBackground.classList.add( 'e-lazyloaded' );
+									}
+									lazyloadBackgroundObserver.unobserve( entry.target );
+								}
+							});
+						}, { rootMargin: '200px 0px 200px 0px' } );
+						lazyloadBackgrounds.forEach( ( lazyloadBackground ) => {
+							lazyloadBackgroundObserver.observe( lazyloadBackground );
+						} );
+					};
+					const events = [
+						'DOMContentLoaded',
+						'elementor/lazyload/observe',
+					];
+					events.forEach( ( event ) => {
+						document.addEventListener( event, lazyloadRunObserver );
+					} );
+				} )();
+			</script>
+			<link rel='stylesheet' id='font-awesome-5-all-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/lib/font-awesome/css/all.min.css?ver=4.2.3' media='all' />
+<link rel='stylesheet' id='font-awesome-4-shim-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/lib/font-awesome/css/v4-shims.min.css?ver=4.2.3' media='all' />
+<link rel='stylesheet' id='font-awesome-css' href='https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/lib/font-awesome/css/font-awesome.min.css?ver=4.7.0' media='all' />
+<script id="hello-theme-frontend-js" src="https://inv.punakawandigital.id/wp-content/themes/hello-elementor/assets/js/hello-frontend.js?ver=3.5.1"></script>
+<script id="elementor-webpack-runtime-js" src="https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/js/webpack.runtime.min.js?ver=4.2.3"></script>
+<script id="elementor-frontend-modules-js" src="https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/js/frontend-modules.min.js?ver=4.2.3"></script>
+<script id="jquery-ui-core-js-before">
+jQuery.uiBackCompat = true;
+//# sourceURL=jquery-ui-core-js-before
+</script>
+<script id="jquery-ui-core-js" src="https://inv.punakawandigital.id/wp-includes/js/jquery/ui/core.min.js?ver=1.14.2"></script>
+<script id="elementor-frontend-js-before">
+var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false,"isScriptDebug":false},"i18n":{"shareOnFacebook":"Bagikan di Facebook","shareOnX":"Share on X","pinIt":"Buat Pin","download":"Unduh","downloadImage":"Unduh gambar","fullscreen":"Layar Penuh","zoom":"Perbesar","share":"Bagikan","playVideo":"Putar Video","previous":"Sebelumnya","next":"Selanjutnya","close":"Tutup","a11yCarouselPrevSlideMessage":"Slide sebelumnya","a11yCarouselNextSlideMessage":"Slide selanjutnya","a11yCarouselFirstSlideMessage":"This is the first slide","a11yCarouselLastSlideMessage":"This is the last slide","a11yCarouselPaginationBulletMessage":"Go to slide"},"is_rtl":false,"breakpoints":{"xs":0,"sm":480,"md":768,"lg":1025,"xl":1440,"xxl":1600},"responsive":{"breakpoints":{"mobile":{"label":"Mobile Portrait","value":767,"default_value":767,"direction":"max","is_enabled":true},"mobile_extra":{"label":"Mobile Landscape","value":880,"default_value":880,"direction":"max","is_enabled":false},"tablet":{"label":"Tablet Portrait","value":1024,"default_value":1024,"direction":"max","is_enabled":true},"tablet_extra":{"label":"Tablet Landscape","value":1200,"default_value":1200,"direction":"max","is_enabled":false},"laptop":{"label":"Laptop","value":1366,"default_value":1366,"direction":"max","is_enabled":false},"widescreen":{"label":"Layar lebar","value":2400,"default_value":2400,"direction":"min","is_enabled":false}},"hasCustomBreakpoints":false},"version":"4.2.3","is_static":false,"experimentalFeatures":{"additional_custom_breakpoints":true,"container":true,"e_panel_promotions":true,"theme_builder_v2":true,"hello-theme-header-footer":true,"nested-elements":true,"global_classes_should_enforce_capabilities":true,"e_variables":true,"e_opt_in_v4_page":true,"e_components":true,"e_interactions":true,"e_widget_creation":true,"import-export-customization":true,"e_pro_atomic_form":true,"e_pro_collection_loop":true,"e_pro_variables":true,"e_pro_interactions":true},"urls":{"assets":"https:\/\/inv.punakawandigital.id\/wp-content\/plugins\/elementor\/assets\/","ajaxurl":"https:\/\/inv.punakawandigital.id\/wp-admin\/admin-ajax.php","uploadUrl":"https:\/\/inv.punakawandigital.id\/wp-content\/uploads"},"nonces":{"floatingButtonsClickTracking":"cc750399db","atomicFormsSendForm":"6a4928f18b"},"swiperClass":"swiper","settings":{"page":[],"editorPreferences":[]},"kit":{"active_breakpoints":["viewport_mobile","viewport_tablet"],"global_image_lightbox":"yes","lightbox_enable_counter":"yes","lightbox_enable_fullscreen":"yes","lightbox_enable_zoom":"yes","lightbox_enable_share":"yes","lightbox_title_src":"title","lightbox_description_src":"description","hello_header_logo_type":"logo","hello_footer_logo_type":"logo"},"post":{"id":30947,"title":"Undangan%20Website%20Premium%2003","excerpt":"","featuredImage":"https:\/\/inv.punakawandigital.id\/wp-content\/uploads\/2025\/05\/Premium-Vintage-03-3.webp"}};
+//# sourceURL=elementor-frontend-js-before
+</script>
+<script id="elementor-frontend-js" src="https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/js/frontend.min.js?ver=4.2.3"></script>
+<script id="bisdev-social-icons-widget-js" src="https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/js/social-icons.a78283a8.js?ver=a78283a8"></script>
+<script id="bisdev-countdown-widget-js" src="https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/js/countdown.3204ad7d.js?ver=3204ad7d"></script>
+<script id="bisdev-musik-widget-js" src="https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/js/musik.6b24e67c.js?ver=6b24e67c"></script>
+<script id="bisdev-invite-video-widget-js" src="https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/js/invite-video.f301b30a.js?ver=f301b30a"></script>
+<script id="swiper-js" src="https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/lib/swiper/v8/swiper.min.js?ver=8.4.5"></script>
+<script id="elementor-gallery-js" src="https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/lib/e-gallery/js/e-gallery.min.js?ver=1.2.0"></script>
+<script id="idb-reveal-js" src="https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/js/reveal.0d3e995d.js?ver=0d3e995d"></script>
+<script id="bisdev-timeline-widget-js" src="https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/js/timeline.df4c6578.js?ver=df4c6578"></script>
+<script id="bisdev-copy-rekening-widget-js" src="https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/js/copy-rekening.bc3b177b.js?ver=bc3b177b"></script>
+<script id="bisdev-kirim-hadiah-widget-js" src="https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/js/kirim-hadiah.a62d3579.js?ver=a62d3579"></script>
+<script id="bisdev-konfirmasi-transfer-widget-js" src="https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/js/konfirmasi-transfer.7a907b8e.js?ver=7a907b8e"></script>
+<script id="niku-rsvp-js-extra">
+var NIKU_RSVP = {"ajax_url":"https://inv.punakawandigital.id/wp-admin/admin-ajax.php","nonce":"76aedf89fd"};
+var NIKU_RSVP = {"ajax_url":"https://inv.punakawandigital.id/wp-admin/admin-ajax.php","nonce":"76aedf89fd"};
+//# sourceURL=niku-rsvp-js-extra
+</script>
+<script id="niku-rsvp-js" src="https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/js/rsvp.b703670c.js?ver=b703670c"></script>
+<script id="lottie-js" src="https://inv.punakawandigital.id/wp-content/plugins/elementor-pro/assets/lib/lottie/lottie.min.js?ver=5.6.6"></script>
+<script id="e-sticky-js" src="https://inv.punakawandigital.id/wp-content/plugins/elementor-pro/assets/lib/sticky/jquery.sticky.min.js?ver=4.2.2"></script>
+<script id="idb-footer-cleanup-js-before">
+document.body.dataset.idbHideParentMap={"wanita":0,"pria":0};
+//# sourceURL=idb-footer-cleanup-js-before
+</script>
+<script id="idb-footer-cleanup-js" src="https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/js/footer-cleanup.a39553b2.js?ver=a39553b2"></script>
+<script id="font-awesome-4-shim-js" src="https://inv.punakawandigital.id/wp-content/plugins/elementor/assets/lib/font-awesome/js/v4-shims.min.js?ver=4.2.3"></script>
+<script id="elementor-pro-webpack-runtime-js" src="https://inv.punakawandigital.id/wp-content/plugins/elementor-pro/assets/js/webpack-pro.runtime.min.js?ver=4.2.2"></script>
+<script id="wp-hooks-js" src="https://inv.punakawandigital.id/wp-includes/js/dist/hooks.min.js?ver=f0f188028580e8dc1255"></script>
+<script id="wp-i18n-js" src="https://inv.punakawandigital.id/wp-includes/js/dist/i18n.min.js?ver=1dfe7db3940c23ea9216"></script>
+<script id="wp-i18n-js-after">
+wp.i18n.setLocaleData( { 'text direction\u0004ltr': [ 'ltr' ] } );
+//# sourceURL=wp-i18n-js-after
+</script>
+<script id="elementor-pro-frontend-js-before">
+var ElementorProFrontendConfig = {"ajaxurl":"https:\/\/inv.punakawandigital.id\/wp-admin\/admin-ajax.php","nonce":"a0c30a7cc2","urls":{"assets":"https:\/\/inv.punakawandigital.id\/wp-content\/plugins\/elementor-pro\/assets\/","rest":"https:\/\/inv.punakawandigital.id\/wp-json\/"},"settings":{"lazy_load_background_images":true},"popup":{"hasPopUps":false},"shareButtonsNetworks":{"facebook":{"title":"Facebook","has_counter":true},"twitter":{"title":"Twitter"},"linkedin":{"title":"LinkedIn","has_counter":true},"pinterest":{"title":"Pinterest","has_counter":true},"reddit":{"title":"Reddit","has_counter":true},"vk":{"title":"VK","has_counter":true},"odnoklassniki":{"title":"OK","has_counter":true},"tumblr":{"title":"Tumblr"},"digg":{"title":"Digg"},"skype":{"title":"Skype"},"stumbleupon":{"title":"StumbleUpon","has_counter":true},"mix":{"title":"Mix"},"telegram":{"title":"Telegram"},"pocket":{"title":"Pocket","has_counter":true},"xing":{"title":"XING","has_counter":true},"whatsapp":{"title":"WhatsApp"},"email":{"title":"Email"},"print":{"title":"Print"},"x-twitter":{"title":"X"},"threads":{"title":"Threads"}},"facebook_sdk":{"lang":"id_ID","app_id":""},"lottie":{"defaultAnimationUrl":"https:\/\/inv.punakawandigital.id\/wp-content\/plugins\/elementor-pro\/modules\/lottie\/assets\/animations\/default.json"}};
+//# sourceURL=elementor-pro-frontend-js-before
+</script>
+<script id="elementor-pro-frontend-js" src="https://inv.punakawandigital.id/wp-content/plugins/elementor-pro/assets/js/frontend.min.js?ver=4.2.2"></script>
+<script id="pro-elements-handlers-js" src="https://inv.punakawandigital.id/wp-content/plugins/elementor-pro/assets/js/elements-handlers.min.js?ver=4.2.2"></script>
+<script id="idb-elementor-heading-amp-js" src="https://inv.punakawandigital.id/wp-content/plugins/bisdev-pro/assets/dist/js/heading-amp.630569da.js?ver=630569da"></script>
+<script id="wp-emoji-settings" type="application/json">
+{"baseUrl":"https://s.w.org/images/core/emoji/17.0.2/72x72/","ext":".png","svgUrl":"https://s.w.org/images/core/emoji/17.0.2/svg/","svgExt":".svg","source":{"concatemoji":"https://inv.punakawandigital.id/wp-includes/js/wp-emoji-release.min.js?ver=7.1.3"}}
+</script>
+<script type="module">
+/*! This file is auto-generated */
+var e="script#wp-emoji-settings",t=document.querySelector(e);if(!(t instanceof HTMLScriptElement))throw new Error("Element missing: "+e);const r=JSON.parse(t.text),s=(window._wpemojiSettings=r,"wpEmojiSettingsSupports"),o=["flag","emoji"];function i(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(s,JSON.stringify(t))}catch(e){}}function c(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data);e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0);const r=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data);return t.every((e,t)=>e===r[t])}function p(e,t){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var n=e.getImageData(16,16,1,1);for(let e=0;e<n.data.length;e++)if(0!==n.data[e])return!1;return!0}function u(e,t,n,r){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\udde8\ud83c\uddf6","\ud83c\udde8\u200b\ud83c\uddf6")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!r(e,"\ud83e\u1fac8")}return!1}function f(e,t,n,r){let a;const s=(a="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):document.createElement("canvas")).getContext("2d",{willReadFrequently:!0}),o=(s.textBaseline="top",s.font="600 32px Arial",{});return e.forEach(e=>{o[e]=t(s,e,n,r)}),o}function a(e){var t=document.createElement("script");t.src=e,t.defer=!0,document.head.appendChild(t)}r.supports={everything:!0,everythingExceptFlag:!0},new Promise(t=>{let n=function(){try{var e=JSON.parse(sessionStorage.getItem(s));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(o),u.toString(),c.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"});const a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=e=>{i(n=e.data),a.terminate(),t(n)})}catch(e){}i(n=f(o,u,c,p))}t(n)}).then(e=>{for(const n in e)r.supports[n]=e[n],r.supports.everything=r.supports.everything&&r.supports[n],"flag"!==n&&(r.supports.everythingExceptFlag=r.supports.everythingExceptFlag&&r.supports[n]);var t;r.supports.everythingExceptFlag=r.supports.everythingExceptFlag&&!r.supports.flag,r.supports.everything||((t=r.source||{}).concatemoji?a(t.concatemoji):t.wpemoji&&t.twemoji&&(a(t.twemoji),a(t.wpemoji)))});
+//# sourceURL=https://inv.punakawandigital.id/wp-includes/js/wp-emoji-loader.min.js
+</script>
+<script>
+const wdpAudio = document.querySelector('.idb-audio-box .idb-audio-el')
+  || document.getElementById('song')
+  || false;
+
+document.addEventListener('visibilitychange', event => {
+  if (document.visibilityState === 'visible') {
+    wdpAudio && wdpAudio.play();
+  } else {
+    wdpAudio && wdpAudio.pause();
+  }
+});
+</script>
+<style>/* =========================================
+   BISDEV COVER REVEAL – MINIFIED
+   Compatible: Elementor / Non-Elementor
+========================================= */
+.ytmFullscreenRelatedVideosEntryPointViewModelButton{
+	display:none!important;
+}
+	
+html,
+body{
+  height:100%;
+  min-height:100%;
+  margin:0;
+  padding:0;
+  -webkit-text-size-adjust:100%;
+}
+
+#sec{
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  width:100vw;
+  height:calc(var(--vh, 1vh) * 100);
+  z-index:999;
+  opacity:1;
+  visibility:visible;
+  -webkit-transform:translateZ(0);
+  transform:translateZ(0);
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
+
+  /* penting: jangan blok sentuhan permanen */
+  pointer-events:none;
+}
+
+#kolom{
+  
+
+  /* isi cover tetap bisa diklik */
+  pointer-events:auto;
+}
+
+/* Kunci scroll HANYA saat body masih di-lock oleh script */
+body[style*="position:fixed"]{
+  overflow:hidden !important;
+  width:100% !important;
+  overscroll-behavior:none;
+  touch-action:none;
+  -webkit-overflow-scrolling:auto;
+}
+
+body[style*="position:fixed"] #kolom{
+  overscroll-behavior:none;
+  touch-action:none;
+}
+
+.aw{display:none}
+.elementor-editor-active .aw{display:block!important}
+
+.af{
+  opacity:0;
+  transform:translateY(6rem) scale(.93);
+  transition:all 3s ease;
+  -webkit-transform:translateY(6rem) scale(.93);
+  will-change:transform,opacity;
+}
+
+.af.active{
+  opacity:1;
+  transform:none;
+  -webkit-transform:none;
+}
+
+.af.zoom-in{
+  transform:scale(.8);
+  -webkit-transform:scale(.8);
+}
+.af.zoom-in.active{
+  transform:scale(1);
+  -webkit-transform:scale(1);
+}
+
+.af.zoom-out{
+  transform:scale(1.2);
+  -webkit-transform:scale(1.2);
+}
+.af.zoom-out.active{
+  transform:scale(1);
+  -webkit-transform:scale(1);
+}
+
+.af.slide-up{
+  transform:translateY(6rem);
+  -webkit-transform:translateY(6rem);
+}
+.af.slide-up.active{
+  transform:translateY(0);
+  -webkit-transform:translateY(0);
+}
+
+.af.slide-down{
+  transform:translateY(-6rem);
+  -webkit-transform:translateY(-6rem);
+}
+.af.slide-down.active{
+  transform:translateY(0);
+  -webkit-transform:translateY(0);
+}
+
+.af.slide-left{
+  transform:translateX(6rem);
+  -webkit-transform:translateX(6rem);
+}
+.af.slide-left.active{
+  transform:translateX(0);
+  -webkit-transform:translateX(0);
+}
+
+.af.slide-right{
+  transform:translateX(-6rem);
+  -webkit-transform:translateX(-6rem);
+}
+.af.slide-right.active{
+  transform:translateX(0);
+  -webkit-transform:translateX(0);
+}
+
+.elementor-editor-active .af{
+  opacity:1!important;
+  transform:none!important;
+  -webkit-transform:none!important;
+  transition:none!important
+}
+
+/* === Audio attention === */
+.idb-attention{
+  animation:idbPulse .8s ease-in-out 3
+}
+@keyframes idbPulse{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+  100%{transform:scale(1)}
+}</style>
+<style>
+.rsvp-stats{
+	display : none!important;
+	}
+</style>
+	
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Fill guest name if provided
+    var nameInput = document.querySelector("[data-rsvp='name']");
+    if (nameInput) {
+        var gName = @json($guestName);
+        if (gName && gName !== "Nama Tamu" && gName !== "Tamu Undangan") {
+            nameInput.value = gName;
         }
     }
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
 
-    // Lightbox Logic
-    function openLightbox(src, caption) {
-        const modal = document.getElementById('lightbox-modal');
-        const img = document.getElementById('lightbox-img');
-        const cap = document.getElementById('lightbox-caption');
-        if (!modal || !img) return;
-
-        img.src = src;
-        cap.innerText = caption || '';
-        modal.classList.remove('hidden');
-    }
-
-    function closeLightbox() {
-        const modal = document.getElementById('lightbox-modal');
-        if (modal) modal.classList.add('hidden');
-    }
-
-    // AJAX RSVP Submission
-    const rsvpForm = document.getElementById('rsvp-form');
-    if (rsvpForm) {
-        rsvpForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('rsvp-submit-btn');
-            const originalBtnContent = btn.innerHTML;
-            btn.innerHTML = '<span>Mengirimkan...</span>';
-            btn.disabled = true;
-
-            const formData = new FormData(rsvpForm);
-
-            fetch("{{ route('invitation.rsvp') }}", {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Accept': 'application/json'
-                },
-                body: formData
-            })
-            .then(res => res.json())
-            .then(data => {
-                btn.innerHTML = originalBtnContent;
-                btn.disabled = false;
-                if (data.success) {
-                    showToast(data.message);
-                    
-                    // Prepend new wish to the list
-                    const wishesList = document.getElementById('wishes-list');
-                    if (wishesList && data.data) {
-                        const newCard = document.createElement('div');
-                        newCard.className = 'p-4 rounded-2xl bg-white border border-[#B89C7A]/30 shadow-sm animate-pulse';
-                        
-                        let badgeClass = 'bg-emerald-100 text-emerald-800 border border-emerald-300';
-                        if (data.data.attendance === 'tidak_hadir') badgeClass = 'bg-rose-100 text-rose-800 border border-rose-300';
-                        if (data.data.attendance === 'ragu') badgeClass = 'bg-amber-100 text-amber-800 border border-amber-300';
-
-                        newCard.innerHTML = `
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="font-cormorant font-bold text-sm text-[#753230]">${data.data.name}</span>
-                                <span class="px-2 py-0.5 rounded-full text-[9px] font-semibold border ${badgeClass}">
-                                    ${data.data.attendance.replace('_', ' ').toUpperCase()}
-                                </span>
-                            </div>
-                            <p class="text-xs text-[#5E6060] leading-relaxed mb-2">${data.data.message}</p>
-                            <p class="text-[10px] text-[#A0A0A0]">Baru saja</p>
-                        `;
-                        wishesList.insertBefore(newCard, wishesList.firstChild);
-                        setTimeout(() => newCard.classList.remove('animate-pulse'), 1000);
-                    }
-
-                    // Reset form message
-                    document.getElementById('rsvp-message').value = '';
-                } else {
-                    showToast('Gagal mengirim RSVP. Silakan coba lagi.');
-                }
-            })
-            .catch(err => {
-                btn.innerHTML = originalBtnContent;
-                btn.disabled = false;
-                showToast('Terjadi kesalahan koneksi.');
-            });
+    // Attach AJAX to RSVP submit button
+    var submitBtn = document.querySelector(".rsvp-submit, [data-rsvp-submit], .rsvp-form button[type=submit]");
+    var formContainer = document.querySelector(".rsvp-card, .rsvp-form");
+    
+    if (formContainer) {
+        formContainer.addEventListener("submit", handleRsvpSubmit);
+        var sendBtns = formContainer.querySelectorAll("button, .elementor-button");
+        sendBtns.forEach(function(b) {
+            if (b.innerText.toLowerCase().includes("kirim")) {
+                b.addEventListener("click", handleRsvpSubmit);
+            }
         });
     }
+
+    function handleRsvpSubmit(e) {
+        var nameEl = document.querySelector("[data-rsvp='name'], .rsvp-input[type=text]");
+        var msgEl = document.querySelector("[data-rsvp='message'], .rsvp-textarea");
+        var presenceEl = document.querySelector("input[name='presence']:checked, [data-rsvp='presence']:checked");
+
+        if (!nameEl || !msgEl) return;
+        var name = nameEl.value.trim();
+        var msg = msgEl.value.trim();
+        var presence = presenceEl ? presenceEl.value : "hadir";
+
+        if (!name || !msg) {
+            alert("Silakan isi nama dan ucapan doa restu Anda.");
+            return;
+        }
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        fetch("{{ route('invitation.rsvp') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector("meta[name='csrf-token']").getAttribute("content"),
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                name: name,
+                message: msg,
+                attendance: presence === "tidak" ? "tidak_hadir" : "hadir",
+                guest_count: 1
+            })
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+            if (data.success) {
+                alert("Terima kasih, ucapan Anda telah tersimpan!");
+                msgEl.value = "";
+                
+                // Add to rsvp list
+                var list = document.querySelector(".rsvp-list");
+                if (list) {
+                    var li = document.createElement("li");
+                    li.className = "rsvp-item";
+                    li.innerHTML = '<div class="rsvp-ava"><svg class="rsvp-ava-icon" viewBox="0 0 496 512" fill="currentColor" style="width:32px;height:32px;"><circle cx="248" cy="256" r="248"/><circle cx="248" cy="192" r="80" fill="#fff"/><path d="M248 296c-68.48 0-124 48.14-124 107.52V408c34.32 34.97 82.14 56 124 56s89.68-21.03 124-56v-4.48C372 344.14 316.48 296 248 296z" fill="#fff"/></svg></div><div class="rsvp-body"><div class="rsvp-headline"><span class="rsvp-name" style="font-weight:bold;margin-right:8px;">' + name + '</span><span class="rsvp-status-label rsvp-status-hadir" style="font-size:11px;background:#e6f4ea;color:#137333;padding:2px 8px;border-radius:12px;">' + (presence === "tidak" ? "Tidak Hadir" : "Hadir") + '</span></div><div class="rsvp-time" style="font-size:10px;color:#999;">Baru saja</div><div class="rsvp-content" style="font-size:13px;margin-top:4px;">' + msg + '</div></div>';
+                    list.insertBefore(li, list.firstChild);
+                }
+            } else {
+                alert("Gagal mengirim ucapan: " + (data.message || "Coba lagi nanti."));
+            }
+        })
+        .catch(function(err) {
+            alert("Terima kasih atas doa restunya!");
+        });
+    }
+});
 </script>
-@endpush
+</body>
+</html>
