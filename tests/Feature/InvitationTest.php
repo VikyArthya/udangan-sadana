@@ -53,3 +53,11 @@ test('invitation page displays dynamic galleries and wedding settings', function
     $response->assertSee('Galeri Foto');
     $response->assertSee('elementor-gallery__container');
 });
+
+test('invitation page displays love stories section dynamically', function () {
+    $response = $this->get('/');
+
+    $response->assertStatus(200);
+    $response->assertSee('Love Story');
+    $response->assertSee('idb-timeline');
+});

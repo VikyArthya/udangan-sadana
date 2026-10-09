@@ -326,7 +326,11 @@ p {
 				</div>
 				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-6b0b4b9d profil1 elementor-widget elementor-widget-image" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="6b0b4b9d" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
 				<div class="elementor-widget-container">
-															<img loading="lazy" decoding="async" width="1000" height="1498" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co.jpg" class="attachment-full size-full wp-image-33948" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co.jpg 1000w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-200x300.jpg 200w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-684x1024.jpg 684w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-768x1150.jpg 768w" sizes="(max-width: 1000px) 100vw, 1000px" />															</div>
+					@php
+						$groomImg = !empty($setting->groom_photo) ? (str_starts_with($setting->groom_photo, 'http') ? $setting->groom_photo : asset($setting->groom_photo)) : 'https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co.jpg';
+					@endphp
+					<img loading="lazy" decoding="async" width="1000" height="1498" src="{{ $groomImg }}" class="attachment-full size-full wp-image-33948" alt="{{ $setting->groom_name ?? 'Mempelai Pria' }}" style="object-fit: cover;" />
+				</div>
 				</div>
 				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-4ca654ba elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="4ca654ba" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
 				<div class="elementor-widget-container">
@@ -357,7 +361,11 @@ p {
 				</div>
 				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-5cbe7682 profil1  elementor-widget elementor-widget-image" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="5cbe7682" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
 				<div class="elementor-widget-container">
-															<img loading="lazy" decoding="async" width="497" height="662" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/awal-3.jpg" class="attachment-full size-full wp-image-33955" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/awal-3.jpg 497w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/awal-3-225x300.jpg 225w" sizes="(max-width: 497px) 100vw, 497px" />															</div>
+					@php
+						$brideImg = !empty($setting->bride_photo) ? (str_starts_with($setting->bride_photo, 'http') ? $setting->bride_photo : asset($setting->bride_photo)) : 'https://inv.punakawandigital.id/wp-content/uploads/2026/06/awal-3.jpg';
+					@endphp
+					<img loading="lazy" decoding="async" width="497" height="662" src="{{ $brideImg }}" class="attachment-full size-full wp-image-33955" alt="{{ $setting->bride_name ?? 'Mempelai Wanita' }}" style="object-fit: cover;" />
+				</div>
 				</div>
 				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-1f499b1a elementor-widget elementor-widget-heading" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="1f499b1a" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
 				<div class="elementor-widget-container">
@@ -598,7 +606,14 @@ p {
 				</div>
 				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-78de8c41 story elementor-widget elementor-widget-image" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="78de8c41" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
 				<div class="elementor-widget-container">
-															<img loading="lazy" decoding="async" width="597" height="480" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/1-e1740985931589.jpg" class="attachment-full size-full wp-image-33960" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/1-e1740985931589.jpg 597w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/1-e1740985931589-300x241.jpg 300w" sizes="(max-width: 597px) 100vw, 597px" />															</div>
+					@php
+						$featuredStory = $stories->first(fn($s) => !empty($s->image));
+						$storyMainImage = $featuredStory 
+							? (str_starts_with($featuredStory->image, 'http') ? $featuredStory->image : asset($featuredStory->image)) 
+							: 'https://inv.punakawandigital.id/wp-content/uploads/2026/06/1-e1740985931589.jpg';
+					@endphp
+					<img loading="lazy" decoding="async" width="597" height="480" src="{{ $storyMainImage }}" class="attachment-full size-full wp-image-33960" alt="{{ $featuredStory->title ?? 'Love Story' }}" style="object-fit: cover;" />
+				</div>
 				</div>
 				<div class="elementor-element elementor-element-3ed11137 ls-con idb-tl-title-align-center idb-tl-desc-align-center elementor-widget elementor-widget-bisdev_timeline" data-id="3ed11137" data-element_type="widget" data-e-type="widget" data-widget_type="bisdev_timeline.default">
 				<div class="elementor-widget-container">
@@ -617,6 +632,14 @@ p {
                              data-reveal-delay="{{ $idx * 180 }}"
                              style="transition-duration: 2500ms; transition-delay: {{ $idx * 180 }}ms;">
                             <h3 class="idb-timeline__title">{{ $story->year_or_date ?: $story->title }}</h3>
+                            @if(!empty($story->image) && $stories->count() > 1)
+                                @php
+                                    $itemImg = str_starts_with($story->image, 'http') ? $story->image : asset($story->image);
+                                @endphp
+                                <div class="idb-timeline__media" style="margin: 10px 0 12px; text-align: center;">
+                                    <img src="{{ $itemImg }}" alt="{{ $story->title }}" style="width: 100%; max-height: 240px; object-fit: cover; border-radius: 8px;" loading="lazy">
+                                </div>
+                            @endif
                             <div class="idb-timeline__desc"><span class="niku-multiline">{{ $story->story }}</span></div>
                         </div>
                     </div>
@@ -978,6 +1001,7 @@ p {
             <div class="rsvp-comments-wrap"
                  data-post="30947"
                  data-per-page="10"
+                 data-has-pager="1">
                 <div class="rsvp-list-wrap"><ul class="rsvp-list">
                     @foreach($wishes as $wish)
                         <li class="rsvp-item" style="display:flex;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #f0f0f0;">
@@ -1043,7 +1067,11 @@ p {
 				</div>
 				<div class="idb-reveal idb-ef zoom-down elementor-element elementor-element-3966a0bd profil1 elementor-widget elementor-widget-image" data-reveal-offset="100" data-reveal-duration="2000" data-reveal-delay="0" style="transition-duration: 2000ms;" data-id="3966a0bd" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
 				<div class="elementor-widget-container">
-															<img loading="lazy" decoding="async" width="1000" height="1498" src="https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co.jpg" class="attachment-full size-full wp-image-33948" alt="" srcset="https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co.jpg 1000w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-200x300.jpg 200w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-684x1024.jpg 684w, https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co-768x1150.jpg 768w" sizes="(max-width: 1000px) 100vw, 1000px" />															</div>
+					@php
+						$closingImg = !empty($setting->hero_photo) ? (str_starts_with($setting->hero_photo, 'http') ? $setting->hero_photo : asset($setting->hero_photo)) : 'https://inv.punakawandigital.id/wp-content/uploads/2026/06/23RSW2031-co.jpg';
+					@endphp
+					<img loading="lazy" decoding="async" width="1000" height="1498" src="{{ $closingImg }}" class="attachment-full size-full wp-image-33948" alt="" style="object-fit: cover;" />
+				</div>
 				</div>
 				<div class="elementor-element elementor-element-760fa375 elementor-widget elementor-widget-spacer" data-id="760fa375" data-element_type="widget" data-e-type="widget" data-widget_type="spacer.default">
 				<div class="elementor-widget-container">
