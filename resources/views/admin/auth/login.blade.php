@@ -50,7 +50,7 @@
 
             <div>
                 <label for="password" class="block text-xs font-semibold text-[#753230] mb-1.5">Kata Sandi</label>
-                <input type="password" id="password" name="password" required value="admin123"
+                <input type="password" id="password" name="password" required
                        placeholder="••••••••"
                        class="w-full px-4 py-2.5 rounded-xl border border-[#B89C7A]/50 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#753230]">
             </div>

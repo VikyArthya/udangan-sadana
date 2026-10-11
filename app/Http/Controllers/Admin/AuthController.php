@@ -37,19 +37,22 @@ class AuthController extends Controller
 
         try {
             // Check if users table exists and has users
-            if (Schema::hasTable('users')) {
+            if (Schema::hasTable('users') && User::exists()) {
                 if (Auth::attempt($credentials, $request->boolean('remember'))) {
                     $request->session()->regenerate();
 
                     return redirect()->intended(route('admin.dashboard'));
                 }
+
+                return back()->withErrors([
+                    'email' => 'Email atau kata sandi yang Anda masukkan salah.',
+                ])->onlyInput('email');
             }
         } catch (Throwable $e) {
             // If table doesn't exist yet or DB unreachable
         }
 
-        // Development/Fallback bypass if DB is not migrated yet:
-        // Allow login with admin@gmail.com / admin123 so user can view admin interface before migrating
+        // Fallback hanya jika tabel users belum ada atau kosong sama sekali (misal saat in-memory testing):
         if ($credentials['email'] === 'admin@gmail.com' && $credentials['password'] === 'admin123') {
             $dummyUser = new User;
             $dummyUser->forceFill([

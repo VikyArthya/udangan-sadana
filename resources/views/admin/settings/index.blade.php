@@ -164,6 +164,7 @@
                            placeholder="https://.../lagu.mp3"
                            class="w-full px-3.5 py-2 text-sm rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#753230] focus:outline-none mb-1.5">
                     <input type="file" name="background_music_file" accept="audio/*" class="text-xs text-gray-500">
+                    <p class="text-[11px] text-gray-500 mt-1">Format didukung: MP3, WAV, OGG, M4A (Maks. 30MB)</p>
                 </div>
 
                 <div>

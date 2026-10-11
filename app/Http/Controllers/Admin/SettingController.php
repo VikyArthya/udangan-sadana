@@ -60,7 +60,7 @@ class SettingController extends Controller
             'quote_source' => ['nullable', 'string', 'max:150'],
 
             'background_music' => ['nullable', 'string'],
-            'background_music_file' => ['nullable', 'file', 'mimes:mp3,wav,ogg', 'max:15360'],
+            'background_music_file' => ['nullable', 'file', 'mimes:mp3,wav,ogg,m4a,aac', 'max:30720'],
             'wedding_date' => ['nullable', 'date'],
             'video_url' => ['nullable', 'string', 'max:255'],
 
@@ -72,6 +72,15 @@ class SettingController extends Controller
             'stream_platform' => ['nullable', 'string', 'max:100'],
             'stream_url' => ['nullable', 'string', 'max:255'],
             'stream_time' => ['nullable', 'string', 'max:150'],
+        ], [
+            'background_music_file.uploaded' => 'File musik gagal diunggah. Pastikan ukuran file tidak melebihi batas maksimal (30MB).',
+            'background_music_file.mimes' => 'Format file musik harus berupa MP3, WAV, OGG, atau M4A.',
+            'background_music_file.max' => 'Ukuran file musik maksimal 30MB.',
+            'cover_photo_file.uploaded' => 'File foto sampul gagal diunggah. Ukuran maksimal 4MB.',
+            'hero_photo_file.uploaded' => 'File foto hero gagal diunggah. Ukuran maksimal 4MB.',
+            'countdown_photo_file.uploaded' => 'File foto countdown gagal diunggah. Ukuran maksimal 4MB.',
+            'groom_photo_file.uploaded' => 'File foto mempelai pria gagal diunggah. Ukuran maksimal 4MB.',
+            'bride_photo_file.uploaded' => 'File foto mempelai wanita gagal diunggah. Ukuran maksimal 4MB.',
         ]);
 
         $data = $request->except(['_token', '_method', 'groom_photo_file', 'bride_photo_file', 'cover_photo_file', 'hero_photo_file', 'countdown_photo_file', 'background_music_file']);
