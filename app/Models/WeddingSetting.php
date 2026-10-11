@@ -63,6 +63,7 @@ class WeddingSetting extends Model
 
             'cover_photo' => 'https://inv.punakawandigital.id/wp-content/uploads/2025/05/Premium-Vintage-03-3.webp',
             'hero_photo' => 'https://inv.punakawandigital.id/wp-content/uploads/2026/06/merah-art-numga-3.webp',
+            'countdown_photo' => 'https://inv.punakawandigital.id/wp-content/uploads/2026/06/1-e1740985931589.jpg',
 
             'quote_arabic' => 'وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً',
             'quote_text' => 'Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir.',

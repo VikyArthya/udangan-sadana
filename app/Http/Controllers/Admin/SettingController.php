@@ -52,6 +52,9 @@ class SettingController extends Controller
             'hero_photo' => ['nullable', 'string'],
             'hero_photo_file' => ['nullable', 'image', 'max:4096'],
 
+            'countdown_photo' => ['nullable', 'string'],
+            'countdown_photo_file' => ['nullable', 'image', 'max:4096'],
+
             'quote_arabic' => ['nullable', 'string'],
             'quote_text' => ['nullable', 'string'],
             'quote_source' => ['nullable', 'string', 'max:150'],
@@ -71,7 +74,7 @@ class SettingController extends Controller
             'stream_time' => ['nullable', 'string', 'max:150'],
         ]);
 
-        $data = $request->except(['_token', '_method', 'groom_photo_file', 'bride_photo_file', 'cover_photo_file', 'hero_photo_file', 'background_music_file']);
+        $data = $request->except(['_token', '_method', 'groom_photo_file', 'bride_photo_file', 'cover_photo_file', 'hero_photo_file', 'countdown_photo_file', 'background_music_file']);
         $data['stream_enabled'] = $request->has('stream_enabled');
 
         // Handle File Uploads
@@ -93,6 +96,11 @@ class SettingController extends Controller
         if ($request->hasFile('hero_photo_file')) {
             $path = $request->file('hero_photo_file')->store('uploads/photos', 'public');
             $data['hero_photo'] = '/storage/'.$path;
+        }
+
+        if ($request->hasFile('countdown_photo_file')) {
+            $path = $request->file('countdown_photo_file')->store('uploads/photos', 'public');
+            $data['countdown_photo'] = '/storage/'.$path;
         }
 
         if ($request->hasFile('background_music_file')) {

@@ -32,9 +32,10 @@ return new class extends Migration
             $table->string('bride_instagram')->nullable()->default('@adiba');
             $table->string('bride_photo')->nullable();
 
-            // Cover & Hero Photos
+            // Cover, Hero & Countdown Photos
             $table->string('cover_photo')->nullable();
             $table->string('hero_photo')->nullable();
+            $table->string('countdown_photo')->nullable();
 
             // Quotes
             $table->text('quote_arabic')->nullable();

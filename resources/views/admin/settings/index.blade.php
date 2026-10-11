@@ -38,9 +38,24 @@
                 </div>
 
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">Keterangan Putra dari Orang Tua</label>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Keterangan / Status Anak Mempelai Pria</label>
                     <input type="text" name="groom_parent_status" value="{{ old('groom_parent_status', $setting->groom_parent_status) }}"
-                           placeholder="Putra Kedua dari Bapak M. Dawam & (Almh) Ibu Dewi Sudarwati"
+                           placeholder="Contoh: Putra Pertama dari Bapak Noor Taufiq & Siti Afri’ah"
+                           class="w-full px-3.5 py-2 text-sm rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#753230] focus:outline-none">
+                    <p class="text-[11px] text-gray-500 mt-1">Bisa ditulis kalimat lengkap (misal: <em>Putra Pertama dari Bapak Noor Taufiq & Siti Afri’ah</em>) atau isi terpisah nama ayah & ibu di bawah.</p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Ayah (Opsional)</label>
+                    <input type="text" name="groom_father" value="{{ old('groom_father', $setting->groom_father) }}"
+                           placeholder="Bapak Noor Taufiq"
+                           class="w-full px-3.5 py-2 text-sm rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#753230] focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Ibu (Opsional)</label>
+                    <input type="text" name="groom_mother" value="{{ old('groom_mother', $setting->groom_mother) }}"
+                           placeholder="Siti Afri’ah"
                            class="w-full px-3.5 py-2 text-sm rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#753230] focus:outline-none">
                 </div>
 
@@ -86,9 +101,24 @@
                 </div>
 
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">Keterangan Putri dari Orang Tua</label>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Keterangan / Status Anak Mempelai Wanita</label>
                     <input type="text" name="bride_parent_status" value="{{ old('bride_parent_status', $setting->bride_parent_status) }}"
-                           placeholder="Putri Pertama dari Bapak Anas Rifai & Ibu Kholifah"
+                           placeholder="Contoh: Putri ke Delapan dari Bapak (Alm) Subadi & Sri Utami"
+                           class="w-full px-3.5 py-2 text-sm rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#753230] focus:outline-none">
+                    <p class="text-[11px] text-gray-500 mt-1">Bisa ditulis kalimat lengkap (misal: <em>Putri ke Delapan dari Bapak (Alm) Subadi & Sri Utami</em>) atau isi terpisah nama ayah & ibu di bawah.</p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Ayah (Opsional)</label>
+                    <input type="text" name="bride_father" value="{{ old('bride_father', $setting->bride_father) }}"
+                           placeholder="Bapak (Alm) Subadi"
+                           class="w-full px-3.5 py-2 text-sm rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#753230] focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Ibu (Opsional)</label>
+                    <input type="text" name="bride_mother" value="{{ old('bride_mother', $setting->bride_mother) }}"
+                           placeholder="Sri Utami"
                            class="w-full px-3.5 py-2 text-sm rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#753230] focus:outline-none">
                 </div>
 
@@ -148,6 +178,15 @@
                     <input type="text" name="hero_photo" value="{{ old('hero_photo', $setting->hero_photo) }}"
                            class="w-full px-3.5 py-2 text-sm rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#753230] focus:outline-none mb-1.5">
                     <input type="file" name="hero_photo_file" accept="image/*" class="text-xs text-gray-500">
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Foto Menuju Hari Bahagia (Card Countdown)</label>
+                    <input type="text" name="countdown_photo" value="{{ old('countdown_photo', $setting->countdown_photo) }}"
+                           placeholder="https://... atau upload file di bawah"
+                           class="w-full px-3.5 py-2 text-sm rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#753230] focus:outline-none mb-1.5">
+                    <input type="file" name="countdown_photo_file" accept="image/*" class="text-xs text-gray-500">
+                    <p class="text-[11px] text-gray-500 mt-1">Foto di atas tulisan <em>Menuju Hari Bahagia</em> pada bagian hitung mundur acara.</p>
                 </div>
             </div>
         </div>
